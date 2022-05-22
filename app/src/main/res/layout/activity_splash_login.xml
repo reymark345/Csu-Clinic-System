@@ -78,6 +78,7 @@
             android:textSize="14sp" />
 
         <EditText
+            android:id="@+id/loginIdno"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -85,12 +86,14 @@
             android:drawableStart="@drawable/ic_baseline_email_24"
             android:drawableLeft="@drawable/ic_baseline_email_24"
             android:drawablePadding="16dp"
-            android:hint="Username"
+            android:maxLength="9"
+            android:hint="ID no."
             android:inputType="textEmailAddress"
             android:padding="16dp"
             android:textSize="14sp" />
 
         <EditText
+            android:id="@+id/loginPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -116,15 +119,28 @@
 
     </LinearLayout>
 
+<!--    <TextView-->
+<!--        android:id="@+id/patientEdt"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_marginEnd="30dp"-->
+<!--        android:alpha="1"-->
+<!--        android:layout_marginRight="30dp"-->
+<!--        android:text="New Patient?"-->
+<!--        android:textColor="@color/textDescription"-->
+<!--        android:textSize="13sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/linlay_inputs" />-->
+
     <TextView
-        android:id="@+id/patientEdt"
+        android:id="@+id/tv_forgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
-        android:alpha="1"
         android:layout_marginRight="30dp"
-        android:text="New Patient?"
+        android:text="New patient?"
         android:textColor="@color/textDescription"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"

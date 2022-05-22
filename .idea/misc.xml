@@ -3,7 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/button_bg.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/button_shape.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/edittext_bg.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/gradient_spinner.xml" value="0.20277777777777778" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/history.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.22407407407407406" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.2703125" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_baseline_visibility_24.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_creditcard.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_location.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/spinner.xml" value="0.20277777777777778" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/spinner_background.xml" value="0.22685185185185186" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_login2.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_main.xml" value="0.24010416666666667" />
@@ -16,8 +27,10 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard_item_2.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard_item_3.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard_item_4.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/safasf.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/sidebar_header.xml" value="0.2203125" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/spinner_load.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/menu/main_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/menu/sidemenu.xml" value="0.2203125" />
       </map>
     </option>

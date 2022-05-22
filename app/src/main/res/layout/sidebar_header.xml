@@ -12,7 +12,7 @@
         android:id="@+id/profile_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/vector"
+        android:src="@drawable/user_logo"
         app:civ_border_width="2dp"
         app:civ_border_color="#FFFFFF"/>
     <TextView
