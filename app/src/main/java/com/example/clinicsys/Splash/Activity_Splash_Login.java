@@ -1,6 +1,7 @@
 package com.example.clinicsys.Splash;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,20 +9,37 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.clinicsys.MainActivity;
 import com.example.clinicsys.R;
 import com.example.clinicsys.SignUp;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class Activity_Splash_Login extends AppCompatActivity {
+import java.util.ArrayList;
+
+
+public class Activity_Splash_Login extends AppCompatActivity implements AdapterView.OnItemSelectedListener  {
+
+    Spinner PatientTypeSpinner;
 
     Button BtnLogin;
     EditText EdtloginIdno,EdtloginPassword;
@@ -32,16 +50,23 @@ public class Activity_Splash_Login extends AppCompatActivity {
         return currCount == 3;
     }
 
+    ArrayList<String> patientType = new ArrayList<>();
+    ArrayAdapter<String> patientAdapter;
+    RequestQueue requestQueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_login);
-
+        requestQueue = Volley.newRequestQueue(this);
 
         EdtloginIdno = findViewById(R.id.loginIdno);
         EdtloginPassword = findViewById(R.id.loginPassword);
         BtnLogin = (Button) findViewById(R.id.btnAccess);
+        PatientTypeSpinner = (Spinner)findViewById(R.id.patientTypeSpinner);
         TextView newPatient = (TextView)findViewById(R.id.tv_forgotPassword);
+
+        patientType();
         DataAuthentication();
 
 
@@ -72,11 +97,19 @@ public class Activity_Splash_Login extends AppCompatActivity {
                             data[0] = id_no;
                             data[1] = password;
 
-//                            PutData putData = new PutData("http://172.31.250.102/csu_clinic/signup.php", "POST", field, data);
-                            PutData putData = new PutData("http://192.168.254.107/csu_clinic/login.php", "POST", field, data);
+//                            PutData putData = new PutData("http://10.0.2.2/csu_clinic/login.php", "POST", field, data);
+//                            PutData putData = new PutData("http://172.31.250.143/csu_clinic/login.php", "POST", field, data);
+
+                            PutData putData = new PutData("http://192.168.254.109/csu_clinic/login.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     String result = putData.getResult();
+
+                                    SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
+                                    SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                                    myEdit.putString("PatientType", "Admin");
+                                    myEdit.commit();
+
                                     if(result.equals("Login Success")){
                                         Toast.makeText(getApplicationContext(), "Successfully Login", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -111,6 +144,52 @@ public class Activity_Splash_Login extends AppCompatActivity {
             }
         });
     }
+
+
+    public void patientType(){
+        patientType.clear();
+//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
+//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
+        String url = "http://192.168.254.109/csu_clinic/populatePatientType.php";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray jsonArray = response.getJSONArray("patient_type");
+                    for(int i=0; i<jsonArray.length();i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String countryName = jsonObject.optString("type");
+                        patientType.add(countryName);
+                        patientAdapter = new ArrayAdapter<>(Activity_Splash_Login.this,
+                                android.R.layout.simple_spinner_item, patientType);
+                        patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        PatientTypeSpinner.setAdapter(patientAdapter);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+        PatientTypeSpinner.setOnItemSelectedListener(this);
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
     private boolean shouldIncrementOrDecrement(int currCount, boolean shouldIncrement) {
         if (shouldIncrement) {
             return prevCount <= currCount && isAtSpaceDelimiter(currCount);

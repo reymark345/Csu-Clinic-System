@@ -7,4 +7,12 @@
 
     <string name="navigation_open">Open Navigation drawer</string>
     <string name="navigation_close">Close Navigation drawer</string>
+    <string name="settings_title">Settings</string>
+    <string name="notifications_title">Notifications</string>
+
+<!--    <style name="SecondaryTextTheme">-->
+<!--        <item name="android:textSize">15sp</item>-->
+<!--        <item name="android:textColor">@color/colorBlack</item>-->
+<!--        <item name="android:textStyle">normal</item>-->
+<!--    </style>-->
 </resources>
