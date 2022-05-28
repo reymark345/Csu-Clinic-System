@@ -41,17 +41,24 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
+
 public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     EditText edtIDno,edtFirstname,edtMiddleName,edtLastname,edtBirthdate,edtAddress,edtCpno,edtEmail,edtSchedule;
     Button buttonSignup;
     private int prevCount = 0;
+    String DialogStatus;
 
     Spinner spinnerPatientType,spinnerAppointment,spinnerComplaints, spinnerSex;
     ArrayList<String> appointmentList = new ArrayList<>();
     ArrayList<String> complaintList = new ArrayList<>();
+    ArrayList<String> patientType = new ArrayList<>();
     ArrayAdapter<String> countryAdapter;
     ArrayAdapter<String> complaintAdapter;
+    ArrayAdapter<String> patientAdapter;
+
     RequestQueue requestQueue;
     TextInputLayout tilIdno, tilFname, tilMiddle,tilLastname, tilSex, tilAddress, tilBdate, tilComplants, tilCpno, tilEmail, tilPatientType;
     String blankMessage = "Please fill this blank";
@@ -59,16 +66,11 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         return currCount == 3;
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         requestQueue = Volley.newRequestQueue(this);
-
-
-
         spinnerPatientType = (Spinner)findViewById(R.id.spinnerPatientType);
         spinnerAppointment = (Spinner)findViewById(R.id.spinnerAppointmentCat);
         spinnerComplaints = (Spinner)findViewById(R.id.spinnerComplaints);
@@ -101,11 +103,12 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
 //        tilPatientType = findViewById(R.id.til_patientType);
 
         String[] Gender = new String[]{"Male", "Female"};
-        String[] patientType = new String[]{"Student", "Staff"};
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Gender);
-        ArrayAdapter<String> adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, patientType);
         spinnerSex.setAdapter(adapter);
-        spinnerPatientType.setAdapter(adapt);
+//        ArrayAdapter<String> adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, patientType);
+
+//        spinnerPatientType.setAdapter(adapt);
 
         edtSchedule.setFocusable(false);
         edtSchedule.setClickable(true);
@@ -126,7 +129,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                 showDateDialog(edtBirthdate);
             }
         });
-
+        patientType();
         patientDropdown();
         DataAuthentication();
 
@@ -135,23 +138,23 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
             public void onClick(View view) {
 
 
-                String id_no, patientType, fname,middle, lname, appointment, complain, sex, email, contact_no, address;
+                String id_no, patientType, fname,middle, lname, appointment, complain, sex, birthdate, email, contact_no, address;
                 id_no = String.valueOf(edtIDno.getText());
                 middle = String.valueOf(edtMiddleName.getText());
                 fname = String.valueOf(edtFirstname.getText());
                 lname = String.valueOf(edtLastname.getText());
-
                 sex = spinnerSex.getSelectedItem().toString();
 
                 email = String.valueOf(edtEmail.getText());
                 contact_no = String.valueOf(edtCpno.getText());
                 address = String.valueOf(edtAddress.getText());
+                birthdate = String.valueOf(edtBirthdate.getText());
 
                 patientType = spinnerPatientType.getSelectedItem().toString();
                 appointment = spinnerAppointment.getSelectedItem().toString();
                 complain = spinnerComplaints.getSelectedItem().toString();
 
-                if(!id_no.equals("") && !fname.equals("") && !lname.equals("")){
+                if(!id_no.equals("") && !fname.equals("") && !lname.equals("") && !email.equals("") ){
                     //Start ProgressBar first (Set visibility VISIBLE)
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
@@ -159,7 +162,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                         public void run() {
                             //Starting Write and Read data with URL
                             //Creating array for parameters
-                            String[] field = new String[8];
+                            String[] field = new String[9];
                             EditText edtIDno,edtPatient,edtFirstname,edtMiddleName,edtLastname,edtBirthdate,edtAge,edtCpno,edtEmail;
 
                             field[0] = "first_name";
@@ -167,33 +170,61 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                             field[2] = "last_name";
                             field[3] = "sex";
                             field[4] = "id_no";
-                            field[5] = "email";
-                            field[6] = "contact_no";
-                            field[7] = "address";
+                            field[5] = "birthdate";
+                            field[6] = "email";
+                            field[7] = "contact_no";
+                            field[8] = "address";
+
 
 
                             //Creating array for data
-                            String[] data = new String[8];
+                            String[] data = new String[9];
 
                             data[0] = fname;
                             data[1] = middle;
                             data[2] = lname;
                             data[3] = sex;
                             data[4] = id_no;
-                            data[5] = email;
-                            data[6] = contact_no;
-                            data[7] = address;
+                            data[5] = birthdate;
+                            data[6] = email;
+                            data[7] = contact_no;
+                            data[8] = address;
 
-//                            PutData putData = new PutData("http://172.31.250.102/csu_clinic/signup.php", "POST", field, data);
+
+//                            PutData putData = new PutData("http://172.31.250.143/csu_clinic/signup.php", "POST", field, data);
                             PutData putData = new PutData("http://192.168.254.107/csu_clinic/signup.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     String result = putData.getResult();
                                     if(result.equals("Created success")){
                                         Toast.makeText(getApplicationContext(), "Successfully save", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getApplicationContext(), Activity_Splash_Login.class);
-                                        startActivity(intent);
-                                        finish();
+
+                                      final SweetAlertDialog pDiaglog =  new SweetAlertDialog(
+                                              SignUp.this, SweetAlertDialog.SUCCESS_TYPE);
+                                        pDiaglog.setTitleText("Successfully Save");
+                                        pDiaglog.setContentText("Please choose corresponding action");
+                                        pDiaglog.setConfirmText("Sign Up");
+                                        pDiaglog.setCancelText("Add");
+                                        pDiaglog.setCancelable(false);
+                                        pDiaglog.showCancelButton(true)
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sDialog) {
+                                                        Intent in = new Intent(getApplicationContext(), Activity_Splash_Login.class);
+                                                        startActivity(in);
+                                                        finish();
+                                                    }
+                                                })
+                                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sDialog) {
+                                                        Intent in = new Intent(getApplicationContext(), SignUp.class);
+                                                        startActivity(in);
+                                                        finish();
+                                                    }
+                                                }).show();
+
+//
                                     }
                                     else {
                                         Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
@@ -207,14 +238,20 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                     });
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "All fields required ", Toast.LENGTH_SHORT).show();
+                    new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Error!")
+                            .setContentText("All Fields required")
+                            .showCancelButton(true)
+                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                }
+                            }).show();
                 }
             }
         });
 
     }
-
-
 //    ------------- start outside
 
     private void showDateTimeDialog(final EditText date_time_in) {
@@ -231,9 +268,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
                         calendar.set(Calendar.MINUTE,minute);
-
                         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
                         date_time_in.setText(simpleDateFormat.format(calendar.getTime()));
                     }
                 };
@@ -268,7 +303,9 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         if(adapterView.getId() == R.id.spinnerAppointmentCat){
             complaintList.clear();
             String selectedCountry = adapterView.getSelectedItem().toString();
-            String url = "http://10.0.2.2/csu_clinic/populate_city.php?country_name="+selectedCountry;
+//            String url = "http://10.0.2.2/csu_clinic/populate_city.php?country_name="+selectedCountry;
+//            String url = "http://172.31.250.143/csu_clinic/populate_city.php?country_name="+selectedCountry;
+            String url = "http://192.168.254.107/csu_clinic/populate_city.php?country_name="+selectedCountry;
             requestQueue = Volley.newRequestQueue(this);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                     url, null, new Response.Listener<JSONObject>() {
@@ -303,9 +340,45 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    public void patientType(){
+        patientType.clear();
+//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
+//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
+        String url = "http://192.168.254.109/csu_clinic/populatePatientType.php";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray jsonArray = response.getJSONArray("patient_type");
+                    for(int i=0; i<jsonArray.length();i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String countryName = jsonObject.optString("type");
+                        patientType.add(countryName);
+                        patientAdapter = new ArrayAdapter<>(SignUp.this,
+                                android.R.layout.simple_spinner_item, patientType);
+                        patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinnerPatientType.setAdapter(patientAdapter);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+        spinnerPatientType.setOnItemSelectedListener(this);
+    }
+
     public void patientDropdown(){
         appointmentList.clear();
-//        String url = "http://172.31.250.102/csu_clinic/populate_country.php";
+//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
+//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
         String url = "http://192.168.254.107/csu_clinic/populate_country.php";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, null, new Response.Listener<JSONObject>() {
@@ -321,8 +394,6 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                                 android.R.layout.simple_spinner_item, appointmentList);
                         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinnerAppointment.setAdapter(countryAdapter);
-
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -337,6 +408,8 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         requestQueue.add(jsonObjectRequest);
         spinnerAppointment.setOnItemSelectedListener(this);
     }
+
+
 
     private boolean shouldIncrementOrDecrement(int currCount, boolean shouldIncrement) {
         if (shouldIncrement) {
@@ -417,6 +490,25 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                 }
                 else{
                     tilLastname.setError(null);
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        edtEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                if(s.toString().length() == 0){
+                    tilEmail.setError(blankMessage);
+                }
+                else{
+                    tilEmail.setError(null);
                 }
             }
             @Override

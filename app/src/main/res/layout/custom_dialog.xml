@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add new Appointment"
+        android:textSize="24sp"
+        android:textColor="@color/colorBlack"
+        android:layout_marginBottom="16dp"
+        android:id="@+id/textAppointment"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/appointmentCat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        app:helperTextTextColor="@color/validation"
+        android:layout_below="@+id/textAppointment"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+        <Spinner
+            android:id="@+id/spnAppointmentCat"
+            android:layout_width= "match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edtIdno"/>
+
+<!--        <EditText-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Appointment Schedule"-->
+<!--            android:id="@+id/spnAppointmentCat"-->
+<!--            android:inputType="text"-->
+<!--            android:layout_below="@id/til_schedule"/>-->
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:endIconMode="clear_text"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        app:helperTextTextColor="@color/validation"
+        app:startIconDrawable="@drawable/ic_series"
+        android:layout_below="@+id/appointmentCat"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Appointment Schedule"
+            android:id="@+id/name_et"
+            android:inputType="text"
+            android:layout_below="@id/spnAppointmentCat"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+<!--    <EditText-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Date"-->
+<!--        android:inputType="text"-->
+<!--        android:imeOptions="actionNext"-->
+<!--        android:id="@+id/name_et"/>-->
+
+<!--    <EditText-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Time"-->
+<!--        android:inputType="number"-->
+<!--        android:imeOptions="actionNext"-->
+<!--        android:id="@+id/age_et"/>-->
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/_23ssp"
+        android:text="Submit"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimary"
+        android:id="@+id/submit_button"/>
+</LinearLayout>

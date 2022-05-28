@@ -88,7 +88,7 @@
             android:drawablePadding="16dp"
             android:maxLength="9"
             android:hint="ID no."
-            android:inputType="textEmailAddress"
+            android:inputType="number"
             android:padding="16dp"
             android:textSize="14sp" />
 
@@ -107,6 +107,64 @@
             android:inputType="textPassword"
             android:padding="16dp"
             android:textSize="14sp" />
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:layout_weight=".28"-->
+<!--            -->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_above="@id/loginPassword"-->
+<!--            android:layout_below="@id/btnAccess">-->
+
+            <Spinner
+                android:id="@+id/patientTypeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_above="@id/loginPassword"
+                android:layout_below="@id/btnAccess"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                 />
+<!--        </RelativeLayout>-->
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_weight=".28"-->
+<!--            android:background="@drawable/background"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_above="@id/loginPassword"-->
+<!--            android:layout_below="@id/btnAccess">-->
+
+<!--        <Spinner-->
+<!--            android:id="@+id/patientTypeSpinner"-->
+<!--            android:layout_marginTop="@dimen/_10sdp"-->
+<!--            android:layout_width= "match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:gravity="center"-->
+<!--            android:spinnerMode="dropdown"-->
+<!--            />-->
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:src="@drawable/ic_night" />-->
+
+<!--        </RelativeLayout>-->
+
 
         <Button
             android:id="@+id/btnAccess"
