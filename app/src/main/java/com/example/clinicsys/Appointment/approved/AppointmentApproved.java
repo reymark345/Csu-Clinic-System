@@ -1,11 +1,11 @@
 package com.example.clinicsys.Appointment.approved;
 
-public class Appointment {
+public class AppointmentApproved {
     private String title, image;
     private String price;
 //    private float rating;
 
-    public Appointment(String title, String price){
+    public AppointmentApproved(String title, String price){
 
         this.title = title;
 //        this.image = image;

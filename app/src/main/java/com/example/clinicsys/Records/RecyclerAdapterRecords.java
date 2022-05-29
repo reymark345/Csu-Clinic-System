@@ -1,6 +1,6 @@
-package com.example.clinicsys.Appointment.approved;
+package com.example.clinicsys.Records;
 
-import static com.example.clinicsys.Appointment.pending.HomeActivity.admin;
+import static com.example.clinicsys.Appointment.pending.HomePending.admin;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,23 +20,23 @@ import com.example.clinicsys.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
+public class RecyclerAdapterRecords extends RecyclerView.Adapter<RecyclerAdapterRecords.MyViewHolderRecords> {
 
     private Context mContext;
-    private List<Appointment> appointments = new ArrayList<>();
+    private List<Records> appointments = new ArrayList<>();
     private Button btnDone,btnChange, btnCancel;
 
-    public RecyclerAdapter(Context context, List<Appointment> appointments){
+    public RecyclerAdapterRecords(Context context, List<Records> appointments){
         this.mContext = context;
         this.appointments = appointments;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolderRecords extends RecyclerView.ViewHolder {
 
         private TextView aptTitle, aptTime;
         private LinearLayout mContainer;
 
-        public MyViewHolder (View view){
+        public MyViewHolderRecords(View view){
             super(view);
             aptTitle = view.findViewById(R.id.appointment_title);
             aptTime = view.findViewById(R.id.appointment_time);
@@ -52,16 +52,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolderRecords onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.products_list_item_layout,parent,false);
-        return new MyViewHolder(view);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.appointment_layout_pending,parent,false);
+        return new MyViewHolderRecords(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull MyViewHolderRecords holder, @SuppressLint("RecyclerView") int position) {
 
-        final Appointment appointment = appointments.get(position);
+        final Records appointment = appointments.get(position);
         int id = position+1;
 
         btnDone.setOnClickListener(new View.OnClickListener() {

@@ -10,7 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.clinicsys.R;
 
-public class DetailedAppointmentsActivity extends AppCompatActivity {
+public class DetailedAppointmentApproved extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private ActionBar mActionBar;
@@ -21,7 +21,7 @@ public class DetailedAppointmentsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detailed_appointment);
+        setContentView(R.layout.appointment_activity);
 
 
 // Retrieving the value using its keys the file name

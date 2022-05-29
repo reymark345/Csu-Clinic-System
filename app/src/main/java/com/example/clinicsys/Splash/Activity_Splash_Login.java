@@ -2,6 +2,7 @@ package com.example.clinicsys.Splash;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -39,8 +40,6 @@ import java.util.ArrayList;
 
 public class Activity_Splash_Login extends AppCompatActivity implements AdapterView.OnItemSelectedListener  {
 
-    Spinner PatientTypeSpinner;
-
     Button BtnLogin;
     EditText EdtloginIdno,EdtloginPassword;
 
@@ -53,6 +52,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
     ArrayList<String> patientType = new ArrayList<>();
     ArrayAdapter<String> patientAdapter;
     RequestQueue requestQueue;
+    TextView newPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +63,9 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
         EdtloginIdno = findViewById(R.id.loginIdno);
         EdtloginPassword = findViewById(R.id.loginPassword);
         BtnLogin = (Button) findViewById(R.id.btnAccess);
-        PatientTypeSpinner = (Spinner)findViewById(R.id.patientTypeSpinner);
-        TextView newPatient = (TextView)findViewById(R.id.tv_forgotPassword);
+        newPatient = (TextView)findViewById(R.id.tv_forgotPassword);
 
-        patientType();
+        newPatient.setPaintFlags(newPatient.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
         DataAuthentication();
 
 
@@ -146,39 +145,6 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
     }
 
 
-    public void patientType(){
-        patientType.clear();
-//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
-//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
-        String url = "http://192.168.1.10/csu_clinic/populatePatientType.php";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray("patient_type");
-                    for(int i=0; i<jsonArray.length();i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String countryName = jsonObject.optString("type");
-                        patientType.add(countryName);
-                        patientAdapter = new ArrayAdapter<>(Activity_Splash_Login.this,
-                                android.R.layout.simple_spinner_item, patientType);
-                        patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        PatientTypeSpinner.setAdapter(patientAdapter);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
-        PatientTypeSpinner.setOnItemSelectedListener(this);
-    }
 
 
     @Override
