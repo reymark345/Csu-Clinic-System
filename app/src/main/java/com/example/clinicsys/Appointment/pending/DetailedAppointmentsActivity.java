@@ -1,4 +1,4 @@
-package com.example.clinicsys.Appointment;
+package com.example.clinicsys.Appointment.pending;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
