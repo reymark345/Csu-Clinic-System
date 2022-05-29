@@ -32,16 +32,20 @@
         </activity>
 
         <activity
-            android:name=".login"
-            android:exported="true" />
-        <activity
             android:name=".Splash.Activity_Splash_Login"
             android:exported="true" />
 
         <activity
-            android:name=".Appointment.pending.HomeActivity"
+            android:name=".Appointment.pending.HomePending"
             android:exported="true" />
 
+        <activity
+            android:name=".Appointment.approved.HomeApproved"
+            android:exported="true" />
+
+        <activity
+            android:name=".Records.Home"
+            android:exported="true" />
 
         <activity
             android:name=".SignUp"

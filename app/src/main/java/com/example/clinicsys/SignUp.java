@@ -136,117 +136,113 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         buttonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
+                    String id_no, patientType, fname, middle, lname, appointment, complain, sex, birthdate, email, contact_no, address;
+                    id_no = String.valueOf(edtIDno.getText());
+                    middle = String.valueOf(edtMiddleName.getText());
+                    fname = String.valueOf(edtFirstname.getText());
+                    lname = String.valueOf(edtLastname.getText());
+                    sex = spinnerSex.getSelectedItem().toString();
+
+                    email = String.valueOf(edtEmail.getText());
+                    contact_no = String.valueOf(edtCpno.getText());
+                    address = String.valueOf(edtAddress.getText());
+                    birthdate = String.valueOf(edtBirthdate.getText());
+
+                    patientType = spinnerPatientType.getSelectedItem().toString();
+                    appointment = spinnerAppointment.getSelectedItem().toString();
+                    complain = spinnerComplaints.getSelectedItem().toString();
+
+                    if (!id_no.equals("") && !fname.equals("") && !lname.equals("") && !email.equals("")) {
+                        //Start ProgressBar first (Set visibility VISIBLE)
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                String[] field = new String[9];
+                                EditText edtIDno, edtPatient, edtFirstname, edtMiddleName, edtLastname, edtBirthdate, edtAge, edtCpno, edtEmail;
+
+                                field[0] = "first_name";
+                                field[1] = "middle_name";
+                                field[2] = "last_name";
+                                field[3] = "sex";
+                                field[4] = "id_no";
+                                field[5] = "birthdate";
+                                field[6] = "email";
+                                field[7] = "contact_no";
+                                field[8] = "address";
 
 
-                String id_no, patientType, fname,middle, lname, appointment, complain, sex, birthdate, email, contact_no, address;
-                id_no = String.valueOf(edtIDno.getText());
-                middle = String.valueOf(edtMiddleName.getText());
-                fname = String.valueOf(edtFirstname.getText());
-                lname = String.valueOf(edtLastname.getText());
-                sex = spinnerSex.getSelectedItem().toString();
+                                //Creating array for data
+                                String[] data = new String[9];
 
-                email = String.valueOf(edtEmail.getText());
-                contact_no = String.valueOf(edtCpno.getText());
-                address = String.valueOf(edtAddress.getText());
-                birthdate = String.valueOf(edtBirthdate.getText());
-
-                patientType = spinnerPatientType.getSelectedItem().toString();
-                appointment = spinnerAppointment.getSelectedItem().toString();
-                complain = spinnerComplaints.getSelectedItem().toString();
-
-                if(!id_no.equals("") && !fname.equals("") && !lname.equals("") && !email.equals("") ){
-                    //Start ProgressBar first (Set visibility VISIBLE)
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Starting Write and Read data with URL
-                            //Creating array for parameters
-                            String[] field = new String[9];
-                            EditText edtIDno,edtPatient,edtFirstname,edtMiddleName,edtLastname,edtBirthdate,edtAge,edtCpno,edtEmail;
-
-                            field[0] = "first_name";
-                            field[1] = "middle_name";
-                            field[2] = "last_name";
-                            field[3] = "sex";
-                            field[4] = "id_no";
-                            field[5] = "birthdate";
-                            field[6] = "email";
-                            field[7] = "contact_no";
-                            field[8] = "address";
-
-
-
-                            //Creating array for data
-                            String[] data = new String[9];
-
-                            data[0] = fname;
-                            data[1] = middle;
-                            data[2] = lname;
-                            data[3] = sex;
-                            data[4] = id_no;
-                            data[5] = birthdate;
-                            data[6] = email;
-                            data[7] = contact_no;
-                            data[8] = address;
-
-
+                                data[0] = fname;
+                                data[1] = middle;
+                                data[2] = lname;
+                                data[3] = sex;
+                                data[4] = id_no;
+                                data[5] = birthdate;
+                                data[6] = email;
+                                data[7] = contact_no;
+                                data[8] = address;
 //                            PutData putData = new PutData("http://172.31.250.143/csu_clinic/signup.php", "POST", field, data);
-                            PutData putData = new PutData("http://192.168.254.107/csu_clinic/signup.php", "POST", field, data);
-                            if (putData.startPut()) {
-                                if (putData.onComplete()) {
-                                    String result = putData.getResult();
-                                    if(result.equals("Created success")){
-                                        Toast.makeText(getApplicationContext(), "Successfully save", Toast.LENGTH_SHORT).show();
+                                PutData putData = new PutData("http://192.168.254.109/csu_clinic/signup.php", "POST", field, data);
+                                if (putData.startPut()) {
+                                    if (putData.onComplete()) {
+                                        String result = putData.getResult();
+                                        if (result.equals("Created success")) {
+                                            Toast.makeText(getApplicationContext(), "Successfully save", Toast.LENGTH_SHORT).show();
 
-                                      final SweetAlertDialog pDiaglog =  new SweetAlertDialog(
-                                              SignUp.this, SweetAlertDialog.SUCCESS_TYPE);
-                                        pDiaglog.setTitleText("Successfully Save");
-                                        pDiaglog.setContentText("Please choose corresponding action");
-                                        pDiaglog.setConfirmText("Sign Up");
-                                        pDiaglog.setCancelText("Add");
-                                        pDiaglog.setCancelable(false);
-                                        pDiaglog.showCancelButton(true)
-                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                    @Override
-                                                    public void onClick(SweetAlertDialog sDialog) {
-                                                        Intent in = new Intent(getApplicationContext(), Activity_Splash_Login.class);
-                                                        startActivity(in);
-                                                        finish();
-                                                    }
-                                                })
-                                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                    @Override
-                                                    public void onClick(SweetAlertDialog sDialog) {
-                                                        Intent in = new Intent(getApplicationContext(), SignUp.class);
-                                                        startActivity(in);
-                                                        finish();
-                                                    }
-                                                }).show();
+                                            final SweetAlertDialog pDiaglog = new SweetAlertDialog(
+                                                    SignUp.this, SweetAlertDialog.SUCCESS_TYPE);
+                                            pDiaglog.setTitleText("Successfully Save");
+                                            pDiaglog.setContentText("Please choose corresponding action");
+                                            pDiaglog.setConfirmText("Sign Up");
+                                            pDiaglog.setCancelText("Add");
+                                            pDiaglog.setCancelable(false);
+                                            pDiaglog.showCancelButton(true)
+                                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                        @Override
+                                                        public void onClick(SweetAlertDialog sDialog) {
+                                                            Intent in = new Intent(getApplicationContext(), Activity_Splash_Login.class);
+                                                            startActivity(in);
+                                                            finish();
+                                                        }
+                                                    })
+                                                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                        @Override
+                                                        public void onClick(SweetAlertDialog sDialog) {
+                                                            Intent in = new Intent(getApplicationContext(), SignUp.class);
+                                                            startActivity(in);
+                                                            finish();
+                                                        }
+                                                    }).show();
 
 //
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                                        }
+                                        //End ProgressBar (Set visibility to GONE)
+                                        Log.i("PutData", result);
                                     }
-                                    else {
-                                        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-                                    }
-                                    //End ProgressBar (Set visibility to GONE)
-                                    Log.i("PutData", result);
                                 }
+                                //End Write and Read data with URL
                             }
-                            //End Write and Read data with URL
-                        }
-                    });
+                        });
+                    } else {
+                        new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText("Error!")
+                                .setContentText("All Fields required")
+                                .showCancelButton(true)
+                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                    }
+                                }).show();
+                    }
                 }
-                else {
-                    new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error!")
-                            .setContentText("All Fields required")
-                            .showCancelButton(true)
-                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                }
-                            }).show();
+                 catch (Exception e){
+                    Toast.makeText(getApplicationContext(), "Server Connection Failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -305,7 +301,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
             String selectedCountry = adapterView.getSelectedItem().toString();
 //            String url = "http://10.0.2.2/csu_clinic/populate_city.php?country_name="+selectedCountry;
 //            String url = "http://172.31.250.143/csu_clinic/populate_city.php?country_name="+selectedCountry;
-            String url = "http://192.168.1.10/csu_clinic/populate_city.php?country_name="+selectedCountry;
+            String url = "http://192.168.254.109/csu_clinic/populate_city.php?country_name="+selectedCountry;
             requestQueue = Volley.newRequestQueue(this);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                     url, null, new Response.Listener<JSONObject>() {
@@ -345,7 +341,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         patientType.clear();
 //        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
 //        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
-        String url = "http://192.168.1.10/csu_clinic/populatePatientType.php";
+        String url = "http://192.168.254.109/csu_clinic/populatePatientType.php";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -379,7 +375,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         appointmentList.clear();
 //        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
 //        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
-        String url = "http://192.168.1.10/csu_clinic/populate_country.php";
+        String url = "http://192.168.254.109/csu_clinic/populate_country.php";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, null, new Response.Listener<JSONObject>() {
             @Override

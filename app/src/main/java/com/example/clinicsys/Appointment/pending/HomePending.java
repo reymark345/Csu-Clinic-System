@@ -6,6 +6,9 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,6 +40,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.clinicsys.R;
+import com.example.clinicsys.SignUp;
+import com.example.clinicsys.Splash.Activity_Splash_Login;
+import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +53,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener  {
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
+public class HomePending extends AppCompatActivity implements AdapterView.OnItemSelectedListener  {
 
     // Variable declarations
     private String userEmail;
@@ -57,7 +65,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager manager;
     private RecyclerView.Adapter mAdapter;
-    private List<Appointment> appointments;
+    private List<AppointmentPending> appointments;
     private ProgressBar progressBar;
     public static boolean admin= false;
     Button openDialog;
@@ -68,9 +76,10 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     ArrayAdapter<String> complaintAdapter;
     RequestQueue requestQueue;
 
-    Spinner ageEt, spinnerComplaints,appointmentCat;
+    Spinner spnAppointmentCat, spinnerComplaints;
+    EditText edtSched, edtRemarks;
 //    SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
-    private static  final String BASE_URL = "http://192.168.1.10/android/getProducts.php";
+    private static  final String BASE_URL = "http://192.168.254.109/android/getProducts.php";
 //    private static  final  String BASE_URL = "http://192.168.254.107/android/getProducts.php";
 //        private static  final  String BASE_URL = "http://172.31.250.24/android/getProducts.php";
 
@@ -79,14 +88,14 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
         Intent intent;
 
-        if (item.getItemId() == R.id.action_settings){
+        if (item.getItemId() == R.id.action_add){
 
 //            intent = new Intent(HomeActivity.this,SettingsActivity.class);
 //            startActivity(intent);
 
 //            patientType();
             showCustomDialog();
-            Toast.makeText(HomeActivity.this,"ADD appointment clicked!",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(HomePending.this,"ADD appointment clicked!",Toast.LENGTH_SHORT).show();
         }
 
         return true;
@@ -105,7 +114,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.home_pending);
         requestQueue = Volley.newRequestQueue(this);
         mToolbar = findViewById(R.id.dashboard_toolbar);
         progressBar = findViewById(R.id.progressbar);
@@ -116,11 +125,10 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         recyclerView = findViewById(R.id.products_recyclerView);
         Button openDialog;
         TextView infoTv;
-        manager = new GridLayoutManager(HomeActivity.this, 1);
+        manager = new GridLayoutManager(HomePending.this, 1);
         recyclerView.setLayoutManager(manager);
         appointments = new ArrayList<>();
 
-        ageEt = findViewById(R.id.spnAppointmentCat);
 
         spinnerComplaints = (Spinner)findViewById(R.id.spnComplaints);
 
@@ -130,7 +138,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         String patientType = sh.getString("PatientType", "");
 
         if (patientType.matches("Admin")) {
-            Toast.makeText(getApplicationContext(), "Hala ka 1 ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Type is Admin ", Toast.LENGTH_SHORT).show();
             admin = true;
         }
 
@@ -153,30 +161,38 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
    public void showCustomDialog() {
 
-        final Dialog dialog = new Dialog(HomeActivity.this);
+        final Dialog dialog = new Dialog(HomePending.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.custom_dialog);
-        final EditText nameEt = dialog.findViewById(R.id.name_et);
-        appointmentCat = dialog.findViewById(R.id.spnAppointmentCat);
+       spnAppointmentCat = dialog.findViewById(R.id.spnAppointmentCat);
        spinnerComplaints = dialog.findViewById(R.id.spnComplaints);
+       edtSched = dialog.findViewById(R.id.edtSchedule);
+       edtRemarks =  dialog.findViewById(R.id.edtRemarks);
+
+
         Button submitButton = dialog.findViewById(R.id.submit_button);
-       patientType(appointmentCat);
-        nameEt.setFocusable(false);
-        nameEt.setClickable(true);
+        patientType(spnAppointmentCat);
+        edtSched.setFocusable(false);
+        edtSched.setClickable(true);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String type = ageEt.getSelectedItem().toString();
-                String name = nameEt.getText().toString();
-                Toast.makeText(getApplicationContext(), "name " + name, Toast.LENGTH_SHORT).show();
+                String CatType = spnAppointmentCat.getSelectedItem().toString();
+                String complaints = spinnerComplaints.getSelectedItem().toString();
+                String schedule = edtSched.getText().toString();
+                String remarks = edtRemarks.getText().toString();
 
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(intent);
-                finish();
+                addAppointment(CatType,complaints,schedule,remarks);
+
+
+
+//                Intent intent = new Intent(getApplicationContext(), HomePending.class);
+//                startActivity(intent);
+//                finish();
 //                populateInfoTv(name,age,hasAccepted);
-//                dialog.dismiss();
+                dialog.dismiss();
             }
         });
 
@@ -189,10 +205,10 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         //-------
 
 
-        nameEt.setOnClickListener(new View.OnClickListener() {
+       edtSched.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDateTimeDialog(nameEt);
+                showDateTimeDialog(edtSched);
             }
         });
     }
@@ -202,7 +218,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         patientType.clear();
 //        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
 //        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
-        String url = "http://192.168.1.10/csu_clinic/populate_country.php";
+        String url = "http://192.168.254.109/csu_clinic/populate_country.php";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -213,7 +229,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         String countryName = jsonObject.optString("country_name");
                         patientType.add(countryName);
-                        patientAdapter = new ArrayAdapter<>(HomeActivity.this,
+                        patientAdapter = new ArrayAdapter<>(HomePending.this,
                                 android.R.layout.simple_spinner_item, patientType);
                         patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         aptCat.setAdapter(patientAdapter);
@@ -239,12 +255,11 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 //        Toast.makeText(HomeActivity.this, "Viewwww" + adapterView ,Toast.LENGTH_LONG).show();
         if(adapterView.getId() == R.id.spnAppointmentCat){
-//            complaintList.clear();
+            complaintList.clear();
             String selectedCountry = adapterView.getSelectedItem().toString();
-            Toast.makeText(HomeActivity.this, "Gi SELECTTTTTTTTTTTTTTTTTT " + selectedCountry ,Toast.LENGTH_LONG).show();
 //            String url = "http://10.0.2.2/csu_clinic/populate_city.php?country_name="+selectedCountry;
 //            String url = "http://172.31.250.143/csu_clinic/populate_city.php?country_name="+selectedCountry;
-            String url = "http://192.168.1.10/csu_clinic/populate_city.php?country_name="+selectedCountry;
+            String url = "http://192.168.254.109/csu_clinic/populate_city.php?country_name="+selectedCountry;
             requestQueue = Volley.newRequestQueue(this);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                     url, null, new Response.Listener<JSONObject>() {
@@ -257,7 +272,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                             String cityName = jsonObject.optString("city_name");
 
                             complaintList.add(cityName);
-                            complaintAdapter = new ArrayAdapter<>(HomeActivity.this,
+                            complaintAdapter = new ArrayAdapter<>(HomePending.this,
                                     android.R.layout.simple_spinner_item, complaintList);
                             complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinnerComplaints.setAdapter(complaintAdapter);
@@ -276,7 +291,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 //            ageEt.setOnItemSelectedListener(this);
         }
         else{
-            Toast.makeText(HomeActivity.this, "sa error " ,Toast.LENGTH_LONG).show();
+            Toast.makeText(HomePending.this, "sa error " ,Toast.LENGTH_LONG).show();
         }
     }
 
@@ -285,6 +300,84 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    public void addAppointment(String CatType,String complaints,String schedule,String remarks){
+        try {
+            if (!CatType.equals("") && !complaints.equals("") && !schedule.equals("")) {
+                //Start ProgressBar first (Set visibility VISIBLE)
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        String[] field = new String[4];
+                        field[0] = "category_name";
+                        field[1] = "sub_category";
+                        field[2] = "schedule";
+                        field[3] = "remarks";
+                        //Creating array for data
+                        String[] data = new String[4];
+
+                        data[0] = CatType;
+                        data[1] = complaints;
+                        data[2] = schedule;
+                        data[3] = remarks;
+
+//                            PutData putData = new PutData("http://172.31.250.143/csu_clinic/signup.php", "POST", field, data);
+                        PutData putData = new PutData("http://192.168.254.109/csu_clinic/AddNewApt.php", "POST", field, data);
+                        if (putData.startPut()) {
+                            if (putData.onComplete()) {
+                                String result = putData.getResult();
+                                if (result.equals("Created success")) {
+                                    final SweetAlertDialog pDiaglog = new SweetAlertDialog(
+                                            HomePending.this, SweetAlertDialog.SUCCESS_TYPE);
+                                    pDiaglog.setTitleText("Successfully Save");
+                                    pDiaglog.setContentText("Done!");
+                                    pDiaglog.setConfirmText("Ok");
+                                    pDiaglog.setCancelable(false);
+                                    pDiaglog.showCancelButton(false)
+                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                @Override
+                                                public void onClick(SweetAlertDialog sDialog) {
+                                                    Intent in = new Intent(getApplicationContext(), HomePending.class);
+                                                    startActivity(in);
+                                                    finish();
+                                                }
+                                            }).show();
+//                                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                                @Override
+//                                                public void onClick(SweetAlertDialog sDialog) {
+//                                                    Intent in = new Intent(getApplicationContext(), HomePending.class);
+//                                                    startActivity(in);
+//                                                    finish();
+//                                                }
+//                                            }).show();
+
+//
+                                } else {
+                                    Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                                }
+                                //End ProgressBar (Set visibility to GONE)
+                                Log.i("PutData", result);
+                            }
+                        }
+                        //End Write and Read data with URL
+                    }
+                });
+            } else {
+                new SweetAlertDialog(HomePending.this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Error!")
+                        .setContentText("All Fields required")
+                        .showCancelButton(true)
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                            }
+                        }).show();
+            }
+        }
+        catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Server Connection Failed", Toast.LENGTH_SHORT).show();
+        }
+    }
 //    public void patientType(){
 //        patientType.clear();
 ////        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
@@ -339,11 +432,11 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     }
                 };
 
-                new TimePickerDialog(HomeActivity.this,timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),false).show();
+                new TimePickerDialog(HomePending.this,timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),false).show();
             }
         };
 
-        new DatePickerDialog(HomeActivity.this,dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+        new DatePickerDialog(HomePending.this,dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
 
     }
 
@@ -383,7 +476,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 //                                String rate = String.valueOf(rating);
 //                                float newRate = Float.valueOf(rate);
 
-                                Appointment product = new Appointment(title,price);
+                                AppointmentPending product = new AppointmentPending(title,price);
                                 appointments.add(product);
                             }
 
@@ -391,7 +484,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
                         }
 
-                        mAdapter = new RecyclerAdapter(HomeActivity.this,appointments);
+                        mAdapter = new RecyclerAdapterPending(HomePending.this,appointments);
                         recyclerView.setAdapter(mAdapter);
 
                     }
@@ -399,11 +492,11 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(HomeActivity.this, "Database connection failed " + error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(HomePending.this, "Database connection failed " + error.toString(),Toast.LENGTH_LONG).show();
             }
         });
 
-        Volley.newRequestQueue(HomeActivity.this).add(stringRequest);
+        Volley.newRequestQueue(HomePending.this).add(stringRequest);
 
     }
 

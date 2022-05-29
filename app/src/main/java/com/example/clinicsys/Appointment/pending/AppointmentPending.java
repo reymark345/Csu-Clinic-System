@@ -1,11 +1,11 @@
 package com.example.clinicsys.Appointment.pending;
 
-public class Appointment {
+public class AppointmentPending {
     private String title, image;
     private String price;
 //    private float rating;
 
-    public Appointment(String title, String price){
+    public AppointmentPending(String title, String price){
 
         this.title = title;
 //        this.image = image;

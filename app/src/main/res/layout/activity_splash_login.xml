@@ -65,8 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
-            android:text="CSU CLINIC SYSTEM"
-            android:textColor="@color/textHeadline"
+            android:text="CSU CLINIC APP"
+            android:textColor="@color/csuTextColor"
             android:textSize="20sp" />
 
         <TextView
@@ -119,19 +119,6 @@
 <!--            android:layout_above="@id/loginPassword"-->
 <!--            android:layout_below="@id/btnAccess">-->
 
-            <Spinner
-                android:id="@+id/patientTypeSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_above="@id/loginPassword"
-                android:layout_below="@id/btnAccess"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                 />
 <!--        </RelativeLayout>-->
 
 <!--        <RelativeLayout-->
@@ -199,7 +186,7 @@
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:text="New patient?"
-        android:textColor="@color/textDescription"
+        android:textColor="@color/colorPrimary"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linlay_inputs" />

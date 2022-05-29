@@ -1,6 +1,6 @@
 package com.example.clinicsys.Appointment.pending;
 
-import static com.example.clinicsys.Appointment.pending.HomeActivity.admin;
+import static com.example.clinicsys.Appointment.pending.HomePending.admin;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,23 +20,23 @@ import com.example.clinicsys.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
+public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapterPending.MyViewHolderPending> {
 
     private Context mContext;
-    private List<Appointment> appointments = new ArrayList<>();
+    private List<AppointmentPending> appointments = new ArrayList<>();
     private Button btnDone,btnChange, btnCancel;
 
-    public RecyclerAdapter(Context context, List<Appointment> appointments){
+    public RecyclerAdapterPending(Context context, List<AppointmentPending> appointments){
         this.mContext = context;
         this.appointments = appointments;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolderPending extends RecyclerView.ViewHolder {
 
         private TextView aptTitle, aptTime;
         private LinearLayout mContainer;
 
-        public MyViewHolder (View view){
+        public MyViewHolderPending(View view){
             super(view);
             aptTitle = view.findViewById(R.id.appointment_title);
             aptTime = view.findViewById(R.id.appointment_time);
@@ -52,16 +52,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolderPending onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.products_list_item_layout,parent,false);
-        return new MyViewHolder(view);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.appointment_layout_pending,parent,false);
+        return new MyViewHolderPending(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull MyViewHolderPending holder, @SuppressLint("RecyclerView") int position) {
 
-        final Appointment appointment = appointments.get(position);
+        final AppointmentPending appointment = appointments.get(position);
         int id = position+1;
 
         btnDone.setOnClickListener(new View.OnClickListener() {
@@ -88,12 +88,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         holder.aptTime.setText("Ksh "+appointment.getPrice());
         holder.aptTitle.setText(appointment.getTitle());
-        holder.mContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext.getApplicationContext(), "The ID is " + id ,Toast.LENGTH_SHORT).show();
-            }
-        });
+//        holder.mContainer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(mContext.getApplicationContext(), "The ID is " + id ,Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     //        holder.mRate.setRating(product.getRating());
