@@ -305,7 +305,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
             String selectedCountry = adapterView.getSelectedItem().toString();
 //            String url = "http://10.0.2.2/csu_clinic/populate_city.php?country_name="+selectedCountry;
 //            String url = "http://172.31.250.143/csu_clinic/populate_city.php?country_name="+selectedCountry;
-            String url = "http://192.168.254.107/csu_clinic/populate_city.php?country_name="+selectedCountry;
+            String url = "http://192.168.1.10/csu_clinic/populate_city.php?country_name="+selectedCountry;
             requestQueue = Volley.newRequestQueue(this);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                     url, null, new Response.Listener<JSONObject>() {
@@ -345,7 +345,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         patientType.clear();
 //        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
 //        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
-        String url = "http://192.168.254.109/csu_clinic/populatePatientType.php";
+        String url = "http://192.168.1.10/csu_clinic/populatePatientType.php";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -379,7 +379,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         appointmentList.clear();
 //        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
 //        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
-        String url = "http://192.168.254.107/csu_clinic/populate_country.php";
+        String url = "http://192.168.1.10/csu_clinic/populate_country.php";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, null, new Response.Listener<JSONObject>() {
             @Override

@@ -19,9 +19,11 @@
         android:networkSecurityConfig="@xml/network_security_config">
 <!--        android:name=".SignUp"-->
 <!--        android:name=".Splash.Activity_Splash_Login"-->
+<!--        android:name=".Appointment.HomeActivity"-->
+
 
         <activity
-            android:name=".Appointment.HomeActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,7 +39,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Appointment.pending.HomeActivity"
             android:exported="true" />
 
 

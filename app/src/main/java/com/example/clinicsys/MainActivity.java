@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.clinicsys.Appointment.HomeActivity;
+import com.example.clinicsys.Appointment.pending.HomeActivity;
 import com.example.clinicsys.Splash.Activity_Splash_Login;
 
 public class MainActivity extends AppCompatActivity {

@@ -42,6 +42,24 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/appointmentComplaints"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        app:helperTextTextColor="@color/validation"
+        android:layout_below="@+id/appointmentCat"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+        <Spinner
+            android:id="@+id/spnComplaints"
+            android:layout_width= "match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edtIdno"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_schedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,7 +69,7 @@
         android:layout_marginLeft="10dp"
         app:helperTextTextColor="@color/validation"
         app:startIconDrawable="@drawable/ic_series"
-        android:layout_below="@+id/appointmentCat"
+        android:layout_below="@+id/appointmentComplaints"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
         <EditText
@@ -60,7 +78,7 @@
             android:hint="Appointment Schedule"
             android:id="@+id/name_et"
             android:inputType="text"
-            android:layout_below="@id/spnAppointmentCat"/>
+            android:layout_below="@id/spnComplaints"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 <!--    <EditText-->

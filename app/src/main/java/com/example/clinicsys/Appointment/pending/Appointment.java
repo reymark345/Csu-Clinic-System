@@ -1,4 +1,4 @@
-package com.example.clinicsys.Appointment;
+package com.example.clinicsys.Appointment.pending;
 
 public class Appointment {
     private String title, image;

@@ -100,7 +100,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
 //                            PutData putData = new PutData("http://10.0.2.2/csu_clinic/login.php", "POST", field, data);
 //                            PutData putData = new PutData("http://172.31.250.143/csu_clinic/login.php", "POST", field, data);
 
-                            PutData putData = new PutData("http://192.168.254.109/csu_clinic/login.php", "POST", field, data);
+                            PutData putData = new PutData("http://192.168.1.10/csu_clinic/login.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     String result = putData.getResult();
@@ -150,7 +150,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
         patientType.clear();
 //        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
 //        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
-        String url = "http://192.168.254.109/csu_clinic/populatePatientType.php";
+        String url = "http://192.168.1.10/csu_clinic/populatePatientType.php";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, null, new Response.Listener<JSONObject>() {
             @Override

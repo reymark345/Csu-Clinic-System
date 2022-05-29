@@ -1,4 +1,4 @@
-package com.example.clinicsys.Appointment;
+package com.example.clinicsys.Appointment.approved;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -11,9 +11,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -36,9 +36,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.clinicsys.MainActivity;
 import com.example.clinicsys.R;
-import com.example.clinicsys.SignUp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +47,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener  {
 
     // Variable declarations
     private String userEmail;
@@ -64,11 +62,15 @@ public class HomeActivity extends AppCompatActivity {
     public static boolean admin= false;
     Button openDialog;
     TextView infoTv;
+    ArrayList<String> complaintList = new ArrayList<>();
     ArrayList<String> patientType = new ArrayList<>();
     ArrayAdapter<String> patientAdapter;
+    ArrayAdapter<String> complaintAdapter;
     RequestQueue requestQueue;
+
+    Spinner ageEt, spinnerComplaints,appointmentCat;
 //    SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
-    private static  final String BASE_URL = "http://192.168.254.109/android/getProducts.php";
+    private static  final String BASE_URL = "http://192.168.1.10/android/getProducts.php";
 //    private static  final  String BASE_URL = "http://192.168.254.107/android/getProducts.php";
 //        private static  final  String BASE_URL = "http://172.31.250.24/android/getProducts.php";
 
@@ -104,7 +106,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        requestQueue = Volley.newRequestQueue(this);
         mToolbar = findViewById(R.id.dashboard_toolbar);
         progressBar = findViewById(R.id.progressbar);
         setSupportActionBar(mToolbar);
@@ -117,6 +119,12 @@ public class HomeActivity extends AppCompatActivity {
         manager = new GridLayoutManager(HomeActivity.this, 1);
         recyclerView.setLayoutManager(manager);
         appointments = new ArrayList<>();
+
+        ageEt = findViewById(R.id.spnAppointmentCat);
+
+        spinnerComplaints = (Spinner)findViewById(R.id.spnComplaints);
+
+
 
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
         String patientType = sh.getString("PatientType", "");
@@ -143,53 +151,25 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    void showCustomDialog() {
+   public void showCustomDialog() {
 
         final Dialog dialog = new Dialog(HomeActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.custom_dialog);
         final EditText nameEt = dialog.findViewById(R.id.name_et);
-        final Spinner ageEt = dialog.findViewById(R.id.spnAppointmentCat);
+        appointmentCat = dialog.findViewById(R.id.spnAppointmentCat);
+       spinnerComplaints = dialog.findViewById(R.id.spnComplaints);
         Button submitButton = dialog.findViewById(R.id.submit_button);
-
+       patientType(appointmentCat);
         nameEt.setFocusable(false);
         nameEt.setClickable(true);
-
-//        patientType.clear();
-//        String url = "http://192.168.254.107/csu_clinic/populatePatientType.php";
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-//                url, null, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                try {
-//                    JSONArray jsonArray = response.getJSONArray("patient_type");
-//                    for(int i=0; i<jsonArray.length();i++){
-//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                        String countryName = jsonObject.optString("type");
-//                        patientType.add(countryName);
-//                        patientAdapter = new ArrayAdapter<>(HomeActivity.this,
-//                                android.R.layout.simple_spinner_item, patientType);
-//                        patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                        ageEt.setAdapter(patientAdapter);
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        });
-//        requestQueue.add(jsonObjectRequest);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String type = ageEt.getSelectedItem().toString();
                 String name = nameEt.getText().toString();
-                String age = ageEt.getSelectedItem().toString();
                 Toast.makeText(getApplicationContext(), "name " + name, Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
@@ -217,6 +197,127 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+
+    public void patientType(Spinner aptCat){
+        patientType.clear();
+//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
+//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
+        String url = "http://192.168.1.10/csu_clinic/populate_country.php";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray jsonArray = response.getJSONArray("countries");
+                    for(int i=0; i<jsonArray.length();i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String countryName = jsonObject.optString("country_name");
+                        patientType.add(countryName);
+                        patientAdapter = new ArrayAdapter<>(HomeActivity.this,
+                                android.R.layout.simple_spinner_item, patientType);
+                        patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        aptCat.setAdapter(patientAdapter);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+        aptCat.setOnItemSelectedListener(this);
+    }
+
+
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//        Toast.makeText(HomeActivity.this, "Viewwww" + adapterView ,Toast.LENGTH_LONG).show();
+        if(adapterView.getId() == R.id.spnAppointmentCat){
+//            complaintList.clear();
+            String selectedCountry = adapterView.getSelectedItem().toString();
+            Toast.makeText(HomeActivity.this, "Gi SELECTTTTTTTTTTTTTTTTTT " + selectedCountry ,Toast.LENGTH_LONG).show();
+//            String url = "http://10.0.2.2/csu_clinic/populate_city.php?country_name="+selectedCountry;
+//            String url = "http://172.31.250.143/csu_clinic/populate_city.php?country_name="+selectedCountry;
+            String url = "http://192.168.1.10/csu_clinic/populate_city.php?country_name="+selectedCountry;
+            requestQueue = Volley.newRequestQueue(this);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray jsonArray = response.getJSONArray("cities");
+                        for(int i=0; i<jsonArray.length();i++){
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            String cityName = jsonObject.optString("city_name");
+
+                            complaintList.add(cityName);
+                            complaintAdapter = new ArrayAdapter<>(HomeActivity.this,
+                                    android.R.layout.simple_spinner_item, complaintList);
+                            complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerComplaints.setAdapter(complaintAdapter);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+            requestQueue.add(jsonObjectRequest);
+//            ageEt.setOnItemSelectedListener(this);
+        }
+        else{
+            Toast.makeText(HomeActivity.this, "sa error " ,Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+//    public void patientType(){
+//        patientType.clear();
+////        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
+////        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
+//        String url = "http://192.168.254.109/csu_clinic/populatePatientType.php";
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+//                url, null, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                try {
+//                    JSONArray jsonArray = response.getJSONArray("patient_type");
+//                    for(int i=0; i<jsonArray.length();i++){
+//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                        String countryName = jsonObject.optString("type");
+//                        patientType.add(countryName);
+//                        patientAdapter = new ArrayAdapter<>(SignUp.this,
+//                                android.R.layout.simple_spinner_item, patientType);
+//                        patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        spinnerPatientType.setAdapter(patientAdapter);
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//            }
+//        });
+//        requestQueue.add(jsonObjectRequest);
+//        spinnerPatientType.setOnItemSelectedListener(this);
+//    }
     private void showDateTimeDialog(final EditText date_time_in) {
         final Calendar calendar=Calendar.getInstance();
         DatePickerDialog.OnDateSetListener dateSetListener=new DatePickerDialog.OnDateSetListener() {
