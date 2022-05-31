@@ -51,6 +51,10 @@
             android:name=".SignUp"
             android:exported="true" />
 
+        <activity
+            android:name=".Records.temporary"
+            android:exported="true" />
+
     </application>
 
 </manifest>

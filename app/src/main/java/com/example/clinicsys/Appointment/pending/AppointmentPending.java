@@ -1,47 +1,45 @@
 package com.example.clinicsys.Appointment.pending;
 
 public class AppointmentPending {
-    private String title, image;
-    private String price;
-//    private float rating;
+    private String category_name, sub_cat, schedule;
+    public AppointmentPending(String category_name, String sub_cat, String schedule){
 
-    public AppointmentPending(String title, String price){
-
-        this.title = title;
-//        this.image = image;
-//        this.rating = rating;
-        this.price = price;
+        this.category_name = category_name;
+        this.sub_cat = sub_cat;
+        this.schedule = schedule;
     }
 
-    public String getTitle() {
-        return title;
+    public String getCategory() {
+        return category_name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setCategory(String category_name) {
+        this.category_name = category_name;
     }
 
-//    public String getImage() {
-//        return image;
-//    }
-
-//    public void setImage(String image) {
-//        this.image = image;
-//    }
-
-    public String getPrice() {
-        return price;
+    public String getSub_cat() {
+        return sub_cat;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setSub_cat(String sub_cat) {
+        this.sub_cat = sub_cat;
     }
 
-//    public float getRating() {
-//        return rating;
-//    }
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
+//    public AppointmentPendingCancel(String category_name, String sub_cat, String schedule){
 //
-//    public void setRating(float rating) {
-//        this.rating = rating;
+//        this.category_name = category_name;
+//        this.sub_cat = sub_cat;
+//        this.schedule = schedule;
 //    }
+
+
+
 }

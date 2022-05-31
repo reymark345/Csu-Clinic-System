@@ -42,6 +42,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
 
     Button BtnLogin;
     EditText EdtloginIdno,EdtloginPassword;
+    public static final  String BASE_URL = "http://172.31.250.43";
 
     private int prevCount = 0;
     String blankMessage = "Please fill this blank";
@@ -97,9 +98,9 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                             data[1] = password;
 
 //                            PutData putData = new PutData("http://10.0.2.2/csu_clinic/login.php", "POST", field, data);
-//                            PutData putData = new PutData("http://172.31.250.143/csu_clinic/login.php", "POST", field, data);
+                            PutData putData = new PutData(BASE_URL+"/csu_clinic/login.php", "POST", field, data);
 
-                            PutData putData = new PutData("http://192.168.1.10/csu_clinic/login.php", "POST", field, data);
+//                            PutData putData = new PutData("http://192.168.1.10/csu_clinic/login.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     String result = putData.getResult();

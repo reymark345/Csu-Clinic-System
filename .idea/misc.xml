@@ -7,8 +7,10 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable-v24/ic_notifications_black_24dp.xml" value="0.24322916666666666" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable-v24/ic_settings_black_24dp.xml" value="0.24322916666666666" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/background.xml" value="0.2703125" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/background2.xml" value="0.26481481481481484" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/button_bg.xml" value="0.22407407407407406" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/button_shape.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/cardView.xml" value="0.26481481481481484" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/edittext_bg.xml" value="0.22407407407407406" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/gradient_spinner.xml" value="0.20277777777777778" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/history.xml" value="0.22407407407407406" />
@@ -49,6 +51,7 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard_item_4.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard_item_5.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard_main.xml" value="0.23854166666666668" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dialog_cancel.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/home(pending).xml" value="0.2427536231884058" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/home_approved.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/home_pending.xml" value="0.2427536231884058" />
@@ -56,6 +59,7 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/safasf.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/sidebar_header.xml" value="0.2203125" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/spinner_load.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/temp.xml" value="0.23369565217391305" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/menu/dashboard_menu.xml" value="0.21302083333333333" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/menu/main_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/menu/sidemenu.xml" value="0.2203125" />
