@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/inventoryList"
+        android:id="@+id/AppointmentDashRecords"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
         app:cardBackgroundColor="@color/dashboard_item_2"

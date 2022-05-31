@@ -9,11 +9,12 @@ import android.view.View;
 
 import com.example.clinicsys.Appointment.approved.HomeApproved;
 import com.example.clinicsys.Appointment.pending.HomePending;
+import com.example.clinicsys.Records.temporary;
 
 import com.example.clinicsys.Splash.Activity_Splash_Login;
 
 public class MainActivity extends AppCompatActivity {
-    CardView AppointmentDashPending,AppointmentDashApproved, Logout;
+    CardView AppointmentDashPending,AppointmentDashApproved,AppointmentDashRecords, Logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
 
         AppointmentDashPending = (CardView) findViewById(R.id.AppointmentDash_Pending);
         AppointmentDashApproved = (CardView) findViewById(R.id.AppointmentDash_Approved);
+        AppointmentDashRecords = (CardView) findViewById(R.id.AppointmentDashRecords);
+
+
         Logout = (CardView) findViewById(R.id.logout);
 
 
@@ -42,6 +46,19 @@ public class MainActivity extends AppCompatActivity {
 //                finish();
             }
         });
+
+        AppointmentDashRecords.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,temporary.class);
+                startActivity(intent);
+//                finish();
+            }
+        });
+
+
+
+
 
         Logout.setOnClickListener(new View.OnClickListener() {
             @Override
