@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,12 +71,15 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
     public static boolean admin= false;
     ArrayList<String> complaintList = new ArrayList<>();
     ArrayList<String> patientType = new ArrayList<>();
+    ArrayList<JSONObject> categories = new ArrayList<>();
+    ArrayList<JSONObject> sub_categories = new ArrayList<>();
     ArrayAdapter<String> patientAdapter;
     ArrayAdapter<String> complaintAdapter;
     RequestQueue requestQueue;
 
     Spinner spnAppointmentCat, spinnerComplaints;
     EditText edtSched, edtRemarks;
+    String Urltype,categoryID,selectedCat, selectSubCat;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -108,13 +112,6 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
         recyclerView.setLayoutManager(manager);
         appointments = new ArrayList<>();
         spinnerComplaints = (Spinner)findViewById(R.id.spnComplaints);
-        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
-        String patientType = sh.getString("PatientType", "");
-
-        if (patientType.matches("Admin")) {
-            Toast.makeText(getApplicationContext(), "Type is Admin ", Toast.LENGTH_SHORT).show();
-            admin = true;
-        }
         getAppointment();
 
     }
@@ -158,80 +155,210 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
 
 
     public void patientType(Spinner aptCat){
+        categories.clear();
         patientType.clear();
-//        String url = "http://172.31.250.174/csu_clinic/populate_country.php";
-        String url = BASE_URL+"/csu_clinic/populate_country.php";
-//        String url = "http://192.168.254.109/csu_clinic/populate_country.php";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray("countries");
-                    for(int i=0; i<jsonArray.length();i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String countryName = jsonObject.optString("country_name");
-                        patientType.add(countryName);
-                        patientAdapter = new ArrayAdapter<>(HomePending.this,
-                                android.R.layout.simple_spinner_item, patientType);
-                        patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        aptCat.setAdapter(patientAdapter);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/category/list/2",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+
+                            JSONArray array = new JSONArray(response);
+                            for (int i = 0; i<array.length(); i++){
+                                JSONObject object = array.getJSONObject(i);
+                                String categoryID = object.optString("id");
+                                String categoryName = object.optString("name");
+                                categories.add(object);
+                                patientType.add(categoryName);
+                                patientAdapter = new ArrayAdapter<>(HomePending.this,
+                                        android.R.layout.simple_spinner_item, patientType);
+                                patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                aptCat.setAdapter(patientAdapter);
+
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
             }
         });
-        requestQueue.add(jsonObjectRequest);
+        requestQueue.add(stringRequest);
         aptCat.setOnItemSelectedListener(this);
     }
 
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
         if(adapterView.getId() == R.id.spnAppointmentCat){
             complaintList.clear();
-            String selectedCountry = adapterView.getSelectedItem().toString();
-            String url = BASE_URL+"/csu_clinic/populate_city.php?country_name="+selectedCountry;
-            requestQueue = Volley.newRequestQueue(this);
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                    url, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        JSONArray jsonArray = response.getJSONArray("cities");
-                        for(int i=0; i<jsonArray.length();i++){
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            String cityName = jsonObject.optString("city_name");
+            sub_categories.clear();
+            JSONObject category_data = categories.get(i);
+            selectedCat = category_data.optString("id");
+            Toast.makeText(HomePending.this, "Selected1 " + selectedCat ,Toast.LENGTH_LONG).show();
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/sub_category/list/2/"+selectedCat,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray array = new JSONArray(response);
+                                for (int i = 0; i<array.length(); i++){
+                                    JSONObject object = array.getJSONObject(i);
+                                    String cityName = object.optString("name");
+                                    sub_categories.add(object);
+                                    complaintList.add(cityName);
+                                    complaintAdapter = new ArrayAdapter<>(HomePending.this,
+                                            android.R.layout.simple_spinner_item, complaintList);
+                                    complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    spinnerComplaints.setAdapter(complaintAdapter);
+                                }
 
-                            complaintList.add(cityName);
-                            complaintAdapter = new ArrayAdapter<>(HomePending.this,
-                                    android.R.layout.simple_spinner_item, complaintList);
-                            complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinnerComplaints.setAdapter(complaintAdapter);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
+                    }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
 
                 }
             });
-            requestQueue.add(jsonObjectRequest);
-//            ageEt.setOnItemSelectedListener(this);
+            requestQueue.add(stringRequest);
+            spinnerComplaints.setOnItemSelectedListener(this);
         }
-        else{
-            Toast.makeText(HomePending.this, "sa error " ,Toast.LENGTH_LONG).show();
+        else if (adapterView.getId() == R.id.spnComplaints){
+
+            JSONObject sub_category_data = sub_categories.get(i);
+            selectSubCat = sub_category_data.optString("id");
+            Toast.makeText(HomePending.this, "Selected2 " + selectSubCat ,Toast.LENGTH_LONG).show();
+
+//            StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/sub_category/list/2/"+selectedCat,
+//                    new Response.Listener<String>() {
+//                        @Override
+//                        public void onResponse(String response) {
+//                            try {
+//                                JSONArray array = new JSONArray(response);
+//                                for (int i = 0; i<array.length(); i++){
+//                                    JSONObject object = array.getJSONObject(i);
+//                                    String cityName = object.optString("name");
+//                                    sub_categories.add(object);
+//                                    complaintList.add(cityName);
+//                                    complaintAdapter = new ArrayAdapter<>(HomePending.this,
+//                                            android.R.layout.simple_spinner_item, complaintList);
+//                                    complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                                    spinnerComplaints.setAdapter(complaintAdapter);
+//                                }
+//
+//                            }catch (Exception e){
+//                                e.printStackTrace();
+//                            }
+//
+//                        }
+//                    }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//
+//                }
+//            });
+//            requestQueue.add(stringRequest);
+
         }
+//        else{
+//            Toast.makeText(HomePending.this, "sa error " ,Toast.LENGTH_LONG).show();
+//        }
     }
+
+
+
+
+
+//    public void patientTypeOLD(Spinner aptCat){
+//        patientType.clear();
+////        String url = "http://172.31.250.174/csu_clinic/populate_country.php";
+//
+//
+//        String url = "http://192.168.1.3/csu_clinic_app/api/category/list/2";
+////        String url = "http://192.168.254.109/csu_clinic/populate_country.php";
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+//                url, null, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                try {
+//                    Toast.makeText(HomePending.this, "sa error " ,Toast.LENGTH_LONG).show();
+//                    JSONArray jsonArray = response.getJSONArray("lib_categories");
+//                    for(int i=0; i<jsonArray.length();i++){
+//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                        String countryName = jsonObject.optString("name");
+//                        patientType.add(countryName);
+//                        patientAdapter = new ArrayAdapter<>(HomePending.this,
+//                                android.R.layout.simple_spinner_item, patientType);
+//                        patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        aptCat.setAdapter(patientAdapter);
+//                    }
+//                    Toast.makeText(getApplicationContext(), "Pila? "+patientType.size(), Toast.LENGTH_SHORT).show();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//            }
+//        });
+//        requestQueue.add(jsonObjectRequest);
+//        aptCat.setOnItemSelectedListener(this);
+//    }
+
+
+//    @Override
+//    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//        if(adapterView.getId() == R.id.spnAppointmentCat){
+//            Toast.makeText(HomePending.this, "Tyyyyy" ,Toast.LENGTH_LONG).show();
+//            complaintList.clear();
+//            String selectedCountry = adapterView.getSelectedItem().toString();
+//            String url = BASE_URL+"/csu_clinic_app/api/sub_category/list/2/"+selectedCountry;
+//            requestQueue = Volley.newRequestQueue(this);
+//            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+//                    url, null, new Response.Listener<JSONObject>() {
+//                @Override
+//                public void onResponse(JSONObject response) {
+////                    try {
+////                        JSONArray jsonArray = response.getJSONArray("sub_cat");
+////                        for(int i=0; i<jsonArray.length();i++){
+////                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+////                            String cityName = jsonObject.optString("name");
+////
+////                            complaintList.add(cityName);
+////                            complaintAdapter = new ArrayAdapter<>(HomePending.this,
+////                                    android.R.layout.simple_spinner_item, complaintList);
+////                            complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+////                            spinnerComplaints.setAdapter(complaintAdapter);
+////                        }
+////                    } catch (JSONException e) {
+////                        e.printStackTrace();
+////                    }
+//                }
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//
+//                }
+//            });
+//            requestQueue.add(jsonObjectRequest);
+////            ageEt.setOnItemSelectedListener(this);
+//        }
+//        else{
+//            Toast.makeText(HomePending.this, "sa error " ,Toast.LENGTH_LONG).show();
+//        }
+//    }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
@@ -337,7 +464,22 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
     public void getAppointment (){
         progressBar.setVisibility(View.VISIBLE);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/android/getAppointment.php",
+        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
+        String useridd = sh.getString("userId", "");
+        String roleName = sh.getString("roleName", "");
+
+        Toast.makeText(HomePending.this, "type s" + roleName,Toast.LENGTH_LONG).show();
+
+
+        if (roleName.matches("end-user")){
+            Urltype = "/csu_clinic_app/api/appointment/list/user/0/"+useridd;
+        }
+        else {
+            Urltype = "/csu_clinic_app/api/appointment/list/0/"+useridd;
+        }
+
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/android/getPendingApt/getAppointment",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+Urltype,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -351,15 +493,19 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
 
                                 JSONObject object = array.getJSONObject(i);
 
-                                String categoryName = object.getString("category_name");
-                                String subCat = object.getString("sub_category");
+//                                Toast.makeText(HomePending.this, "Testing list" + useridd,Toast.LENGTH_LONG).show();
+
+                                String idd = object.getString("id");
+                                String categoryName = object.getString("category");
+                                String subCat = object.getString("subCategory");
                                 String schedule = object.getString("schedule");
+                                String userId = useridd;
 //                                String image = object.getString("image");
 
 //                                String rate = String.valueOf(rating);
 //                                float newRate = Float.valueOf(rate);
 
-                                AppointmentPending appointment = new AppointmentPending(categoryName,subCat,schedule);
+                                AppointmentPending appointment = new AppointmentPending(idd,userId,categoryName,subCat,schedule);
                                 appointments.add(appointment);
                             }
 

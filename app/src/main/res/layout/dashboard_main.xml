@@ -129,6 +129,7 @@
                         android:textSize="@dimen/_10ssp"/>
 
                     <TextView
+                        android:id="@+id/txtPending"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"
@@ -162,7 +163,7 @@
                         android:textSize="@dimen/_10ssp"/>
 
                     <TextView
-                        android:id="@+id/txtPending"
+                        android:id="@+id/txtApproved"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"

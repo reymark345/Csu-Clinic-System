@@ -1,12 +1,14 @@
 package com.example.clinicsys.Appointment.pending;
 
-import static com.example.clinicsys.Appointment.pending.HomePending.admin;
+import static com.example.clinicsys.MainActivity.admin;
+import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -23,10 +25,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.clinicsys.MainActivity;
 import com.example.clinicsys.R;
+import com.example.clinicsys.SignUp;
 import com.example.clinicsys.Splash.Activity_Splash_Login;
 import com.google.android.material.textfield.TextInputLayout;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -43,6 +51,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
     private Context mContext;
     private List<AppointmentPending> appointments = new ArrayList<>();
     private Button btnDone,btnChange, btnCancel;
+    String message,type;
 
     public RecyclerAdapterPending(Context context, List<AppointmentPending> appointments){
         this.mContext = context;
@@ -59,17 +68,17 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
             aptCategory = view.findViewById(R.id.appointment_title);
             aptSubCat = view.findViewById(R.id.appointment_subCat);
             aptDate = view.findViewById(R.id.appointment_date);
-
-
             mContainer = view.findViewById(R.id.appointment_container);
             btnDone = view.findViewById(R.id.btnDone);
             btnChange = view.findViewById(R.id.btnChange);
             btnCancel = view.findViewById(R.id.btnCancel);
-            if (admin==true) {
-//                btnDone.setVisibility(View.GONE);
-                btnChange.setVisibility(View.GONE);
+            if (!admin==true) {
+                btnDone.setVisibility(View.GONE);
             }
         }
+    }
+    public void test(){
+
     }
 
     @NonNull
@@ -84,80 +93,58 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
     public void onBindViewHolder(@NonNull MyViewHolderPending holder, @SuppressLint("RecyclerView") int position) {
 
         final AppointmentPending appointment = appointments.get(position);
-        int id = position+1;
+        int id = 0;
+        int userId =0;
+        id = Integer.parseInt(appointment.getIdd());
+        userId = Integer.parseInt(appointment.getUserId());
 
+        int finalId = id;
+        int finalUserId = userId;
         btnDone.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext.getApplicationContext(), "Click button of Done " + id ,Toast.LENGTH_SHORT).show();
+                final SweetAlertDialog pDiaglog = new SweetAlertDialog(
+                        mContext, SweetAlertDialog.WARNING_TYPE);
+                pDiaglog.setTitleText("Are you sure?");
+                pDiaglog.setContentText("Approved appointment");
+                pDiaglog.setConfirmText("Confirm");
+
+                pDiaglog.setCancelable(true);
+                pDiaglog.showCancelButton(true)
+
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                Toast.makeText(mContext.getApplicationContext(), "Donee " + finalUserId,Toast.LENGTH_SHORT).show();
+                                String idd = String.valueOf(finalId);
+                                String userid = String.valueOf(finalUserId);
+                                DoneAppointment(idd, pDiaglog, userid);
+                            }
+                        }).show();
+
             }
         });
 
         btnChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext.getApplicationContext(), "Click button of Change " + id ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext.getApplicationContext(), "Click button of Change " + finalId ,Toast.LENGTH_SHORT).show();
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                showCustomDialog(id);
+                Toast.makeText(mContext.getApplicationContext(), "Click button of Change " + appointment.getIdd() ,Toast.LENGTH_SHORT).show();
+                showCustomDialog(finalId);
             }
         });
 
-
         holder.aptCategory.setText(appointment.getCategory());
         holder.aptSubCat.setText(appointment.getSub_cat());
-
-
-
         String schedule = appointment.getSchedule();
-
-        String outputPattern = "MMM dd, yyyy h:mm a";
-
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime dateTime = LocalDateTime.parse(schedule, inputFormatter);
-        String output = DateTimeFormatter.ofPattern(outputPattern).format(dateTime);
-
-        holder.aptDate.setText(output);
-
-
-
-
-//        StringTokenizer tk = new StringTokenizer(schedule);
-//
-//        String date = tk.nextToken();
-//        String tme = tk.nextToken();
-
-
-
-
-
-
-
-//        holder.mContainer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(mContext.getApplicationContext(), "The ID is " + id ,Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-
-    //        holder.mRate.setRating(product.getRating());
-    //        Glide.with(mContext).load(product.getImage()).into(holder.mImageView);
-
-    //                Intent intent = new Intent(mContext,DetailedProductsActivity.class);
-//
-//                intent.putExtra("title",product.getTitle());
-////                intent.putExtra("image",product.getImage());
-////                intent.putExtra("rate",product.getRating());
-//                intent.putExtra("price",product.getPrice());
-//
-//                mContext.startActivity(intent);
-
+        holder.aptDate.setText(schedule);
         }
 
     public void showCustomDialog(int id) {
@@ -168,9 +155,11 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         dialog.setContentView(R.layout.dialog_cancel);
 //        spnAppointmentCat = dialog.findViewById(R.id.spnAppointmentCat);
 //        spinnerComplaints = dialog.findViewById(R.id.spnComplaints);
-        EditText remarks = dialog.findViewById(R.id.edtRemarksCancel);
+        EditText noteField = dialog.findViewById(R.id.edtRemarksCancel);
         TextInputLayout tilRemarks = dialog.findViewById(R.id.til_remarks);
 //        edtRemarks =  dialog.findViewById(R.id.edtRemarks);
+
+
 
 
         Button submitButtonCancel = dialog.findViewById(R.id.btn_cancel);
@@ -181,13 +170,15 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         submitButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (remarks.length()==0){
+                if (noteField.length()==0){
                     tilRemarks.setError("Please fill this blank");
                 }
                 else {
 
+                    String remarks = noteField.getText().toString();
+
                     String idd = String.valueOf(id);
-                    CancelAppointment(idd, dialog);
+                    CancelAppointment(idd, dialog, remarks);
 
 
                 }
@@ -195,30 +186,110 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         });
         dialog.show();
     }
-    public void CancelAppointment(String id, Dialog dialog){
+
+    public void CancelAppointment(String id, Dialog dialog, String remarks){
         try {
                 //Start ProgressBar first (Set visibility VISIBLE)
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        String[] field = new String[1];
+                        String[] field = new String[2];
                         field[0] = "id";
+                        field[1] = "remarks";
                         //Creating array for data
-                        String[] data = new String[1];
+                        String[] data = new String[2];
                         data[0] = id;
+                        data[1] = remarks;
 
-                            PutData putData = new PutData("http://172.31.250.43/csu_clinic/CancelApt.php", "POST", field, data);
+
+                            PutData putData = new PutData(BASE_URL+"/csu_clinic_app/api/appointment/cancel", "POST", field, data);
 //                        PutData putData = new PutData("http://192.168.254.109/csu_clinic/CancelApt.php", "POST", field, data);
                         if (putData.startPut()) {
                             if (putData.onComplete()) {
                                 String result = putData.getResult();
-                                if (result.equals("Created success")) {
+
+                                try {
+                                    JSONArray jsonArray = new JSONArray(result);
+                                    JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+
+                                    message = jsonObject1.optString("message");
+                                    type = jsonObject1.optString("type");
+
+                                    if (type.equals("success")) {
+                                        dialog.dismiss();
+                                        final SweetAlertDialog pDiaglog = new SweetAlertDialog(
+                                                mContext, SweetAlertDialog.SUCCESS_TYPE);
+                                        pDiaglog.setTitleText("Successfully Save");
+                                        pDiaglog.setContentText("Appointment Cancel");
+                                        pDiaglog.setConfirmText("Ok");
+                                        pDiaglog.setCancelable(false);
+                                        pDiaglog.showCancelButton(false)
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sDialog) {
+
+                                                        Intent in = new Intent(mContext.getApplicationContext(), HomePending.class);
+                                                        mContext.startActivity(in);
+                                                        ((Activity) mContext).finish();
+                                                        pDiaglog.dismiss();
+
+                                                    }
+                                                }).show();
+
+                                    } else {
+                                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                                    }
+                                    //End ProgressBar (Set visibility to GONE)
+                                    Log.i("PutData", result);
+                                    }
+                                    catch (JSONException e)
+                                    {
+                                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                                    }
+                            }
+
+                        }
+                        //End Write and Read data with URL
+                    }
+                });
+        }
+        catch (Exception e){
+            Toast.makeText(mContext, "Server Connection Failed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void DoneAppointment(String id, Dialog dialog, String userId){
+        try {
+
+            //Start ProgressBar first (Set visibility VISIBLE)
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    String[] field = new String[2];
+                    field[0] = "id";
+                    field[1] = "user_id";
+                    //Creating array for data
+                    String[] data = new String[2];
+                    data[0] = id;
+                    data[1] = userId;
+                    PutData putData = new PutData(BASE_URL+"/csu_clinic_app/api/appointment/approve/"+id+"/"+userId, "POST", field, data);
+//                        PutData putData = new PutData("http://192.168.254.109/csu_clinic/CancelApt.php", "POST", field, data);
+                    if (putData.startPut()) {
+                        if (putData.onComplete()) {
+                            String result = putData.getResult();
+                            try{
+                                JSONArray jsonArray = new JSONArray(result);
+                                JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+                                message = jsonObject1.optString("message");
+                                type = jsonObject1.optString("type");
+                                if (type.equals("success")) {
                                     dialog.dismiss();
                                     final SweetAlertDialog pDiaglog = new SweetAlertDialog(
                                             mContext, SweetAlertDialog.SUCCESS_TYPE);
                                     pDiaglog.setTitleText("Successfully Save");
-                                    pDiaglog.setContentText("Appointment Cancel");
+                                    pDiaglog.setContentText("Appointment completed");
                                     pDiaglog.setConfirmText("Ok");
                                     pDiaglog.setCancelable(false);
                                     pDiaglog.showCancelButton(false)
@@ -233,26 +304,22 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
 
                                                 }
                                             }).show();
-//                                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                                                @Override
-//                                                public void onClick(SweetAlertDialog sDialog) {
-//                                                    Intent in = new Intent(getApplicationContext(), HomePending.class);
-//                                                    startActivity(in);
-//                                                    finish();
-//                                                }
-//                                            }).show();
-
-//
                                 } else {
                                     Toast.makeText(mContext, result, Toast.LENGTH_SHORT).show();
                                 }
                                 //End ProgressBar (Set visibility to GONE)
                                 Log.i("PutData", result);
+
+                            }catch (Exception e){
+
                             }
+
+
                         }
-                        //End Write and Read data with URL
                     }
-                });
+                    //End Write and Read data with URL
+                }
+            });
         }
         catch (Exception e){
             Toast.makeText(mContext, "Server Connection Failed", Toast.LENGTH_SHORT).show();

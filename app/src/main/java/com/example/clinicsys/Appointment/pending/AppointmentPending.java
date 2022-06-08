@@ -1,12 +1,32 @@
 package com.example.clinicsys.Appointment.pending;
 
 public class AppointmentPending {
-    private String category_name, sub_cat, schedule;
-    public AppointmentPending(String category_name, String sub_cat, String schedule){
+    private String idd,userId,category_name, sub_cat, schedule;
 
+
+    public AppointmentPending(String idd,String userId, String category_name, String sub_cat, String schedule){
+
+        this.idd = idd;
+        this.userId = userId;
         this.category_name = category_name;
         this.sub_cat = sub_cat;
         this.schedule = schedule;
+    }
+
+    public String getIdd() {
+        return idd;
+    }
+
+    public void setIdd(String idd) {
+        this.idd = idd;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getCategory() {

@@ -16,17 +16,19 @@
         app:civ_border_width="2dp"
         app:civ_border_color="#FFFFFF"/>
     <TextView
+        android:id="@+id/fullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reymark N. Valdehueza"
+        android:text="User"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         android:textStyle="bold"/>
 
     <TextView
+        android:id="@+id/idNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CMT II"
+        android:text="Id no."
         android:textColor="#FFFFFF"
         android:textSize="12sp"/>
 

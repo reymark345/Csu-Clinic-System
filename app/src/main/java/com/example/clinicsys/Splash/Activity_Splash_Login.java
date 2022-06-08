@@ -26,9 +26,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.clinicsys.Appointment.pending.HomePending;
 import com.example.clinicsys.MainActivity;
 import com.example.clinicsys.R;
 import com.example.clinicsys.SignUp;
+import com.vishnusivadas.advanced_httpurlconnection.FetchData;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 import org.json.JSONArray;
@@ -42,7 +44,8 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
 
     Button BtnLogin;
     EditText EdtloginIdno,EdtloginPassword;
-    public static final  String BASE_URL = "http://172.31.250.43";
+    public static final  String BASE_URL = "http://192.168.1.3";
+//    public static final  String BASE_URL = "http://192.168.254.105";
 
     private int prevCount = 0;
     String blankMessage = "Please fill this blank";
@@ -54,6 +57,8 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
     ArrayAdapter<String> patientAdapter;
     RequestQueue requestQueue;
     TextView newPatient;
+    String user_id,id_number,message,type,role,fname,lname;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
 
         newPatient.setPaintFlags(newPatient.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
         DataAuthentication();
+//        fetchToken();
 
 
         BtnLogin.setOnClickListener(new View.OnClickListener() {
@@ -85,47 +91,64 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            //Starting Write and Read data with URL
-                            //Creating array for parameters
                             String[] field = new String[2];
-
-                            field[0] = "username";
+                            field[0] = "id_no";
                             field[1] = "password";
 
                             //Creating array for data
                             String[] data = new String[2];
                             data[0] = id_no;
                             data[1] = password;
+                            PutData putData = new PutData(BASE_URL+"/csu_clinic_app/api/auth", "POST", field, data);
+                                if (putData.startPut()) {
+                                    if (putData.onComplete()) {
+                                        String result = putData.getResult();
+                                        try
+                                        {
+                                                JSONArray jsonArray = new JSONArray(result);
+                                                JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+                                                JSONArray ar = (JSONArray) jsonObject1.get("result");
+                                                JSONObject jsonObject2 = ar.getJSONObject(0);
 
-//                            PutData putData = new PutData("http://10.0.2.2/csu_clinic/login.php", "POST", field, data);
-                            PutData putData = new PutData(BASE_URL+"/csu_clinic/login.php", "POST", field, data);
+                                                message = jsonObject1.optString("message");
+                                                type = jsonObject1.optString("type");
+                                                id_number = jsonObject2.optString("id_no");
+                                                fname = jsonObject2.optString("first_name");
+                                                lname = jsonObject2.optString("last_name");
+                                                user_id = jsonObject2.optString("user_id");
+                                                role = jsonObject2.optString("role_name");
 
-//                            PutData putData = new PutData("http://192.168.1.10/csu_clinic/login.php", "POST", field, data);
-                            if (putData.startPut()) {
-                                if (putData.onComplete()) {
-                                    String result = putData.getResult();
+                                                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
+                                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
 
-                                    SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
-                                    SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                                    myEdit.putString("PatientType", "Admin");
-                                    myEdit.commit();
+                                                myEdit.putString("idNo", id_number);
+                                                myEdit.putString("firstName", fname);
+                                                myEdit.putString("lastName", lname);
+                                                myEdit.putString("userId", user_id);
+                                                myEdit.putString("roleName", role);
+                                                myEdit.commit();
 
-                                    if(result.equals("Login Success")){
-                                        Toast.makeText(getApplicationContext(), "Successfully Login", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                        startActivity(intent);
-                                        finish();
+                                            if (type.matches("success")){
+    //                                            Toast.makeText(getApplicationContext(), "test " + id, Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                            else{
+                                                Toast.makeText(getApplicationContext(), "User/Password is wrong!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        catch (JSONException e)
+                                        {
+                                            Toast.makeText(getApplicationContext(), "Invalid " , Toast.LENGTH_SHORT).show();
+                                        }
+
+                                            }
                                     }
-                                    else {
-                                        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-                                    }
-                                    //End ProgressBar (Set visibility to GONE)
-                                    Log.i("PutData", result);
-                                }
-                            }
                             //End Write and Read data with URL
-                        }
+                           }
                     });
+
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "All fields required ", Toast.LENGTH_SHORT).show();
@@ -144,6 +167,17 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
             }
         });
     }
+
+public void fetchToken(){
+    FetchData fetchData = new FetchData("http://192.168.1.3/csu_clinic_app/refreshtokens");
+    if (fetchData.startFetch()) {
+        if (fetchData.onComplete()) {
+            String fetchResult = fetchData.getResult();
+            Toast.makeText(getApplicationContext(), "fetchToken " + fetchResult, Toast.LENGTH_SHORT).show();
+//
+            Log.i("fetchData", fetchResult);
+        }}
+}
 
 
 

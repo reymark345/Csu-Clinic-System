@@ -1,6 +1,6 @@
 package com.example.clinicsys.Appointment.approved;
 
-import static com.example.clinicsys.Appointment.approved.HomeApproved.admin;
+import static com.example.clinicsys.MainActivity.admin;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
