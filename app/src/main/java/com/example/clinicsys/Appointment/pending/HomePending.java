@@ -129,7 +129,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
 
 
         Button submitButton = dialog.findViewById(R.id.submit_button);
-        patientType(spnAppointmentCat);
+        Category(spnAppointmentCat);
         edtSched.setFocusable(false);
         edtSched.setClickable(true);
 
@@ -154,7 +154,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
     }
 
 
-    public void patientType(Spinner aptCat){
+    public void Category(Spinner aptCat){
         categories.clear();
         patientType.clear();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/category/list/2",
