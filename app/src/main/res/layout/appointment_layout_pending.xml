@@ -57,14 +57,6 @@
                             android:text="Date"
                             android:textColor="@color/white"
                             android:textSize="14sp" />
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/appointment_id"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="ID"-->
-<!--                            android:textColor="@color/white"-->
-<!--                            android:textSize="14sp" />-->
                     </LinearLayout>
 
                 </LinearLayout>
@@ -99,7 +91,7 @@
                         android:layout_margin="6dp"
                         android:textSize="10dp"
                         android:drawableLeft="@drawable/ic_edit"
-                        android:backgroundTint="@color/dashboard_item_1"/>
+                        android:backgroundTint="@color/colorEdit"/>
 
                     <Button
                         android:id="@+id/btnCancel"
