@@ -88,13 +88,14 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
 
     public class MyViewHolderPending extends RecyclerView.ViewHolder {
 
-        private TextView aptCategory, aptSubCat, aptDate;
+        private TextView aptCategory, aptSubCat, aptDate,aptName ;
         private LinearLayout mContainer;
 
         public MyViewHolderPending(View view){
             super(view);
             aptCategory = view.findViewById(R.id.appointment_title);
             aptSubCat = view.findViewById(R.id.appointment_subCat);
+            aptName = view.findViewById(R.id.patient_name);
             aptDate = view.findViewById(R.id.appointment_date);
             mContainer = view.findViewById(R.id.appointment_container);
             btnDone = view.findViewById(R.id.btnDone);
@@ -171,6 +172,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         holder.aptSubCat.setText(appointment.getSub_cat());
         String schedule = appointment.getSchedule();
         holder.aptDate.setText(schedule);
+        holder.aptName.setText(appointment.getPatientName());
     }
 
 

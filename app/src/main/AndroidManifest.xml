@@ -43,15 +43,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".Records.Home"
-            android:exported="true" />
-
-        <activity
             android:name=".SignUp"
-            android:exported="true" />
-
-        <activity
-            android:name=".Records.temporary"
             android:exported="true" />
 
     </application>

@@ -105,8 +105,6 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                                         String result = putData.getResult();
                                         try
                                         {
-
-                                            Toast.makeText(getApplicationContext(), "test result" + putData.getResult(), Toast.LENGTH_SHORT).show();
                                                 JSONArray jsonArray = new JSONArray(result);
                                                 JSONObject jsonObject1 = jsonArray.getJSONObject(0);
                                                 JSONArray ar = (JSONArray) jsonObject1.get("result");

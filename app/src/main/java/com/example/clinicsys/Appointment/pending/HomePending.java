@@ -386,9 +386,10 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
                                 String categoryName = object.getString("category");
                                 String subCat = object.getString("subCategory");
                                 String schedule = object.getString("schedule");
+                                String patientName = object.getString("name");
                                 String userId = useridd;
 
-                                AppointmentPending appointment = new AppointmentPending(idd,userId,categoryName,subCat,schedule);
+                                AppointmentPending appointment = new AppointmentPending(idd,userId,categoryName,subCat,schedule,patientName);
                                 appointments.add(appointment);
 
                             }

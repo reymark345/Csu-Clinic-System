@@ -12,8 +12,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +23,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.clinicsys.Appointment.approved.HomeApproved;
 import com.example.clinicsys.Appointment.pending.HomePending;
-import com.example.clinicsys.Records.temporary;
 
 import com.example.clinicsys.Splash.Activity_Splash_Login;
 import com.google.android.material.navigation.NavigationView;
@@ -115,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
         AppointmentDashRecords.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,temporary.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MainActivity.this,temporary.class);
+//                startActivity(intent);
 //                finish();
             }
         });

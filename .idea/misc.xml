@@ -20,7 +20,10 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/spinner_load.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/menu/sidemenu.xml" value="0.2203125" />
         <entry key="..\:/csu_clinic_app/Csu-Clinic-System/app/src/main/res/layout/activity_records.xml" value="0.371875" />
+        <entry key="..\:/csu_clinic_app/Csu-Clinic-System/app/src/main/res/layout/appointment_activity.xml" value="0.371875" />
+        <entry key="..\:/csu_clinic_app/Csu-Clinic-System/app/src/main/res/layout/appointment_layout_approved.xml" value="0.371875" />
         <entry key="..\:/csu_clinic_app/Csu-Clinic-System/app/src/main/res/layout/appointment_layout_pending.xml" value="0.371875" />
+        <entry key="..\:/csu_clinic_app/Csu-Clinic-System/app/src/main/res/layout/home_approved.xml" value="0.371875" />
         <entry key="..\:/csu_clinic_app/Csu-Clinic-System/app/src/main/res/layout/home_pending.xml" value="0.371875" />
       </map>
     </option>
