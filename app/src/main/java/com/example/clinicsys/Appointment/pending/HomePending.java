@@ -201,7 +201,6 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
             sub_categories.clear();
             JSONObject category_data = categories.get(i);
             selectedCat = category_data.optString("id");
-//            Toast.makeText(HomePending.this, "Selected1 " + selectedCat ,Toast.LENGTH_LONG).show();
             StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/sub_category/list/2/"+selectedCat,
                     new Response.Listener<String>() {
                         @Override
@@ -237,7 +236,6 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
 
             JSONObject sub_category_data = sub_categories.get(i);
             selectSubCat = sub_category_data.optString("id");
-//            Toast.makeText(HomePending.this, "Selected2 " + selectSubCat ,Toast.LENGTH_LONG).show();
         }
         else{
             Toast.makeText(HomePending.this, "Please contact administrator " + selectSubCat ,Toast.LENGTH_LONG).show();
@@ -297,7 +295,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
                                                 }).show();
 
                                     } else {
-                                        Toast.makeText(getApplicationContext(), result + "ok scuc", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                                     }
                                 }
                                 catch (Exception e){
@@ -360,7 +358,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
         useridd = sh.getString("userId", "");
         String roleName = sh.getString("roleName", "");
 
-        Toast.makeText(HomePending.this, "type s" + roleName,Toast.LENGTH_LONG).show();
+//        Toast.makeText(HomePending.this, "user_type " + roleName,Toast.LENGTH_LONG).show();
 
 
         if (roleName.matches("end-user")){

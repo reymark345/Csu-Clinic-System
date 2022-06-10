@@ -126,15 +126,10 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         finalId = id;
         int finalUserId = userId;
 
-        int idni = Integer.parseInt(appointment.getIdd());
         btnDone.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                String idd = String.valueOf(finalId);
-                Toast.makeText(mContext.getApplicationContext(), "click me" + appointment.getIdd()  ,Toast.LENGTH_SHORT).show();
-
-//                Toast.makeText(mContext.getApplicationContext(), "huyys " + finalId ,Toast.LENGTH_SHORT).show();
                 final SweetAlertDialog pDiaglog = new SweetAlertDialog(
                         mContext, SweetAlertDialog.WARNING_TYPE);
                 pDiaglog.setTitleText("Are you sure?");
@@ -149,7 +144,6 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                             public void onClick(SweetAlertDialog sDialog) {
 
                                 String userid = String.valueOf(finalUserId);
-//                                Toast.makeText(mContext.getApplicationContext(), "convert" + idd ,Toast.LENGTH_SHORT).show();
                                 DoneAppointment(appointment.getIdd(), pDiaglog, userid);
                             }
                         }).show();
@@ -161,7 +155,6 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
             @Override
             public void onClick(View view) {
                 int changeId = Integer.parseInt(appointment.getIdd());
-//                Toast.makeText(mContext.getApplicationContext(), "Click button of Change " + changeId ,Toast.LENGTH_SHORT).show();
                 CustomDialogEdit(changeId);
             }
         });
@@ -170,12 +163,11 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
             @Override
             public void onClick(View view) {
                 int changeId = Integer.parseInt(appointment.getIdd());
-//                Toast.makeText(mContext.getApplicationContext(), "Click button of Change " + appointment.getIdd() ,Toast.LENGTH_SHORT).show();
                 CustomDialogCancel(changeId);
             }
         });
 
-        holder.aptCategory.setText(appointment.getIdd());
+        holder.aptCategory.setText(appointment.getCategory());
         holder.aptSubCat.setText(appointment.getSub_cat());
         String schedule = appointment.getSchedule();
         holder.aptDate.setText(schedule);
@@ -242,9 +234,6 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         submitButtonChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                    Toast.makeText(mContext, "adddd" + id,Toast.LENGTH_LONG).show();
-
                     String complaint = complaints.getText().toString();
                     String idd = String.valueOf(id);
                     ChangeAppointment(idd, complaint);
@@ -300,7 +289,6 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
     }
 
     public void CategoryReplace(Spinner aptCat,Spinner aptComplaint, int id){
-        Toast.makeText(mContext, "fasfsafsafsaf " + id,Toast.LENGTH_LONG).show();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/appointment/get/"+id,
 //        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/category/list/2",
                 new Response.Listener<String>() {
@@ -309,9 +297,6 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                         try {
 
                             JSONObject object = new JSONObject(response);
-
-
-//                            Toast.makeText(mContext, "Resssssponse" + object,Toast.LENGTH_LONG).show();
 
                             ChangeCategoryId = object.getString("category_id");
                             ChangesubCategoryId = object.getString("sub_category_id");
@@ -375,8 +360,6 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
             JSONObject category_data = categories.get(i);
             selectedCat = category_data.optString("id");
 
-            Toast.makeText(mContext, "RRRRRR" + selectedCat ,Toast.LENGTH_LONG).show();
-
             StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/sub_category/list/2/"+selectedCat,
                     new Response.Listener<String>() {
                         @Override
@@ -417,7 +400,6 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
 
             JSONObject sub_category_data = sub_categories.get(i);
             selectSubCat = sub_category_data.optString("id");
-            Toast.makeText(mContext, "Selected2 " + selectSubCat ,Toast.LENGTH_LONG).show();
         }
         else{
             Toast.makeText(mContext, "Please contact administrator " + selectSubCat ,Toast.LENGTH_LONG).show();
@@ -505,7 +487,6 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         try {
 
             String sched = scheduleEdit.getText().toString();
-            Toast.makeText(mContext, "id " + id + "Sched" + sched+ "cat"+ ChangeCategoryId + "Sub" + ChangesubCategoryId + " rem" + remarks, Toast.LENGTH_SHORT).show();
             //Start ProgressBar first (Set visibility VISIBLE)
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
@@ -581,8 +562,6 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
 
     public void DoneAppointment(String id, Dialog dialog, String userId){
         try {
-            Toast.makeText(mContext, "testdoness  "+ id, Toast.LENGTH_SHORT).show();
-
             //Start ProgressBar first (Set visibility VISIBLE)
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
