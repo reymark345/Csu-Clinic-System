@@ -52,14 +52,4 @@ public class AppointmentPending {
     public void setSchedule(String schedule) {
         this.schedule = schedule;
     }
-
-//    public AppointmentPendingCancel(String category_name, String sub_cat, String schedule){
-//
-//        this.category_name = category_name;
-//        this.sub_cat = sub_cat;
-//        this.schedule = schedule;
-//    }
-
-
-
 }

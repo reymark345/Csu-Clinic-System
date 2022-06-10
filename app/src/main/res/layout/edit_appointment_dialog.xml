@@ -9,11 +9,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add appointment"
+        android:text="Change appointment"
         android:textSize="24sp"
         android:textColor="@color/colorBlack"
         android:layout_marginBottom="16dp"
-        android:id="@+id/textAppointment"/>
+        android:id="@+id/editTextAppointment"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/appointmentCat"
@@ -24,26 +24,19 @@
         android:layout_marginLeft="10dp"
         app:helperText="Appointment Category"
         app:helperTextTextColor="@color/validation"
-        android:layout_below="@+id/textAppointment"
+        android:layout_below="@+id/editTextAppointment"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
         <Spinner
-            android:id="@+id/spnAppointmentCat"
+            android:id="@+id/EdtSpnAppointmentCat"
             android:layout_width= "match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/edtIdno"/>
+            android:layout_below="@id/editTextAppointment"/>
 
-<!--        <EditText-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="Appointment Schedule"-->
-<!--            android:id="@+id/spnAppointmentCat"-->
-<!--            android:inputType="text"-->
-<!--            android:layout_below="@id/til_schedule"/>-->
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/appointmentComplaints" 
+        android:id="@+id/edtAppointmentSubCat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
@@ -55,10 +48,10 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
         <Spinner
-            android:id="@+id/spnComplaints"
+            android:id="@+id/EditSpnComplaints"
             android:layout_width= "match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/edtIdno"/>
+            android:layout_below="@id/EdtSpnAppointmentCat"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -71,16 +64,16 @@
         android:layout_marginLeft="10dp"
         app:helperTextTextColor="@color/validation"
         app:startIconDrawable="@drawable/ic_schedule"
-        android:layout_below="@+id/appointmentComplaints"
+        android:layout_below="@+id/edtAppointmentSubCat"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Schedule"
-            android:id="@+id/edtSchedule"
+            android:id="@+id/scheduleEdit"
             android:inputType="text"
-            android:layout_below="@id/spnComplaints"/>
+            android:layout_below="@id/EditSpnComplaints"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -97,30 +90,13 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
         <EditText
-            android:id="@+id/edtComplaints"
+            android:id="@+id/editComplaints"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:hint="Complaints (Optional)"
+            android:hint="Complaint (Optional)"
             android:inputType="text|textMultiLine"
             />
     </com.google.android.material.textfield.TextInputLayout>
-
-<!--    <EditText-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Date"-->
-<!--        android:inputType="text"-->
-<!--        android:imeOptions="actionNext"-->
-<!--        android:id="@+id/name_et"/>-->
-
-<!--    <EditText-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Time"-->
-<!--        android:inputType="number"-->
-<!--        android:imeOptions="actionNext"-->
-<!--        android:id="@+id/age_et"/>-->
-
 
     <Button
         android:layout_width="wrap_content"
@@ -130,5 +106,5 @@
         android:text="Submit"
         android:textColor="@color/colorWhite"
         android:background="@color/colorPrimary"
-        android:id="@+id/submit_button"/>
+        android:id="@+id/EditSubmit_button"/>
 </LinearLayout>

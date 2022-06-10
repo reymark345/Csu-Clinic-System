@@ -78,8 +78,8 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
     RequestQueue requestQueue;
 
     Spinner spnAppointmentCat, spinnerComplaints;
-    EditText edtSched, edtRemarks;
-    String Urltype,categoryID,selectedCat, selectSubCat;
+    EditText edtSched, edtComplaints;
+    String Urltype,categoryID,selectedCat, selectSubCat, useridd, type;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -116,7 +116,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
 
     }
 
-   public void showCustomDialog() {
+    public void showCustomDialog() {
 
         final Dialog dialog = new Dialog(HomePending.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -125,7 +125,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
         spnAppointmentCat = dialog.findViewById(R.id.spnAppointmentCat);
         spinnerComplaints = dialog.findViewById(R.id.spnComplaints);
         edtSched = dialog.findViewById(R.id.edtSchedule);
-        edtRemarks =  dialog.findViewById(R.id.edtRemarks);
+        edtComplaints =  dialog.findViewById(R.id.edtComplaints);
 
 
         Button submitButton = dialog.findViewById(R.id.submit_button);
@@ -136,23 +136,23 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String CatType = spnAppointmentCat.getSelectedItem().toString();
-                String complaints = spinnerComplaints.getSelectedItem().toString();
+//                String CatType = spnAppointmentCat.getSelectedItem().toString();
+//                String subCategory = spinnerComplaints.getSelectedItem().toString();
                 String schedule = edtSched.getText().toString();
-                String remarks = edtRemarks.getText().toString();
-                addAppointment(CatType,complaints,schedule,remarks);
+                String complaint = edtComplaints.getText().toString();
+//                addAppointment(CatType,complaints,schedule,remarks);
+                addAppointment(selectedCat,selectSubCat,schedule,complaint);
                 dialog.dismiss();
             }
         });
         dialog.show();
-       edtSched.setOnClickListener(new View.OnClickListener() {
+        edtSched.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDateTimeDialog(edtSched);
             }
         });
     }
-
 
     public void Category(Spinner aptCat){
         categories.clear();
@@ -201,7 +201,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
             sub_categories.clear();
             JSONObject category_data = categories.get(i);
             selectedCat = category_data.optString("id");
-            Toast.makeText(HomePending.this, "Selected1 " + selectedCat ,Toast.LENGTH_LONG).show();
+//            Toast.makeText(HomePending.this, "Selected1 " + selectedCat ,Toast.LENGTH_LONG).show();
             StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/sub_category/list/2/"+selectedCat,
                     new Response.Listener<String>() {
                         @Override
@@ -237,180 +237,72 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
 
             JSONObject sub_category_data = sub_categories.get(i);
             selectSubCat = sub_category_data.optString("id");
-            Toast.makeText(HomePending.this, "Selected2 " + selectSubCat ,Toast.LENGTH_LONG).show();
-
-//            StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/sub_category/list/2/"+selectedCat,
-//                    new Response.Listener<String>() {
-//                        @Override
-//                        public void onResponse(String response) {
-//                            try {
-//                                JSONArray array = new JSONArray(response);
-//                                for (int i = 0; i<array.length(); i++){
-//                                    JSONObject object = array.getJSONObject(i);
-//                                    String cityName = object.optString("name");
-//                                    sub_categories.add(object);
-//                                    complaintList.add(cityName);
-//                                    complaintAdapter = new ArrayAdapter<>(HomePending.this,
-//                                            android.R.layout.simple_spinner_item, complaintList);
-//                                    complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                                    spinnerComplaints.setAdapter(complaintAdapter);
-//                                }
-//
-//                            }catch (Exception e){
-//                                e.printStackTrace();
-//                            }
-//
-//                        }
-//                    }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//
-//                }
-//            });
-//            requestQueue.add(stringRequest);
-
+//            Toast.makeText(HomePending.this, "Selected2 " + selectSubCat ,Toast.LENGTH_LONG).show();
         }
-//        else{
-//            Toast.makeText(HomePending.this, "sa error " ,Toast.LENGTH_LONG).show();
-//        }
+        else{
+            Toast.makeText(HomePending.this, "Please contact administrator " + selectSubCat ,Toast.LENGTH_LONG).show();
+        }
     }
-
-
-
-
-
-//    public void patientTypeOLD(Spinner aptCat){
-//        patientType.clear();
-////        String url = "http://172.31.250.174/csu_clinic/populate_country.php";
-//
-//
-//        String url = "http://192.168.1.3/csu_clinic_app/api/category/list/2";
-////        String url = "http://192.168.254.109/csu_clinic/populate_country.php";
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-//                url, null, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                try {
-//                    Toast.makeText(HomePending.this, "sa error " ,Toast.LENGTH_LONG).show();
-//                    JSONArray jsonArray = response.getJSONArray("lib_categories");
-//                    for(int i=0; i<jsonArray.length();i++){
-//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                        String countryName = jsonObject.optString("name");
-//                        patientType.add(countryName);
-//                        patientAdapter = new ArrayAdapter<>(HomePending.this,
-//                                android.R.layout.simple_spinner_item, patientType);
-//                        patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                        aptCat.setAdapter(patientAdapter);
-//                    }
-//                    Toast.makeText(getApplicationContext(), "Pila? "+patientType.size(), Toast.LENGTH_SHORT).show();
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        });
-//        requestQueue.add(jsonObjectRequest);
-//        aptCat.setOnItemSelectedListener(this);
-//    }
-
-
-//    @Override
-//    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//        if(adapterView.getId() == R.id.spnAppointmentCat){
-//            Toast.makeText(HomePending.this, "Tyyyyy" ,Toast.LENGTH_LONG).show();
-//            complaintList.clear();
-//            String selectedCountry = adapterView.getSelectedItem().toString();
-//            String url = BASE_URL+"/csu_clinic_app/api/sub_category/list/2/"+selectedCountry;
-//            requestQueue = Volley.newRequestQueue(this);
-//            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-//                    url, null, new Response.Listener<JSONObject>() {
-//                @Override
-//                public void onResponse(JSONObject response) {
-////                    try {
-////                        JSONArray jsonArray = response.getJSONArray("sub_cat");
-////                        for(int i=0; i<jsonArray.length();i++){
-////                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-////                            String cityName = jsonObject.optString("name");
-////
-////                            complaintList.add(cityName);
-////                            complaintAdapter = new ArrayAdapter<>(HomePending.this,
-////                                    android.R.layout.simple_spinner_item, complaintList);
-////                            complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-////                            spinnerComplaints.setAdapter(complaintAdapter);
-////                        }
-////                    } catch (JSONException e) {
-////                        e.printStackTrace();
-////                    }
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//
-//                }
-//            });
-//            requestQueue.add(jsonObjectRequest);
-////            ageEt.setOnItemSelectedListener(this);
-//        }
-//        else{
-//            Toast.makeText(HomePending.this, "sa error " ,Toast.LENGTH_LONG).show();
-//        }
-//    }
-
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 
-    public void addAppointment(String CatType,String complaints,String schedule,String remarks){
+    public void addAppointment(String CatType,String subCategory,String schedule,String complaint){
         try {
-            if (!CatType.equals("") && !complaints.equals("") && !schedule.equals("")) {
+
+            if (!CatType.equals("") && !subCategory.equals("") && !schedule.equals("")) {
                 //Start ProgressBar first (Set visibility VISIBLE)
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         String[] field = new String[4];
-                        field[0] = "category_name";
-                        field[1] = "sub_category";
-                        field[2] = "schedule";
-                        field[3] = "remarks";
+                        field[0] = "schedule";
+                        field[1] = "category";
+                        field[2] = "sub_category";
+                        field[3] = "complaint";
                         //Creating array for data
                         String[] data = new String[4];
 
-                        data[0] = CatType;
-                        data[1] = complaints;
-                        data[2] = schedule;
-                        data[3] = remarks;
-                        PutData putData = new PutData(BASE_URL+"/csu_clinic/AddNewApt.php", "POST", field, data);
+                        data[0] = schedule;
+                        data[1] = CatType;
+                        data[2] = subCategory;
+                        data[3] = complaint;
+
+                        PutData putData = new PutData(BASE_URL+"/csu_clinic_app/api/appointment/create/"+useridd, "POST", field, data);
                         if (putData.startPut()) {
                             if (putData.onComplete()) {
                                 String result = putData.getResult();
-                                if (result.equals("Created success")) {
-                                    final SweetAlertDialog pDiaglog = new SweetAlertDialog(
-                                            HomePending.this, SweetAlertDialog.SUCCESS_TYPE);
-                                    pDiaglog.setTitleText("Successfully Save");
-                                    pDiaglog.setContentText("Done!");
-                                    pDiaglog.setConfirmText("Ok");
-                                    pDiaglog.setCancelable(false);
-                                    pDiaglog.showCancelButton(false)
-                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                @Override
-                                                public void onClick(SweetAlertDialog sDialog) {
-                                                    appointments.clear();
-                                                    getAppointment();
-                                                    pDiaglog.dismiss();
-                                                }
-                                            }).show();
 
-                                } else {
-                                    Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                                try{
+                                    JSONArray jsonArray = new JSONArray(result);
+                                    JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+                                    type = jsonObject1.optString("type");
+                                    if (type.equals("success")) {
+                                        final SweetAlertDialog pDiaglog = new SweetAlertDialog(
+                                                HomePending.this, SweetAlertDialog.SUCCESS_TYPE);
+                                        pDiaglog.setTitleText("Successfully Save");
+                                        pDiaglog.setContentText("Done!");
+                                        pDiaglog.setConfirmText("Ok");
+                                        pDiaglog.setCancelable(false);
+                                        pDiaglog.showCancelButton(false)
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sDialog) {
+                                                        appointments.clear();
+                                                        getAppointment();
+                                                        pDiaglog.dismiss();
+                                                    }
+                                                }).show();
+
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), result + "ok scuc", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                                //End ProgressBar (Set visibility to GONE)
-                                Log.i("PutData", result);
+                                catch (Exception e){
+                                    Toast.makeText(getApplicationContext(), "catch error " + e, Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
                         //End Write and Read data with URL
@@ -465,7 +357,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
         progressBar.setVisibility(View.VISIBLE);
 
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
-        String useridd = sh.getString("userId", "");
+        useridd = sh.getString("userId", "");
         String roleName = sh.getString("roleName", "");
 
         Toast.makeText(HomePending.this, "type s" + roleName,Toast.LENGTH_LONG).show();
@@ -492,31 +384,23 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
                             for (int i = 0; i<array.length(); i++){
 
                                 JSONObject object = array.getJSONObject(i);
-
-//                                Toast.makeText(HomePending.this, "Testing list" + useridd,Toast.LENGTH_LONG).show();
-
                                 String idd = object.getString("id");
                                 String categoryName = object.getString("category");
                                 String subCat = object.getString("subCategory");
                                 String schedule = object.getString("schedule");
                                 String userId = useridd;
-//                                String image = object.getString("image");
-
-//                                String rate = String.valueOf(rating);
-//                                float newRate = Float.valueOf(rate);
 
                                 AppointmentPending appointment = new AppointmentPending(idd,userId,categoryName,subCat,schedule);
                                 appointments.add(appointment);
+
                             }
 
                         }catch (Exception e){
-
+                            Toast.makeText(getApplicationContext(), "catch error " + e, Toast.LENGTH_SHORT).show();
                         }
 
                         mAdapter = new RecyclerAdapterPending(HomePending.this,appointments);
                         recyclerView.setAdapter(mAdapter);
-
-
                     }
                 }, new Response.ErrorListener() {
             @Override

@@ -38,7 +38,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     CardView AppointmentDashPending,AppointmentDashApproved,AppointmentDashRecords, Logout;
-    TextView txtPending,txtFullname;
+    TextView txtPending;
 
     ArrayList<String> patientType = new ArrayList<>();
     ArrayAdapter<String> patientAdapter;

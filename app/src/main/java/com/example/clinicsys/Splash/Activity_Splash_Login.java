@@ -44,7 +44,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
 
     Button BtnLogin;
     EditText EdtloginIdno,EdtloginPassword;
-    public static final  String BASE_URL = "http://172.31.243.174";
+    public static final  String BASE_URL = "http://172.26.153.44";
 //    public static final  String BASE_URL = "http://192.168.254.105";
 
     private int prevCount = 0;
@@ -105,6 +105,8 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                                         String result = putData.getResult();
                                         try
                                         {
+
+                                            Toast.makeText(getApplicationContext(), "test result" + putData.getResult(), Toast.LENGTH_SHORT).show();
                                                 JSONArray jsonArray = new JSONArray(result);
                                                 JSONObject jsonObject1 = jsonArray.getJSONObject(0);
                                                 JSONArray ar = (JSONArray) jsonObject1.get("result");
@@ -140,7 +142,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                                         }
                                         catch (JSONException e)
                                         {
-                                            Toast.makeText(getApplicationContext(), "Invalid " , Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Invalid " + e , Toast.LENGTH_SHORT).show();
                                         }
 
                                             }
