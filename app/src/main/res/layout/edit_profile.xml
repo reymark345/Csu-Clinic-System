@@ -52,6 +52,16 @@
                         android:text="Profile Details"
                         android:textStyle="bold" />
 
+                    <Button
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:padding="10dp"
+                        android:id="@+id/editProfile"
+                        android:drawableLeft="@drawable/ic_edit"
+                        android:textStyle="bold" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/cc_idno"
                         android:layout_width="match_parent"
@@ -75,25 +85,6 @@
                             android:layout_below="@id/edtFirstname"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/cc_role"
-                        app:helperText="Role"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"
-                        app:helperTextTextColor="@color/validation"
-                        android:layout_below="@+id/cc_idno"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-                        <Spinner
-                            android:id="@+id/spinnerRole"
-                            android:layout_width= "match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/edt_idno"
-                            />
-                    </com.google.android.material.textfield.TextInputLayout>
 
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -107,7 +98,7 @@
                         android:layout_marginLeft="10dp"
                         app:helperTextTextColor="@color/validation"
                         app:startIconDrawable="@drawable/ic_series"
-                        android:layout_below="@+id/cc_role"
+                        android:layout_below="@+id/cc_idno"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
                         <EditText
@@ -116,7 +107,7 @@
                             android:hint="First Name"
                             android:id="@+id/edt_Fname"
                             android:inputType="text"
-                            android:layout_below="@id/edtFirstname"/>
+                            android:layout_below="@id/edt_idno"/>
                     </com.google.android.material.textfield.TextInputLayout>
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/cc_middle"
@@ -201,11 +192,12 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
                         <Spinner
-                            android:id="@+id/spinner_Sex"
+                            android:id="@+id/spinnerSex"
                             android:layout_width= "match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/edt_Birthdate"
                             />
+
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -232,7 +224,7 @@
                             android:maxLength="11"
                             android:id="@+id/edt_Contact"
                             android:inputType="number"
-                            android:layout_below="@id/spinner_Sex"/>
+                            android:layout_below="@id/spinnerSex"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -252,7 +244,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Birthdate"
+                            android:hint="Email"
                             android:id="@+id/edt_Email"
                             android:inputType="text"
                             android:layout_below="@id/edt_Contact"/>
@@ -262,7 +254,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/cc_patient"
-                        app:helperText="Patient type"
+                        app:helperText="Patient"
                         android:layout_marginTop="20dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginLeft="10dp"
@@ -271,7 +263,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
                         <Spinner
-                            android:id="@+id/spinner_patient"
+                            android:id="@+id/spinnerPatient"
                             android:layout_width= "match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/edt_Email"
@@ -302,6 +294,21 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <Button
+                        android:id="@+id/confirmRequestBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="20dp"
+                        android:padding="10dp"
+                        android:background="@drawable/mybutton"
+                        android:textSize="15dp"
+                        android:text="Update"
+                        android:textColor="@color/white"
+                        android:layout_marginBottom="5dp"
+                        android:layout_below="@id/cc_address"/>
                 </LinearLayout>
             </LinearLayout>
 

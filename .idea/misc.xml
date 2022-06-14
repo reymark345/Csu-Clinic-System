@@ -19,25 +19,11 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/sidebar_header.xml" value="0.2203125" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/spinner_load.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/menu/sidemenu.xml" value="0.2203125" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/activity_login.xml" value="0.10005065856129686" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/activity_records.xml" value="0.20572916666666666" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/activity_sign_up.xml" value="0.2" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/activity_splash_login.xml" value="0.1" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/appointment_activity.xml" value="0.11398176291793313" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/appointment_layout_pending.xml" value="0.12158054711246201" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/appointment_layout_records.xml" value="0.10005065856129686" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/dashboard_item_1.xml" value="0.2203125" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/dashboard_item_2.xml" value="0.234375" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/dashboard_item_3.xml" value="0.21944444444444444" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/dashboard_main.xml" value="0.1" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/dialog_cancel.xml" value="0.21944444444444444" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/edit_appointment_dialog.xml" value="0.1" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/edit_profile.xml" value="0.20260416666666667" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/home_approved.xml" value="0.20260416666666667" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/home_pending.xml" value="0.20260416666666667" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/home_records.xml" value="0.20260416666666667" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/sidebar_header.xml" value="0.20260416666666667" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/menu/sidemenu.xml" value="0.24537037037037038" />
+        <entry key="..\:/laragon/www/Csu-Clinic-System/app/src/main/res/drawable/background.xml" value="0.263" />
+        <entry key="..\:/laragon/www/Csu-Clinic-System/app/src/main/res/layout/activity_sign_up.xml" value="0.3625" />
+        <entry key="..\:/laragon/www/Csu-Clinic-System/app/src/main/res/layout/appointment_layout_pending.xml" value="0.3625" />
+        <entry key="..\:/laragon/www/Csu-Clinic-System/app/src/main/res/layout/custom_dialog.xml" value="0.3625" />
+        <entry key="..\:/laragon/www/Csu-Clinic-System/app/src/main/res/layout/edit_profile.xml" value="0.1641337386018237" />
       </map>
     </option>
   </component>
