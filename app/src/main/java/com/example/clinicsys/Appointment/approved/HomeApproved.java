@@ -5,6 +5,7 @@ import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,6 +38,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.clinicsys.MainActivity;
 import com.example.clinicsys.R;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
@@ -398,6 +400,14 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
 
         Volley.newRequestQueue(HomeApproved.this).add(stringRequest);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

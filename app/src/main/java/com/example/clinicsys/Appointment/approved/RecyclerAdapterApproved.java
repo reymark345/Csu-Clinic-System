@@ -70,7 +70,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
     Spinner EditSpnComplaints;
     EditText scheduleEdit,complaints;
     int finalId;
-    String ChangeCategoryId,ChangesubCategoryId,schedule,complaint;
+    String ChangeCategoryId,ChangesubCategoryId,schedule,complaint,catGlobal, sub_catGlobal;
 
     public RecyclerAdapterApproved(Context context, List<AppointmentApproved> appointments){
         this.mContext = context;
@@ -253,21 +253,20 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                                 JSONObject object = array.getJSONObject(i);
                                 String categoryID = object.optString("id");
                                 String categoryName = object.optString("name");
-
-
-
                                 categories.add(object);
                                 patientType.add(categoryName);
                                 patientAdapter = new ArrayAdapter<>(mContext,
                                         android.R.layout.simple_spinner_item, patientType);
                                 patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 aptCat.setAdapter(patientAdapter);
-
-
                             }
-                            CategoryReplace(EdtSpnAppointmentCat,EditSpnComplaints, id);
-
-
+                            new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                                    new Runnable() {
+                                        public void run() {
+                                            CategoryReplace(EdtSpnAppointmentCat,EditSpnComplaints, id);
+                                        }
+                                    },
+                                    500);
                         }catch (Exception e){
                             e.printStackTrace();
                         }
@@ -295,41 +294,24 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
 
                             ChangeCategoryId = object.getString("category_id");
                             ChangesubCategoryId = object.getString("sub_category_id");
-
-                            String category= object.getString("category");
-                            String sub_category = object.getString("sub_category");
+                            catGlobal= object.getString("category");
+                            sub_catGlobal = object.getString("sub_category");
                             schedule = object.getString("schedule");
-                            complaint = object.getString("remarks");
-
+                            complaint = object.getString("complaint");
                             scheduleEdit.setText(schedule);
                             if (!complaint.matches("null")){
                                 complaints.setText(complaint);
                             }
+                            try {
+                                patientAdapter = (ArrayAdapter) aptCat.getAdapter(); //cast to an ArrayAdapter
+                                int spinnerPositionCat = patientAdapter.getPosition(catGlobal);
+                                aptCat.setSelection(spinnerPositionCat);
 
-//                            ArrayAdapter myAdapCat = (ArrayAdapter) aptCat.getAdapter(); //cast to an ArrayAdapter
-//                            ArrayAdapter myAdapSub = (ArrayAdapter) aptComplaint.getAdapter(); //cast to an ArrayAdapter
-//
-//                            int spinnerPositionCat = myAdapCat.getPosition(category);
-//                            int spinnerPositionSub = myAdapSub.getPosition(sub_category);
-//
-//                            aptCat.setSelection(spinnerPositionCat);
-//                            aptComplaint.setSelection(spinnerPositionSub);
+                            }
+                            catch (Exception e){
 
-
-//                            Toast.makeText(mContext, "result responsea " + response + " fsa" + subCategoryId ,Toast.LENGTH_LONG).show();
-
-//                            JSONArray jsonArray = new JSONArray(response);
-//                            JSONObject jsonObject1 = jsonArray.getJSONObject(0);
-//                            String SubCatName = jsonObject1.optString("name");
-//
-//                            ArrayAdapter myAdap = (ArrayAdapter) aptCat.getAdapter(); //cast to an ArrayAdapter
-//
-//                            int spinnerPosition = myAdap.getPosition(SubCatName);
-//
-////set the default according to value
-//                            aptCat.setSelection(spinnerPosition);
-
-
+                                Toast.makeText(mContext, "Error  " + e ,Toast.LENGTH_LONG).show();
+                            }
                         }catch (Exception e){
                             Toast.makeText(mContext, "error " + e ,Toast.LENGTH_LONG).show();
 
@@ -344,6 +326,25 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
         });
         requestQueue.add(stringRequest);
         aptCat.setOnItemSelectedListener(this);
+    }
+
+
+    public void SubCategoryReplace(Spinner apptSub){
+        try {
+            new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                    new Runnable() {
+                        public void run() {
+                            complaintAdapter = (ArrayAdapter) apptSub.getAdapter(); //cast to an ArrayAdapter
+                            int spinnerSubCat = complaintAdapter.getPosition(sub_catGlobal);
+                            apptSub.setSelection(spinnerSubCat);
+                        }
+                    },
+                    500);
+
+        }
+        catch (Exception e){
+            Toast.makeText(mContext, "Error SubCategoryReplace  " + e ,Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -364,11 +365,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
 
                                 for (int i = 0; i<array.length(); i++){
                                     JSONObject object = array.getJSONObject(i);
-
-
-
                                     String cityName = object.optString("name");
-
                                     sub_categories.add(object);
                                     complaintList.add(cityName);
                                     complaintAdapter = new ArrayAdapter<>(mContext,
@@ -376,6 +373,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                                     complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     EditSpnComplaints.setAdapter(complaintAdapter);
                                 }
+                                SubCategoryReplace(EditSpnComplaints);
 
                             }catch (Exception e){
                                 e.printStackTrace();

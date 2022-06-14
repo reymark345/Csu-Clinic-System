@@ -158,12 +158,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"
-                        android:text="Approved"
+                        android:text="Completed"
                         android:textColor="@color/secondary_text"
                         android:textSize="@dimen/_10ssp"/>
 
                     <TextView
-                        android:id="@+id/txtApproved"
+                        android:id="@+id/txtCompleted"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"
@@ -192,11 +192,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"
-                        android:text="Records"
+                        android:text="Cancelled"
                         android:textColor="@color/secondary_text"
                         android:textSize="@dimen/_10ssp"/>
 
                     <TextView
+                        android:id="@+id/txtCancelled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"

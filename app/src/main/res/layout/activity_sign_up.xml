@@ -8,13 +8,18 @@
     android:background="@color/background"
     tools:context=".SignUp">
 
+
+
         <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
+
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,65 +45,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/til_patientType"
-                app:helperText="Patient Type"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                app:helperTextTextColor="@color/validation"
-                android:layout_below="@+id/til_Idno"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-                <Spinner
-                    android:id="@+id/spinnerPatientType"
-                    android:layout_width= "match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/edtIdno"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/til_appointmentCat"
-                app:helperText="Appointment Category"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                app:helperTextTextColor="@color/validation"
-                android:layout_below="@+id/til_patientType"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-                <Spinner
-                    android:id="@+id/spinnerAppointmentCat"
-                    android:layout_width= "match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/spinnerPatientType"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/til_complaints"
-                app:helperText="Complaints"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                app:helperTextTextColor="@color/validation"
-                android:layout_below="@+id/til_appointmentCat"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-                <Spinner
-                    android:id="@+id/spinnerComplaints"
-                    android:layout_width= "match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/spinnerAppointmentCat"/>
-
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_firstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -109,7 +55,7 @@
                 android:layout_marginLeft="10dp"
                 app:helperTextTextColor="@color/validation"
                 app:startIconDrawable="@drawable/ic_series"
-                android:layout_below="@+id/til_complaints"
+                android:layout_below="@+id/til_Idno"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
                 <EditText
@@ -118,7 +64,7 @@
                     android:hint="First name"
                     android:id="@+id/edtFirstname"
                     android:inputType="text"
-                    android:layout_below="@id/spinnerComplaints"/>
+                    android:layout_below="@id/edtIdno"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -138,11 +84,12 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Middle name/initial"
+                    android:hint="Middle Name"
                     android:id="@+id/edtMiddleName"
                     android:inputType="text"
                     android:layout_below="@id/edtFirstname"/>
             </com.google.android.material.textfield.TextInputLayout>
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_lastname"
@@ -168,7 +115,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_schedule"
+                android:id="@+id/til_birthdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:endIconMode="clear_text"
@@ -184,10 +131,34 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="Birthday"
+                    android:id="@+id/edtBirthdate"
+                    android:inputType="text"
+                    android:layout_below="@id/edtLastname"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                app:helperText="Mandatory"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                app:helperTextTextColor="@color/validation"
+                app:startIconDrawable="@drawable/ic_series"
+                android:layout_below="@+id/til_birthdate"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:hint="Appointment Schedule"
                     android:id="@+id/edtSchedule"
                     android:inputType="text"
-                    android:layout_below="@id/edtLastname"/>
+                    android:layout_below="@id/edtBirthdate"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -210,57 +181,7 @@
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
-<!--            <com.google.android.material.textfield.TextInputLayout-->
-<!--                android:id="@+id/til_sex"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                app:endIconMode="clear_text"-->
-<!--                app:helperText="Mandatory"-->
-<!--                android:layout_marginTop="25dp"-->
-<!--                android:layout_marginRight="10dp"-->
-<!--                android:layout_marginLeft="10dp"-->
-<!--                app:helperTextTextColor="@color/validation"-->
-<!--                app:startIconDrawable="@drawable/ic_series"-->
-<!--                android:layout_below="@+id/til_lastname"-->
-<!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">-->
 
-<!--                <EditText-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:hint="Sex"-->
-<!--                    android:id="@+id/edtSex"-->
-<!--                    android:inputType="text"-->
-<!--                    android:layout_below="@id/edtLastname"/>-->
-<!--            </com.google.android.material.textfield.TextInputLayout>-->
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_birthdate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
-                app:helperText="Mandatory"
-                android:layout_marginTop="25dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                app:helperTextTextColor="@color/validation"
-                app:startIconDrawable="@drawable/ic_series"
-                android:layout_below="@+id/til_sex"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-<!--                <Button-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="Birthdate"-->
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Birthdate"
-                    android:id="@+id/edtBirthdate"
-                    android:inputType="text"
-                    android:layout_below="@id/spinnerSex"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -273,7 +194,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_below="@+id/til_birthdate"
+                android:layout_below="@+id/til_sex"
                 app:helperTextTextColor="@color/validation"
                 app:startIconDrawable="@drawable/ic_series"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -282,11 +203,11 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Contact number"
+                    android:hint="Cellphone no."
                     android:maxLength="11"
                     android:id="@+id/edtContact"
                     android:inputType="number"
-                    android:layout_below="@id/edtBirthdate"/>
+                    android:layout_below="@id/edtSchedule"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -302,6 +223,7 @@
                 app:startIconDrawable="@drawable/ic_series"
                 android:layout_below="@+id/til_cpno"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
 
                 <EditText
                     android:layout_width="match_parent"
@@ -319,7 +241,6 @@
                 app:endIconMode="clear_text"
                 app:helperText="Optional"
                 android:layout_marginTop="25dp"
-                android:layout_marginBottom="70dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 app:helperTextTextColor="@color/validation"
@@ -337,13 +258,111 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/til_patientType"
+                app:helperText="Patient Type"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                app:helperTextTextColor="@color/validation"
+                android:layout_below="@+id/til_address"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <Spinner
+                    android:id="@+id/spinnerPatientType"
+                    android:layout_width= "match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edtAddress"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/til_appointmentCat"
+                app:helperText="Appointment Category"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                app:helperTextTextColor="@color/validation"
+                android:layout_below="@+id/til_patientType"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <Spinner
+                    android:id="@+id/spinnerAppointmentCat"
+                    android:layout_width= "match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/spinnerPatientType"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/til_subCat"
+                app:helperText="Appointment Sub-category"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                app:helperTextTextColor="@color/validation"
+                android:layout_below="@+id/til_appointmentCat"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <Spinner
+                    android:id="@+id/spinnerSubCat"
+                    android:layout_width= "match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/spinnerAppointmentCat"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_complaint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                app:helperText="Optional"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                app:helperTextTextColor="@color/validation"
+                app:startIconDrawable="@drawable/ic_series"
+                android:layout_below="@+id/til_subCat"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Complaint"
+                    android:id="@+id/edtComplaint"
+                    android:layout_below="@id/spinnerSubCat"
+                    android:inputType="text|textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:helperTextTextColor="@color/validation"
+                android:layout_below="@+id/til_complaint"
+                android:layout_marginBottom="90dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/progressbarSignup"
+                    android:visibility="gone"
+                    android:layout_below="@+id/edtComplaint"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
         </RelativeLayout>
+
+
         </ScrollView>
-
-
-
-
 
     <TextView
         android:id="@+id/textView1"
@@ -351,11 +370,14 @@
         android:layout_height="wrap_content"
         android:background="@color/background"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
         android:text="Appointment Booking"
         android:fontFamily="sans-serif-condensed"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="15dp" />
+
+
 
     <Button
         android:id="@+id/confirmRequestBtn"

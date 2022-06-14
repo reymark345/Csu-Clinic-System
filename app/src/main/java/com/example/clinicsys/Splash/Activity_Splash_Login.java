@@ -44,9 +44,8 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
 
     Button BtnLogin;
     EditText EdtloginIdno,EdtloginPassword;
-    public static final  String BASE_URL = "http://172.26.153.44";
-//    public static final  String BASE_URL = "http://192.168.254.105";
-
+//    public static final  String BASE_URL = "http://172.26.153.173";
+    public static final  String BASE_URL = "http://192.168.1.12";
     private int prevCount = 0;
     String blankMessage = "Please fill this blank";
     private boolean isAtSpaceDelimiter(int currCount) {
@@ -57,7 +56,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
     ArrayAdapter<String> patientAdapter;
     RequestQueue requestQueue;
     TextView newPatient;
-    String user_id,id_number,message,type,role,fname,lname;
+    String user_id,id_number,message,type,role,fname,lname, image;
 
 
     @Override
@@ -117,6 +116,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                                                 lname = jsonObject2.optString("last_name");
                                                 user_id = jsonObject2.optString("user_id");
                                                 role = jsonObject2.optString("role_name");
+                                                image = jsonObject2.optString("image");
 
                                                 SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
                                                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
@@ -126,6 +126,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                                                 myEdit.putString("lastName", lname);
                                                 myEdit.putString("userId", user_id);
                                                 myEdit.putString("roleName", role);
+                                                myEdit.putString("imageUrl", image);
                                                 myEdit.commit();
 
                                             if (type.matches("success")){
@@ -140,7 +141,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                                         }
                                         catch (JSONException e)
                                         {
-                                            Toast.makeText(getApplicationContext(), "Invalid " + e , Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "ID no. is not yet approved"  , Toast.LENGTH_SHORT).show();
                                         }
 
                                             }
