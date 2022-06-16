@@ -166,8 +166,6 @@ public class MainActivity extends AppCompatActivity {
                             txtCancelled.setText(cancelled);
                             txtCompleted.setText(completed);
                             txtRecords.setText(records);
-
-
                         }
                         catch (Exception e){
                             Toast.makeText(getApplicationContext(), "catch error " + e, Toast.LENGTH_SHORT).show();

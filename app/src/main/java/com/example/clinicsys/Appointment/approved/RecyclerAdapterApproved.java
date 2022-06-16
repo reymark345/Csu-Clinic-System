@@ -80,6 +80,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
 
     public class MyViewHolderApproved extends RecyclerView.ViewHolder {
 
+        private Button btnDone, btnChange, btnCancel;
         private TextView aptCategory, aptSubCat, aptDate, aptName;
         private LinearLayout mContainer;
 
@@ -120,7 +121,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
         finalId = id;
         int finalUserId = userId;
 
-        btnDone.setOnClickListener(new View.OnClickListener() {
+        holder.btnDone.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -145,14 +146,14 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
             }
         });
 
-        btnChange.setOnClickListener(new View.OnClickListener() {
+        holder.btnChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int changeId = Integer.parseInt(appointment.getIdd());
                 CustomDialogEdit(changeId);
             }
         });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        holder.btnCancel.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {

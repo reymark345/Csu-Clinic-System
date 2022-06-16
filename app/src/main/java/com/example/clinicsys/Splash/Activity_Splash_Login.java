@@ -44,8 +44,8 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
 
     Button BtnLogin;
     EditText EdtloginIdno,EdtloginPassword;
-//    public static final  String BASE_URL = "http://172.26.153.173";
-    public static final  String BASE_URL = "http://192.168.1.3";
+//    public static final  String BASE_URL = "http://172.26.153.25";
+    public static final  String BASE_URL = "http://192.168.254.110";
     private int prevCount = 0;
     String blankMessage = "Please fill this blank";
     private boolean isAtSpaceDelimiter(int currCount) {

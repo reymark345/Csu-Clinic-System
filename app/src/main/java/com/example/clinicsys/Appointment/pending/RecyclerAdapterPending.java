@@ -87,6 +87,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
 
     public class MyViewHolderPending extends RecyclerView.ViewHolder {
 
+        private Button btnDone, btnChange, btnCancel;
         private TextView aptCategory, aptSubCat, aptDate,aptName ;
         private LinearLayout mContainer;
 
@@ -126,7 +127,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         finalId = id;
         int finalUserId = userId;
 
-        btnDone.setOnClickListener(new View.OnClickListener() {
+        holder.btnDone.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -152,14 +153,16 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
             }
         });
 
-        btnChange.setOnClickListener(new View.OnClickListener() {
+        holder.btnChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int changeId = Integer.parseInt(appointment.getIdd());
+                Toast.makeText(mContext, "Editt " + changeId  ,Toast.LENGTH_LONG).show();
+//                holder.aptSubCat.setText(appointment.getSub_cat());
                 CustomDialogEdit(changeId);
             }
         });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        holder.btnCancel.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -168,7 +171,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
             }
         });
 
-        holder.aptCategory.setText(appointment.getCategory());
+        holder.aptCategory.setText(appointment.getIdd());
         holder.aptSubCat.setText(appointment.getSub_cat());
         String schedule = appointment.getSchedule();
         holder.aptDate.setText(schedule);
@@ -245,7 +248,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         dialog.show();
     }
 
-    public void Category(Spinner aptCat, int id){
+    public void Category(Spinner aptCat, int idd){
         categories.clear();
         patientType.clear();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/category/list/2",
@@ -269,7 +272,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                             new android.os.Handler(Looper.getMainLooper()).postDelayed(
                                     new Runnable() {
                                         public void run() {
-                                            CategoryReplace(EdtSpnAppointmentCat,EditSpnComplaints, id);
+                                            CategoryReplace(EdtSpnAppointmentCat,EditSpnComplaints, idd);
                                         }
                                     },
                                     500);
@@ -352,7 +355,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                     @Override
                     public void onResponse(String response) {
                         try {
-
+                            Toast.makeText(mContext, "ID ni  " + id ,Toast.LENGTH_LONG).show();
                             JSONObject object = new JSONObject(response);
 
                             ChangeCategoryId = object.getString("category_id");
@@ -391,6 +394,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         });
         requestQueue.add(stringRequest);
         apptCat.setOnItemSelectedListener(this);
+        apptSub.setOnItemSelectedListener(this);
     }
 
 
@@ -487,6 +491,8 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
     public void ChangeAppointment(String id, String remarks){
         try {
 
+            Toast.makeText(mContext, "ID Appointment " + id, Toast.LENGTH_SHORT).show();
+
             String sched = scheduleEdit.getText().toString();
             //Start ProgressBar first (Set visibility VISIBLE)
             Handler handler = new Handler(Looper.getMainLooper());
@@ -523,7 +529,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                                     final SweetAlertDialog pDiaglog = new SweetAlertDialog(
                                             mContext, SweetAlertDialog.SUCCESS_TYPE);
                                     pDiaglog.setTitleText("Successfully Save");
-                                    pDiaglog.setContentText("Appointment Cancel");
+                                    pDiaglog.setContentText("Appointment Change");
                                     pDiaglog.setConfirmText("Ok");
                                     pDiaglog.setCancelable(false);
                                     pDiaglog.showCancelButton(false)

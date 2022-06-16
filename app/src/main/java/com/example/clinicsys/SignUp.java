@@ -277,6 +277,9 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
     }
 //    ------------- start outside
 
+
+
+
     private void showDateTimeDialog(final EditText date_time_in) {
         final Calendar calendar=Calendar.getInstance();
         DatePickerDialog.OnDateSetListener dateSetListener=new DatePickerDialog.OnDateSetListener() {

@@ -46,6 +46,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.BreakIterator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -81,6 +82,7 @@ public class RecyclerAdapterRecords extends RecyclerView.Adapter<RecyclerAdapter
 
     public class MyViewHolderPending extends RecyclerView.ViewHolder {
 
+        private Button btnStatusRecords;
         private TextView aptCategory, aptSubCat, aptDate,aptName ;
         private LinearLayout mContainer;
 
@@ -122,22 +124,14 @@ public class RecyclerAdapterRecords extends RecyclerView.Adapter<RecyclerAdapter
         holder.aptDate.setText(schedule);
         holder.aptName.setText(appointment.getPatientName());
 
-        if (appointment.getStatus().matches("0")){
-            btnStatusRecords.setText("Pending");
-            btnStatusRecords.setBackgroundColor(Color.YELLOW);
-        }
-        else if (appointment.getStatus().matches("1")){
-            btnStatusRecords.setText("Approved");
-            btnStatusRecords.setBackgroundColor(Color.BLUE);
-        }
 
-        else if (appointment.getStatus().matches("2")){
-            btnStatusRecords.setText("Completed");
-            btnStatusRecords.setBackgroundColor(Color.parseColor("#32993d"));
+        if (appointment.getStatus().matches("2")){
+            holder.btnStatusRecords.setText("Completed");
+            holder.btnStatusRecords.setBackgroundColor(Color.parseColor("#32993d"));
         }
         else if (appointment.getStatus().matches("3")){
-            btnStatusRecords.setText("Canceled");
-            btnStatusRecords.setBackgroundColor(Color.RED);
+            holder.btnStatusRecords.setText("Cancelled");
+            holder.btnStatusRecords.setBackgroundColor(Color.RED);
         }
     }
     @Override

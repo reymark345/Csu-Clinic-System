@@ -386,15 +386,15 @@ public class HomeRecords extends AppCompatActivity implements AdapterView.OnItem
 
                                 AppointmentRecords appointment = new AppointmentRecords(idd,userId,categoryName,subCat,schedule,patientName,status);
                                 appointments.add(appointment);
-
+                                mAdapter = new RecyclerAdapterRecords(HomeRecords.this,appointments);
+                                recyclerView.setAdapter(mAdapter);
                             }
 
                         }catch (Exception e){
                             Toast.makeText(getApplicationContext(), "catch error " + e, Toast.LENGTH_SHORT).show();
                         }
 
-                        mAdapter = new RecyclerAdapterRecords(HomeRecords.this,appointments);
-                        recyclerView.setAdapter(mAdapter);
+
                     }
                 }, new Response.ErrorListener() {
             @Override
