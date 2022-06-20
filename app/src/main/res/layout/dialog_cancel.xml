@@ -46,4 +46,15 @@
         android:textColor="@color/colorWhite"
         android:background="@color/colorPrimary"
         android:id="@+id/btn_cancel"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_below="@id/edtRemarksCancel"
+        android:text="LOADING..."
+        android:textStyle="italic|bold"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimary"
+        android:id="@+id/txt_loading"/>
 </LinearLayout>

@@ -53,6 +53,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapterApproved.MyViewHolderApproved> implements AdapterView.OnItemSelectedListener {
@@ -67,24 +68,26 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
     ArrayList<JSONObject> sub_categories = new ArrayList<>();
     ArrayAdapter<String> categoryAdapter;
     ArrayAdapter<String> complaintAdapter;
+    ArrayAdapter<String>medicineAdapter;
     RequestQueue requestQueue;
     String selectedCat, selectSubCat;
     Spinner EdtSpnAppointmentCat;
     Spinner EditSpnComplaints;
     EditText scheduleEdit,complaints, edtMedication;
     int finalId;
+    JSONArray ApptMedications;
     String ChangeCategoryId,ChangesubCategoryId,schedule,complaint,catGlobal, sub_catGlobal;
     boolean[] selectedMedication;
-    ArrayList<Integer> medicationList = new ArrayList<>();
+    ArrayList<Integer> medicationList = new ArrayList<Integer>();
 
     ArrayList<JSONObject> medication = new ArrayList<>();
     ArrayList<String> medicationType = new ArrayList<>();
     ArrayAdapter<String> medicationAdapter;
 
 
-    String[] medicationArray =  {"Amoxicillin","Paracetamol","Sympex", "Zilgam","Ceterezine"};
-
-
+//    String[] medicationArray =  {"Amoxicillin","Paracetamol","Sympex", "Zilgam","Ceterezine"};
+    ArrayList<String> medicationArray = new ArrayList<>();
+    TextView txt_loading,txt_loadingChange;
 
 
 
@@ -93,6 +96,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
         this.mContext = context;
         this.appointments = appointments;
         requestQueue = Volley.newRequestQueue(mContext);
+        MedicationList();
     }
 
     public class MyViewHolderApproved extends RecyclerView.ViewHolder {
@@ -111,6 +115,9 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
             btnDone = view.findViewById(R.id.btnDone);
             btnChange = view.findViewById(R.id.btnChange);
             btnCancel = view.findViewById(R.id.btnCancel);
+
+
+
             if (!admin==true) {
                 btnDone.setVisibility(View.GONE);
                 btnChange.setVisibility(View.GONE);
@@ -196,7 +203,10 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
         EditText noteField = dialog.findViewById(R.id.edtRemarksCancel);
         TextInputLayout tilRemarks = dialog.findViewById(R.id.til_remarks);
 
-        Button submitButtonCancel = dialog.findViewById(R.id.btn_cancel);
+        txt_loading = dialog.findViewById(R.id.txt_loading);
+        txt_loading.setVisibility(View.GONE);
+
+        Button submitButtonCancel = (Button) dialog.findViewById(R.id.btn_cancel);
         submitButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,7 +214,8 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                     tilRemarks.setError("Please fill this blank");
                 }
                 else {
-
+                    txt_loading.setVisibility(View.VISIBLE);
+                    submitButtonCancel.setClickable(false);
                     String remarks = noteField.getText().toString();
                     String idd = String.valueOf(id);
                     CancelAppointment(idd, dialog, remarks);
@@ -225,9 +236,9 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
         EditSpnComplaints = dialog.findViewById(R.id.EditSpnComplaints);
         scheduleEdit = dialog.findViewById(R.id.scheduleEdit);
         edtMedication = dialog.findViewById(R.id.medicationEdit);
-        edtMedication = dialog.findViewById(R.id.medicationEdit);
-        selectedMedication = new boolean[medicationArray.length];
-
+        selectedMedication = new boolean[medicationArray.size()];
+        txt_loadingChange = dialog.findViewById(R.id.txt_loadingChange);
+        txt_loadingChange.setVisibility(View.GONE);
         complaints = dialog.findViewById(R.id.editComplaints);
         TextInputLayout tilComplaints = dialog.findViewById(R.id.til_complaints);
         if (admin==true) {
@@ -235,13 +246,13 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
         }
         Button submitButtonChange = dialog.findViewById(R.id.EditSubmit_button);
 
+
         scheduleEdit.setFocusable(false);
         scheduleEdit.setClickable(true);
         edtMedication.setFocusable(false);
         edtMedication.setClickable(true);
 
         Category(EdtSpnAppointmentCat,id);
-        MedicationList();
 
         scheduleEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,6 +260,8 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                 showDateTimeDialog(scheduleEdit);
             }
         });
+        medicationList.clear();
+        edtMedication.setText("");
         edtMedication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -256,7 +269,20 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setTitle("Select medication");
                 builder.setCancelable(false);
-                builder.setMultiChoiceItems(medicationArray, selectedMedication, new DialogInterface.OnMultiChoiceClickListener() {
+                String[] arr = new String[medicationArray.size()];
+                for(int i=0 ; i< medicationArray.size();i++){
+                    arr[i] = medicationArray.get(i);
+                    //getProductName or any suitable method
+                    for (int j=0 ; j<ApptMedications.length(); j++) {
+                        if (ApptMedications.optString(j).equals(medicationArray.get(i))) {
+                            selectedMedication[i] = true;
+                            medicationList.add(i);
+                            Collections.sort(medicationList);
+                        }
+                    }
+                }
+
+                builder.setMultiChoiceItems(arr, selectedMedication, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i, boolean b) {
                         if (b){
@@ -265,6 +291,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                         }
                         else{
                             medicationList.remove(i);
+                            ApptMedications.remove(i);
                         }
                     }
                 });
@@ -273,7 +300,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                     public void onClick(DialogInterface dialogInterface, int i) {
                         StringBuilder stringBuilder = new StringBuilder();
                         for(int j=0; j<medicationList.size();j++){
-                            stringBuilder.append(medicationArray[medicationList.get(j)]);
+                            stringBuilder.append(medicationArray.get(medicationList.get(j)));
                             if(j !=medicationList.size()-1){
                                 stringBuilder.append(", ");
                             }
@@ -304,6 +331,8 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
         submitButtonChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                    txt_loadingChange.setVisibility(View.VISIBLE);
+                    submitButtonChange.setClickable(false);
                     String complaint = complaints.getText().toString();
                     String idd = String.valueOf(id);
                     ChangeAppointment(idd, complaint);
@@ -322,12 +351,9 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                             JSONArray array = new JSONArray(response);
                             for (int i = 0; i<array.length(); i++){
                                 JSONObject object = array.getJSONObject(i);
-
                                 String medicineId = object.optString("id");
                                 String MedicineName = object.optString("name");
-
-                                //gettingMedicine through medicineName
-                                Toast.makeText(mContext, "Medicine result  " + MedicineName ,Toast.LENGTH_LONG).show();
+                                medicationArray.add(MedicineName);
 
                             }
                         }catch (Exception e){
@@ -401,6 +427,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                             ChangesubCategoryId = object.getString("sub_category_id");
                             catGlobal= object.getString("category");
                             sub_catGlobal = object.getString("sub_category");
+                            ApptMedications = object.getJSONArray("medications_name");
                             schedule = object.getString("schedule");
                             complaint = object.getString("complaint");
                             scheduleEdit.setText(schedule);
@@ -411,10 +438,12 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                                 categoryAdapter = (ArrayAdapter) aptCat.getAdapter(); //cast to an ArrayAdapter
                                 int spinnerPositionCat = categoryAdapter.getPosition(catGlobal);
                                 aptCat.setSelection(spinnerPositionCat);
+                                if (ApptMedications.length() > 0) {
+                                    edtMedication.setText(ApptMedications.toString().replace("[", "").replace("]", "").replace("\"", "").replace(",", ", ").trim());
+                                }
 
                             }
                             catch (Exception e){
-
                                 Toast.makeText(mContext, "Error  " + e ,Toast.LENGTH_LONG).show();
                             }
                         }catch (Exception e){

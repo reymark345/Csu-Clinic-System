@@ -129,4 +129,15 @@
         android:textColor="@color/colorWhite"
         android:background="@color/colorPrimary"
         android:id="@+id/EditSubmit_button"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_below="@id/til_complaints"
+        android:text="LOADING..."
+        android:textStyle="italic|bold"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimary"
+        android:id="@+id/txt_loadingChange"/>
 </LinearLayout>

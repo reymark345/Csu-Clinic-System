@@ -79,6 +79,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
     int finalId;
     String ChangeCategoryId,ChangesubCategoryId,schedule,complaint,catGlobal, sub_catGlobal;
 
+    TextView txt_loading,txt_loadingChange;
     public RecyclerAdapterPending(Context context, List<AppointmentPending> appointments){
         this.mContext = context;
         this.appointments = appointments;
@@ -157,7 +158,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
             @Override
             public void onClick(View view) {
                 int changeId = Integer.parseInt(appointment.getIdd());
-                Toast.makeText(mContext, "Editt " + changeId  ,Toast.LENGTH_LONG).show();
+//                Toast.makeText(mContext, "Editt " + changeId  ,Toast.LENGTH_LONG).show();
 //                holder.aptSubCat.setText(appointment.getSub_cat());
                 CustomDialogEdit(changeId);
             }
@@ -166,6 +167,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
 
             @Override
             public void onClick(View view) {
+
                 int changeId = Integer.parseInt(appointment.getIdd());
                 CustomDialogCancel(changeId);
             }
@@ -173,7 +175,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
 
         holder.aptCategory.setText(appointment.getCategory());
         holder.aptSubCat.setText(appointment.getSub_cat());
-        String schedule = appointment.getIdd();
+        String schedule = appointment.getSchedule();
         holder.aptDate.setText(schedule);
         holder.aptName.setText(appointment.getPatientName());
     }
@@ -188,6 +190,9 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         EditText noteField = dialog.findViewById(R.id.edtRemarksCancel);
         TextInputLayout tilRemarks = dialog.findViewById(R.id.til_remarks);
 
+        txt_loading = dialog.findViewById(R.id.txt_loading);
+        txt_loading.setVisibility(View.GONE);
+
         Button submitButtonCancel = dialog.findViewById(R.id.btn_cancel);
         submitButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,6 +202,8 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                 }
                 else {
 
+                    txt_loading.setVisibility(View.VISIBLE);
+                    submitButtonCancel.setClickable(false);
                     String remarks = noteField.getText().toString();
                     String idd = String.valueOf(id);
                     CancelAppointment(idd, dialog, remarks);
@@ -217,7 +224,8 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         EditSpnComplaints = dialog.findViewById(R.id.EditSpnComplaints);
         scheduleEdit = dialog.findViewById(R.id.scheduleEdit);
         edtMedication = dialog.findViewById(R.id.medicationEdit);
-
+        txt_loadingChange = dialog.findViewById(R.id.txt_loadingChange);
+        txt_loadingChange.setVisibility(View.GONE);
         complaints = dialog.findViewById(R.id.editComplaints);
         TextInputLayout tilComplaints = dialog.findViewById(R.id.til_complaints);
         TextInputLayout tilMedication = dialog.findViewById(R.id.til_medication);
@@ -248,6 +256,8 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         submitButtonChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                    txt_loadingChange.setVisibility(View.VISIBLE);
+                    submitButtonChange.setClickable(false);
                     String complaint = complaints.getText().toString();
                     String idd = String.valueOf(id);
 
@@ -371,7 +381,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                     @Override
                     public void onResponse(String response) {
                         try {
-                            Toast.makeText(mContext, "ID ni  " + id ,Toast.LENGTH_LONG).show();
+//                            Toast.makeText(mContext, "ID ni  " + id ,Toast.LENGTH_LONG).show();
                             JSONObject object = new JSONObject(response);
 
                             ChangeCategoryId = object.getString("category_id");
@@ -469,6 +479,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                                 type = jsonObject1.optString("type");
 
                                 if (type.equals("success")) {
+//                                    btnCancel.setEnabled(true);
                                     dialog.dismiss();
                                     final SweetAlertDialog pDiaglog = new SweetAlertDialog(
                                             mContext, SweetAlertDialog.SUCCESS_TYPE);

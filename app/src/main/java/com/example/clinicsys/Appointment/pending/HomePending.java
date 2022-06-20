@@ -153,6 +153,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 //                String CatType = spnAppointmentCat.getSelectedItem().toString();
 //                String subCategory = spinnerComplaints.getSelectedItem().toString();
                 String schedule = edtSched.getText().toString();
