@@ -231,6 +231,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                                             JSONArray jsonArray = new JSONArray(result);
                                             JSONObject jsonObject1 = jsonArray.getJSONObject(0);
                                             type = jsonObject1.optString("type");
+                                            Toast.makeText(getApplicationContext(), "diri" + type, Toast.LENGTH_SHORT).show();
                                             if (type.equals("success")) {
                                                 enabledAction();
                                                 progressBar.setVisibility(View.GONE);
@@ -507,6 +508,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         spinnerAppointment.setEnabled(false);
         spinnerSubCat.setEnabled(false);
         spinnerSex.setEnabled(false);
+        buttonSignup.setVisibility(View.GONE);
     }
 
     public void enabledAction(){
@@ -526,6 +528,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         spinnerAppointment.setEnabled(true);
         spinnerSubCat.setEnabled(true);
         spinnerSex.setEnabled(true);
+        buttonSignup.setVisibility(View.VISIBLE);
     }
 
     public void Category(Spinner aptCat){

@@ -8,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     DrawerLayout drawerLayout;
     String Urltype,useridd;
+    ImageView profileImg;
 
     public static boolean admin= false;
     @Override
@@ -64,47 +66,38 @@ public class MainActivity extends AppCompatActivity {
         txtCompleted = (TextView) findViewById(R.id.txtCompleted);
         Logout = (CardView) findViewById(R.id.logout);
         drawerLayout = findViewById(R.id.drawerlayout);
+        profileImg = findViewById(R.id.ImgProfileDashboard);
+
         countAppointment(txtPending,txtApproved,txtCancelled,txtRecords);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigationview);
         navigationView.bringToFront();
         View headerView = navigationView.getHeaderView(0);
         TextView navfullName = (TextView) headerView.findViewById(R.id.fullName);
         TextView navUsername = (TextView) headerView.findViewById(R.id.idNumber);
-
-
-//        Toast.makeText(getApplicationContext(), z, Toast.LENGTH_SHORT).show();
-
+        ImageView profileImage = (ImageView) headerView.findViewById(R.id.profile_images);
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
         String fName = sh.getString("firstName", "");
         String lName = sh.getString("lastName", "");
         String idNo = sh.getString("idNo", "");
         String roleName = sh.getString("roleName", "");
         String imageUrl = sh.getString("imageUrl", "");
-
         String fullName = fName + " "+ lName;
         navfullName.setText(fullName);
         navUsername.setText(idNo);
         if (roleName.matches("staff") || roleName.matches("admin") ) {
             admin = true;
-            Toast.makeText(getApplicationContext(), "True ", Toast.LENGTH_SHORT).show();
         }
         else {
             admin = false;
-            Toast.makeText(getApplicationContext(), "false ", Toast.LENGTH_SHORT).show();
         }
-
-//
-//        Menu menus = null;
-//        MenuItem item = menus.findItem(R.id.editProfile);
-//        item.setVisible(false);
-
-
-
-
-
-        //        Glide.with(this)
-//                        .load("https://pixabay.com/images/search/nature/")
-//                        .into((ImageView) findViewById(R.id.profile_images));
+        if (!imageUrl.matches("null")){
+            Glide.with(this)
+                    .load(BASE_URL+"/csu_clinic_app/storage/profile_img/"+imageUrl)
+                    .into(profileImage);
+            Glide.with(this)
+                    .load(BASE_URL+"/csu_clinic_app/storage/profile_img/"+imageUrl)
+                    .into(profileImg);
+        }
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override

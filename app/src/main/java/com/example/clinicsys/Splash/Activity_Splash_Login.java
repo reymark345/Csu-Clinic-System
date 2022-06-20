@@ -160,13 +160,13 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                                                 finish();
                                             }
                                             else{
-                                                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                                Toasty.error(Activity_Splash_Login.this, message, Toast.LENGTH_SHORT, true).show();
                                             }
 
                                         }
                                         catch (JSONException e)
                                         {
-                                            Toast.makeText(getApplicationContext(), "Username/Password is wrong ", Toast.LENGTH_SHORT).show();
+                                            Toasty.error(Activity_Splash_Login.this, "Username/Password is wrong", Toast.LENGTH_SHORT, true).show();
                                         }
 
                                     }
@@ -185,7 +185,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
 
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "All fields required ", Toast.LENGTH_SHORT).show();
+                    Toasty.error(Activity_Splash_Login.this, "All fields required ", Toast.LENGTH_SHORT, true).show();
                 }
             }
         });
@@ -218,6 +218,10 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
         dialog.setContentView(R.layout.base_url);
         EditText noteField = dialog.findViewById(R.id.edtBaseUrl);
         TextInputLayout tilError = dialog.findViewById(R.id.til_baseUrl);
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
+        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
+        String url = sh.getString("urlBased", "");
+        noteField.setText(url);
 
         Button submitButton = dialog.findViewById(R.id.btn_baseUrl);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -229,7 +233,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                 else {
                     String remarks = noteField.getText().toString();
                     SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
-                    String urls = "http://"+remarks;
+                    String urls = remarks;
                     SharedPreferences.Editor myEdit = sharedPreferences.edit();
                     myEdit.putString("urlBased", urls);
                     myEdit.commit();

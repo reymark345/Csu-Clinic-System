@@ -22,20 +22,8 @@ public class DetailedAppointmentApproved extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.appointment_activity);
-
-
-//        mToolbar = findViewById(R.id.toolbar);
-//        mImage = findViewById(R.id.image_view);
         mDate = findViewById(R.id.name);
         mTime = findViewById(R.id.price);
-//        mRating = findViewById(R.id.rating);
-
-
-        // Setting up action bar
-//        setSupportActionBar(mToolbar);
-//        mActionBar = getSupportActionBar();
-//        mActionBar.setDisplayHomeAsUpEnabled(true);
-//        mActionBar.setHomeAsUpIndicator(getResources().getDrawable(R.drawable.ic_chevron_left_black_24dp));
 
         // Catching incoming intent
         Intent intent = getIntent();

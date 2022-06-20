@@ -32,7 +32,7 @@
             android:id="@+id/edtBaseUrl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="eg. 192.168.1.1"
+            android:hint="eg. http://192.168.10.10"
             android:inputType="text"
             />
     </com.google.android.material.textfield.TextInputLayout>
