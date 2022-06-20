@@ -1,12 +1,10 @@
-package com.example.clinicsys.Appointment.approved;
+package com.example.clinicsys.Appointment.records;
 
 import static com.example.clinicsys.MainActivity.BASE_URL;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -50,13 +48,11 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class HomeApproved extends AppCompatActivity implements AdapterView.OnItemSelectedListener  {
+public class HomeRecords extends AppCompatActivity implements AdapterView.OnItemSelectedListener  {
 
     // Variable declarations
     private Toolbar mToolbar;
@@ -64,7 +60,7 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager manager;
     private RecyclerView.Adapter mAdapter;
-    private List<AppointmentApproved> appointments;
+    private List<AppointmentRecords> appointments;
     private ProgressBar progressBar;
     public static boolean admin= false;
     ArrayList<String> complaintList = new ArrayList<>();
@@ -76,22 +72,20 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
     RequestQueue requestQueue;
 
     Spinner spnAppointmentCat, spinnerComplaints;
-    EditText edtSched, edtComplaints, edtMedication;
-    String Urltype,categoryID,selectedCat, selectSubCat, useridd, type;
-
-
+    EditText edtSched, edtComplaints;
+    String Urltype,selectedCat, selectSubCat, useridd, type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_approved);
+        setContentView(R.layout.home_records);
         requestQueue = Volley.newRequestQueue(this);
         mToolbar = findViewById(R.id.dashboard_toolbar);
         progressBar = findViewById(R.id.progressbar);
         setSupportActionBar(mToolbar);
         mActionBar = getSupportActionBar();
         recyclerView = findViewById(R.id.products_recyclerView);
-        manager = new GridLayoutManager(HomeApproved.this, 1);
+        manager = new GridLayoutManager(HomeRecords.this, 1);
         recyclerView.setLayoutManager(manager);
         appointments = new ArrayList<>();
         spinnerComplaints = (Spinner)findViewById(R.id.spnComplaints);
@@ -101,7 +95,7 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
 
     public void showCustomDialog() {
 
-        final Dialog dialog = new Dialog(HomeApproved.this);
+        final Dialog dialog = new Dialog(HomeRecords.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.custom_dialog);
@@ -109,11 +103,12 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
         spinnerComplaints = dialog.findViewById(R.id.spnComplaints);
         edtSched = dialog.findViewById(R.id.edtSchedule);
         edtComplaints =  dialog.findViewById(R.id.edtComplaints);
+
+
         Button submitButton = dialog.findViewById(R.id.submit_button);
         Category(spnAppointmentCat);
         edtSched.setFocusable(false);
         edtSched.setClickable(true);
-
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +129,6 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
                 showDateTimeDialog(edtSched);
             }
         });
-
     }
 
     public void Category(Spinner aptCat){
@@ -153,7 +147,7 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
                                 String categoryName = object.optString("name");
                                 categories.add(object);
                                 patientType.add(categoryName);
-                                patientAdapter = new ArrayAdapter<>(HomeApproved.this,
+                                patientAdapter = new ArrayAdapter<>(HomeRecords.this,
                                         android.R.layout.simple_spinner_item, patientType);
                                 patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 aptCat.setAdapter(patientAdapter);
@@ -195,7 +189,7 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
                                     String cityName = object.optString("name");
                                     sub_categories.add(object);
                                     complaintList.add(cityName);
-                                    complaintAdapter = new ArrayAdapter<>(HomeApproved.this,
+                                    complaintAdapter = new ArrayAdapter<>(HomeRecords.this,
                                             android.R.layout.simple_spinner_item, complaintList);
                                     complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     spinnerComplaints.setAdapter(complaintAdapter);
@@ -221,7 +215,7 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
             selectSubCat = sub_category_data.optString("id");
         }
         else{
-            Toast.makeText(HomeApproved.this, "Please contact administrator " + selectSubCat ,Toast.LENGTH_LONG).show();
+            Toast.makeText(HomeRecords.this, "Please contact administrator " + selectSubCat ,Toast.LENGTH_LONG).show();
         }
     }
     @Override
@@ -262,7 +256,7 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
                                     type = jsonObject1.optString("type");
                                     if (type.equals("success")) {
                                         final SweetAlertDialog pDiaglog = new SweetAlertDialog(
-                                                HomeApproved.this, SweetAlertDialog.SUCCESS_TYPE);
+                                                HomeRecords.this, SweetAlertDialog.SUCCESS_TYPE);
                                         pDiaglog.setTitleText("Successfully Save");
                                         pDiaglog.setContentText("Done!");
                                         pDiaglog.setConfirmText("Ok");
@@ -290,7 +284,7 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
                     }
                 });
             } else {
-                new SweetAlertDialog(HomeApproved.this, SweetAlertDialog.ERROR_TYPE)
+                new SweetAlertDialog(HomeRecords.this, SweetAlertDialog.ERROR_TYPE)
                         .setTitleText("Error!")
                         .setContentText("All Fields required")
                         .showCancelButton(true)
@@ -326,11 +320,11 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
                     }
                 };
 
-                new TimePickerDialog(HomeApproved.this,timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),false).show();
+                new TimePickerDialog(HomeRecords.this,timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),false).show();
             }
         };
 
-        new DatePickerDialog(HomeApproved.this,dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+        new DatePickerDialog(HomeRecords.this,dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
 
     }
 
@@ -342,11 +336,14 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
         String roleName = sh.getString("roleName", "");
 
         if (roleName.matches("end-user")){
-            Urltype = "/csu_clinic_app/api/appointment/list/user/1/"+useridd;
+//            Urltype = "/csu_clinic_app/api/appointment/list/user/5/"+useridd;
+            Urltype = "/csu_clinic_app/appointment/list/user/5/"+useridd;
         }
         else {
-            Urltype = "/csu_clinic_app/api/appointment/list/1/"+useridd;
+            Urltype = "/csu_clinic_app/appointment/list/5/"+useridd;
         }
+
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/android/getPendingApt/getAppointment",
         StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+Urltype,
                 new Response.Listener<String>() {
                     @Override
@@ -359,38 +356,40 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
                             JSONArray array = new JSONArray(response);
                             for (int i = 0; i<array.length(); i++){
 
+//                                Toast.makeText(getApplicationContext(), "Records " + response, Toast.LENGTH_SHORT).show();
+
                                 JSONObject object = array.getJSONObject(i);
                                 String idd = object.getString("id");
                                 String categoryName = object.getString("category");
                                 String subCat = object.getString("subCategory");
                                 String schedule = object.getString("schedule");
                                 String patientName = object.getString("name");
+                                String status = object.getString("status");
                                 String userId = useridd;
 
-                                AppointmentApproved appointment = new AppointmentApproved(idd,userId,categoryName,subCat,schedule,patientName);
+                                AppointmentRecords appointment = new AppointmentRecords(idd,userId,categoryName,subCat,schedule,patientName,status);
                                 appointments.add(appointment);
-
+                                mAdapter = new RecyclerAdapterRecords(HomeRecords.this,appointments);
+                                recyclerView.setAdapter(mAdapter);
                             }
 
                         }catch (Exception e){
                             Toast.makeText(getApplicationContext(), "catch error " + e, Toast.LENGTH_SHORT).show();
                         }
 
-                        mAdapter = new RecyclerAdapterApproved(HomeApproved.this,appointments);
-                        recyclerView.setAdapter(mAdapter);
+
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(HomeApproved.this, "Database connection failed " + error.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(HomeRecords.this, "Database connection failed " + error.toString(),Toast.LENGTH_LONG).show();
             }
         });
 
-        Volley.newRequestQueue(HomeApproved.this).add(stringRequest);
+        Volley.newRequestQueue(HomeRecords.this).add(stringRequest);
 
     }
-
     @Override
     public void onBackPressed() {
 

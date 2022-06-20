@@ -8,13 +8,14 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="173dp"
+            android:layout_height="200dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
+                android:id="@+id/appointment_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/card_view"
@@ -41,6 +42,14 @@
                             android:text="Appointment"
                             android:textColor="@color/white"
                             android:textSize="22sp" />
+
+                        <TextView
+                            android:id="@+id/patient_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Patient Name"
+                            android:textColor="@color/card_background"
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/appointment_subCat"

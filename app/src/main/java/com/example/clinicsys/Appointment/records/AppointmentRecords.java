@@ -1,10 +1,10 @@
-package com.example.clinicsys.Appointment.pending;
+package com.example.clinicsys.Appointment.records;
 
-public class AppointmentPending {
-    private String idd,userId,category_name, sub_cat, schedule, patient_name;
+public class AppointmentRecords {
+    private String idd,userId,category_name, sub_cat, schedule, patient_name, status;
 
 
-    public AppointmentPending(String idd,String userId, String category_name, String sub_cat, String schedule, String patient_name){
+    public AppointmentRecords(String idd, String userId, String category_name, String sub_cat, String schedule, String patient_name, String status){
 
         this.idd = idd;
         this.userId = userId;
@@ -12,6 +12,7 @@ public class AppointmentPending {
         this.sub_cat = sub_cat;
         this.schedule = schedule;
         this.patient_name = patient_name;
+        this.status = status;
     }
 
     public String getIdd() {
@@ -60,5 +61,13 @@ public class AppointmentPending {
 
     public void setPatientName(String patient_name) {
         this.patient_name = patient_name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setgetStatus(String stq) {
+        this.status = status;
     }
 }

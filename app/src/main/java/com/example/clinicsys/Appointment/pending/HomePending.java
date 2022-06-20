@@ -1,6 +1,7 @@
 package com.example.clinicsys.Appointment.pending;
 
-import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
+import static com.example.clinicsys.MainActivity.admin;
+import static com.example.clinicsys.MainActivity.BASE_URL;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -42,6 +43,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.clinicsys.EditProfile;
+import com.example.clinicsys.MainActivity;
 import com.example.clinicsys.R;
 import com.example.clinicsys.SignUp;
 import com.example.clinicsys.Splash.Activity_Splash_Login;
@@ -68,7 +71,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
     private RecyclerView.Adapter mAdapter;
     private List<AppointmentPending> appointments;
     private ProgressBar progressBar;
-    public static boolean admin= false;
+//    public static boolean admin= false;
     ArrayList<String> complaintList = new ArrayList<>();
     ArrayList<String> patientType = new ArrayList<>();
     ArrayList<JSONObject> categories = new ArrayList<>();
@@ -95,9 +98,23 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
 
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.dashboard_menu,menu);
-
+        MenuItem shareItem = menu.findItem(R.id.action_add);
+        if (admin == true){
+            shareItem.setVisible(false);
+        }
         return true;
     }
+
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.sidemenu, menu);
+//        MenuItem shareItem = menu.findItem(R.id.editProfile);
+//
+//        // show the button when some condition is true
+//        shareItem.setVisible(false);
+//        return true;
+//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +153,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 //                String CatType = spnAppointmentCat.getSelectedItem().toString();
 //                String subCategory = spinnerComplaints.getSelectedItem().toString();
                 String schedule = edtSched.getText().toString();
@@ -322,6 +340,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
             Toast.makeText(getApplicationContext(), "Server Connection Failed", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void showDateTimeDialog(final EditText date_time_in) {
         final Calendar calendar=Calendar.getInstance();
         DatePickerDialog.OnDateSetListener dateSetListener=new DatePickerDialog.OnDateSetListener() {
@@ -386,9 +405,10 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
                                 String categoryName = object.getString("category");
                                 String subCat = object.getString("subCategory");
                                 String schedule = object.getString("schedule");
+                                String patientName = object.getString("name");
                                 String userId = useridd;
 
-                                AppointmentPending appointment = new AppointmentPending(idd,userId,categoryName,subCat,schedule);
+                                AppointmentPending appointment = new AppointmentPending(idd,userId,categoryName,subCat,schedule,patientName);
                                 appointments.add(appointment);
 
                             }
@@ -410,6 +430,14 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
 
         Volley.newRequestQueue(HomePending.this).add(stringRequest);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

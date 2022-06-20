@@ -100,57 +100,13 @@
             android:background="@drawable/edittext_bg"
             android:drawableStart="@drawable/ic_baseline_lock_24"
             android:drawableLeft="@drawable/ic_baseline_lock_24"
-            android:drawableEnd="@drawable/ic_baseline_visibility_24"
-            android:drawableRight="@drawable/ic_baseline_visibility_24"
             android:drawablePadding="16dp"
             android:hint="Password"
             android:inputType="textPassword"
             android:padding="16dp"
             android:textSize="14sp" />
-
-<!--        <RelativeLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="45dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginBottom="10dp"-->
-<!--            android:layout_weight=".28"-->
-<!--            -->
-<!--            android:orientation="horizontal"-->
-<!--            android:layout_above="@id/loginPassword"-->
-<!--            android:layout_below="@id/btnAccess">-->
-
-<!--        </RelativeLayout>-->
-
-<!--        <RelativeLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:layout_weight=".28"-->
-<!--            android:background="@drawable/background"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_above="@id/loginPassword"-->
-<!--            android:layout_below="@id/btnAccess">-->
-
-<!--        <Spinner-->
-<!--            android:id="@+id/patientTypeSpinner"-->
-<!--            android:layout_marginTop="@dimen/_10sdp"-->
-<!--            android:layout_width= "match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@android:color/transparent"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:gravity="center"-->
-<!--            android:spinnerMode="dropdown"-->
-<!--            />-->
-<!--            <ImageView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_alignParentRight="true"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:src="@drawable/ic_night" />-->
-
-<!--        </RelativeLayout>-->
+<!--        android:drawableEnd="@drawable/ic_baseline_visibility_24"-->
+<!--        android:drawableRight="@drawable/ic_baseline_visibility_24"-->
 
 
         <Button
@@ -164,19 +120,6 @@
 
     </LinearLayout>
 
-<!--    <TextView-->
-<!--        android:id="@+id/patientEdt"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:layout_marginEnd="30dp"-->
-<!--        android:alpha="1"-->
-<!--        android:layout_marginRight="30dp"-->
-<!--        android:text="New Patient?"-->
-<!--        android:textColor="@color/textDescription"-->
-<!--        android:textSize="13sp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/linlay_inputs" />-->
 
     <TextView
         android:id="@+id/tv_forgotPassword"
@@ -195,12 +138,12 @@
         android:id="@+id/tv_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/allRightsReserved"
-        android:textColor="@color/textHeadline"
+        android:text="BASE_URL"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:textSize="14sp"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

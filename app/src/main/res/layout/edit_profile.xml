@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".EditProfile">
+    <ScrollView
+        android:id="@+id/scrolView_account"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/linear_account"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="50dp"
+                android:background="@color/primary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="100dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginRight="10dp"
+
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:padding="10dp"
+                        android:id="@+id/txtProfileDetails"
+                        android:text="Profile Details"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:padding="10dp"
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/editProfile"
+                        android:drawableLeft="@drawable/ic_edit"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cc_idno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:helperText="Mandatory"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:helperTextTextColor="@color/validation"
+                        app:startIconDrawable="@drawable/ic_series"
+                        android:layout_below="@+id/txtProfileDetails"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="ID number"
+                            android:id="@+id/edt_idno"
+                            android:inputType="text"
+                            android:layout_below="@id/edtFirstname"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cc_fname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:helperText="Optional"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:helperTextTextColor="@color/validation"
+                        app:startIconDrawable="@drawable/ic_series"
+                        android:layout_below="@+id/cc_idno"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="First Name"
+                            android:id="@+id/edt_Fname"
+                            android:inputType="text"
+                            android:layout_below="@id/edt_idno"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cc_middle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:helperText="Optional"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:helperTextTextColor="@color/validation"
+                        app:startIconDrawable="@drawable/ic_series"
+                        android:layout_below="@+id/cc_fname"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Middle Name"
+                            android:id="@+id/edt_middleName"
+                            android:inputType="text"
+                            android:layout_below="@id/edtFirstname"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cc_lname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:helperText="Optional"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:helperTextTextColor="@color/validation"
+                        app:startIconDrawable="@drawable/ic_series"
+                        android:layout_below="@+id/cc_middle"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Last Name"
+                            android:id="@+id/edt_lastName"
+                            android:inputType="text"
+                            android:layout_below="@id/edt_middleName"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cc_birthdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:helperText="Mandatory"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:helperTextTextColor="@color/validation"
+                        app:startIconDrawable="@drawable/ic_series"
+                        android:layout_below="@+id/cc_lname"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Birthdate"
+                            android:id="@+id/edt_Birthdate"
+                            android:inputType="text"
+                            android:layout_below="@id/edt_lastName"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cc_sex"
+                        app:helperText="Sex"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:helperTextTextColor="@color/validation"
+                        android:layout_below="@+id/cc_birthdate"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <Spinner
+                            android:id="@+id/spinnerSex"
+                            android:layout_width= "match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/edt_Birthdate"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cc_cpno"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="11"
+                        app:helperText="Optional"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_below="@+id/cc_sex"
+                        app:helperTextTextColor="@color/validation"
+                        app:startIconDrawable="@drawable/ic_series"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Cellphone no."
+                            android:maxLength="11"
+                            android:id="@+id/edt_Contact"
+                            android:inputType="number"
+                            android:layout_below="@id/spinnerSex"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cc_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:helperText="Mandatory"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:helperTextTextColor="@color/validation"
+                        app:startIconDrawable="@drawable/ic_series"
+                        android:layout_below="@+id/cc_cpno"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Email"
+                            android:id="@+id/edt_Email"
+                            android:inputType="text"
+                            android:layout_below="@id/edt_Contact"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cc_patient"
+                        app:helperText="Patient"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:helperTextTextColor="@color/validation"
+                        android:layout_below="@+id/cc_email"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <Spinner
+                            android:id="@+id/spinnerPatient"
+                            android:layout_width= "match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/edt_Email"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cc_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:helperText="Mandatory"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:helperTextTextColor="@color/validation"
+                        app:startIconDrawable="@drawable/ic_series"
+                        android:layout_below="@+id/cc_email"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Address"
+                            android:id="@+id/edt_address"
+                            android:inputType="text"
+                            android:layout_below="@id/edt_Email"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/updateProfileBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="20dp"
+                        android:padding="10dp"
+                        android:background="@drawable/mybutton"
+                        android:textSize="15dp"
+                        android:text="Update"
+                        android:textColor="@color/white"
+                        android:layout_marginBottom="5dp"
+                        android:layout_below="@id/cc_address"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="30dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageview_account_profile"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/user_logo"
+                    app:civ_border_color="#FFFFFF"
+                    app:civ_border_width="2dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/floatingActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/imageview_account_profile"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -17,12 +17,15 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.ClinicSys"
         android:networkSecurityConfig="@xml/network_security_config">
-<!--        android:name=".SignUp"-->
+
 <!--        android:name=".Appointment.HomeActivity"-->
-        android:name=".MainActivity"
+<!--        android:name=".MainActivity"-->
 <!--        android:name=".Splash.Activity_Splash_Login"-->
+<!--        android:name=".SignUp"-->
+<!--        android:name=".MainActivity"-->
+        android:name=".Splash.Activity_Splash_Login"
         <activity
-            android:name=".MainActivity"
+            android:name=".Splash.Activity_Splash_Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +34,7 @@
         </activity>
 
         <activity
-            android:name=".Splash.Activity_Splash_Login"
+            android:name=".EditProfile"
             android:exported="true" />
 
         <activity
@@ -43,7 +46,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".Records.Home"
+            android:name=".Appointment.records.HomeRecords"
             android:exported="true" />
 
         <activity
@@ -51,7 +54,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".Records.temporary"
+            android:name=".MainActivity"
             android:exported="true" />
 
     </application>

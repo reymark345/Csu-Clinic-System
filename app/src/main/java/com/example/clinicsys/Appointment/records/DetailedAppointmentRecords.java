@@ -1,4 +1,4 @@
-package com.example.clinicsys.Records;
+package com.example.clinicsys.Appointment.records;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.clinicsys.R;
 
-public class DetailedRecords extends AppCompatActivity {
+public class DetailedAppointmentRecords extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private ActionBar mActionBar;
@@ -22,18 +22,6 @@ public class DetailedRecords extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.appointment_activity);
-
-
-// Retrieving the value using its keys the file name
-// must be same in both saving and retrieving the data
-
-
-// The value will be default as empty string because for
-// the very first time when the app is opened, there is nothing to show
-
-
-
-
 
 
 //        mToolbar = findViewById(R.id.toolbar);
@@ -55,16 +43,16 @@ public class DetailedRecords extends AppCompatActivity {
 
 //        float rate = intent.getFloatExtra("rate",0);
         int id = intent.getIntExtra("id",0);
-        String date = intent.getStringExtra("title");
-        String time = intent.getStringExtra("price");
+        String categoryName = intent.getStringExtra("title");
+        String SubCategory = intent.getStringExtra("price");
         String image = intent.getStringExtra("image");
 
         if (intent !=null){
 
 //            mActionBar.setTitle(title);
-            mDate.setText(date);
+            mDate.setText(categoryName);
 //            mRating.setText("Rating :"+rate+" /2");
-            mTime.setText(time);
+            mTime.setText(SubCategory);
 //            Glide.with(DetailedProductsActivity.this).load(image).into(mImage);
         }
 

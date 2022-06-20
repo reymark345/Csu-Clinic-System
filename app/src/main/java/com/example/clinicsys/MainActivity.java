@@ -1,19 +1,19 @@
 package com.example.clinicsys;
 
-import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,11 +22,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.clinicsys.Appointment.approved.HomeApproved;
 import com.example.clinicsys.Appointment.pending.HomePending;
-import com.example.clinicsys.Records.temporary;
 
+import com.example.clinicsys.Appointment.records.AppointmentRecords;
+import com.example.clinicsys.Appointment.records.HomeRecords;
+import com.example.clinicsys.Appointment.records.RecyclerAdapterRecords;
 import com.example.clinicsys.Splash.Activity_Splash_Login;
 import com.google.android.material.navigation.NavigationView;
 
@@ -36,15 +40,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+
 public class MainActivity extends AppCompatActivity {
     CardView AppointmentDashPending,AppointmentDashApproved,AppointmentDashRecords, Logout;
-    TextView txtPending;
-
-    ArrayList<String> patientType = new ArrayList<>();
-    ArrayAdapter<String> patientAdapter;
-    ArrayAdapter<String> complaintAdapter;
+    TextView txtPending, txtApproved, txtRecords, txtCancelled, txtCompleted;
     RequestQueue requestQueue;
     DrawerLayout drawerLayout;
+    String Urltype,useridd;
+    ImageView profileImg;
+    public static String BASE_URL = "";
 
     public static boolean admin= false;
     @Override
@@ -56,22 +60,33 @@ public class MainActivity extends AppCompatActivity {
         AppointmentDashApproved = (CardView) findViewById(R.id.AppointmentDash_Approved);
         AppointmentDashRecords = (CardView) findViewById(R.id.AppointmentDashRecords);
         txtPending = (TextView) findViewById(R.id.txtPending);
+        txtApproved = (TextView) findViewById(R.id.txtApproved);
+        txtCancelled = (TextView) findViewById(R.id.txtCancelled);
+        txtRecords = (TextView) findViewById(R.id.txtRecords);
+        txtCompleted = (TextView) findViewById(R.id.txtCompleted);
         Logout = (CardView) findViewById(R.id.logout);
         drawerLayout = findViewById(R.id.drawerlayout);
-        countAppointment(txtPending);
+        profileImg = findViewById(R.id.ImgProfileDashboard);
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigationview);
         navigationView.bringToFront();
         View headerView = navigationView.getHeaderView(0);
         TextView navfullName = (TextView) headerView.findViewById(R.id.fullName);
         TextView navUsername = (TextView) headerView.findViewById(R.id.idNumber);
+        ImageView profileImage = (ImageView) headerView.findViewById(R.id.profile_images);
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
         String fName = sh.getString("firstName", "");
         String lName = sh.getString("lastName", "");
         String idNo = sh.getString("idNo", "");
         String roleName = sh.getString("roleName", "");
+        String imageUrl = sh.getString("imageUrl", "");
+        BASE_URL = sh.getString("urlBased", "");
         String fullName = fName + " "+ lName;
         navfullName.setText(fullName);
         navUsername.setText(idNo);
+
+        countAppointment(txtPending,txtApproved,txtCancelled,txtRecords);
+
         if (roleName.matches("staff") || roleName.matches("admin") ) {
             admin = true;
         }
@@ -79,17 +94,32 @@ public class MainActivity extends AppCompatActivity {
             admin = false;
         }
 
+
+
+
+        if (!imageUrl.matches("null")){
+            Glide.with(this)
+                    .load(BASE_URL+"/csu_clinic_app/storage/profile_img/"+imageUrl)
+                    .into(profileImage);
+            Glide.with(this)
+                    .load(BASE_URL+"/csu_clinic_app/storage/profile_img/"+imageUrl)
+                    .into(profileImg);
+        }
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-
                 if (item.getItemId() == R.id.editProfile)
                 {
-                    Toast.makeText(getApplicationContext(),"profile",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), EditProfile.class);
+                    startActivity(intent);
+                    finish();
                 }
                 else if (item.getItemId() == R.id.logout_menu)
                 {
-                    Toast.makeText(getApplicationContext(),"logout",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), Activity_Splash_Login.class);
+                    startActivity(intent);
+                    finish();
                 }
 
                 return false;
@@ -101,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, HomePending.class);
                 startActivity(intent);
-//                finish();
+                finish();
             }
         });
         AppointmentDashApproved.setOnClickListener(new View.OnClickListener() {
@@ -109,15 +139,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, HomeApproved.class);
                 startActivity(intent);
-//                finish();
+                finish();
             }
         });
         AppointmentDashRecords.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,temporary.class);
+                Intent intent = new Intent(MainActivity.this, HomeRecords.class);
                 startActivity(intent);
-//                finish();
+                finish();
             }
         });
 
@@ -132,40 +162,43 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public void countAppointment(TextView aptCat){
-        patientType.clear();
-//        String url =
-        String url = BASE_URL+"/csu_clinic/populate_country.php";
-//        String url = "http://192.168.254.109/csu_clinic/populate_country.php";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray("countries");
-                    for(int i=0; i<jsonArray.length();i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String countryName = jsonObject.optString("country_name");
-                        patientType.add(countryName);
-                        patientAdapter = new ArrayAdapter<>(MainActivity.this,
-                                android.R.layout.simple_spinner_item, patientType);
-                        patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//
+
+    public void countAppointment (TextView txtPending, TextView txtApproved, TextView txtCancelled,TextView txtRecords){
+        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
+        useridd = sh.getString("userId", "");
+        String roleName = sh.getString("roleName", "");
+        if (roleName.matches("end-user")){Urltype = "/csu_clinic_app/api/dashboard/status/"+useridd;}
+        else {Urltype = "/csu_clinic_app/api/dashboard/status/";}
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+Urltype,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+                            String pending = jsonObject1.optString("pending");
+                            String approved = jsonObject1.optString("approved");
+                            String cancelled = jsonObject1.optString("cancelled");
+                            String records = jsonObject1.optString("records");
+                            String completed = jsonObject1.optString("completed");
+
+                            txtPending.setText(pending);
+                            txtApproved.setText(approved);
+                            txtCancelled.setText(cancelled);
+                            txtCompleted.setText(completed);
+                            txtRecords.setText(records);
+                        }
+                        catch (Exception e){
+                            Toast.makeText(getApplicationContext(), "catch error " + e, Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    aptCat.setText(""+patientType.size());
-                    Toast.makeText(getApplicationContext(), "Pilaa? "+patientType.size(), Toast.LENGTH_SHORT).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(MainActivity.this, "Database connection failed " + error.toString(),Toast.LENGTH_LONG).show();
             }
         });
-        requestQueue.add(jsonObjectRequest);
-//        aptCat.setOnItemSelectedListener(this);
+        Volley.newRequestQueue(MainActivity.this).add(stringRequest);
     }
-
 }

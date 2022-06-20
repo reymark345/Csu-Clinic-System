@@ -45,7 +45,7 @@
             android:paddingBottom="@dimen/_16sdp">
 
             <TextView
-                android:id="@+id/total"
+                android:id="@+id/txtApproved"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
@@ -62,10 +62,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_marginRight="@dimen/_8sdp"
-                android:text="Appointment (Approved)"
+                android:text="Approved"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/_14ssp"
-                app:layout_constraintEnd_toStartOf="@id/total"
+                app:layout_constraintEnd_toStartOf="@id/txtApproved"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 

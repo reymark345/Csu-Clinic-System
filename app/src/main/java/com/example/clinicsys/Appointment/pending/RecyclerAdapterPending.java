@@ -1,7 +1,7 @@
 package com.example.clinicsys.Appointment.pending;
 
 import static com.example.clinicsys.MainActivity.admin;
-import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
+import static com.example.clinicsys.MainActivity.BASE_URL;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -74,12 +74,12 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
     ArrayAdapter<String> complaintAdapter;
     RequestQueue requestQueue;
     String selectedCat, selectSubCat;
-    Spinner EdtSpnAppointmentCat;
-    Spinner EditSpnComplaints;
-    EditText scheduleEdit,complaints;
+    Spinner EdtSpnAppointmentCat,EditSpnComplaints;
+    EditText scheduleEdit,complaints,edtMedication;
     int finalId;
-    String ChangeCategoryId,ChangesubCategoryId,schedule,complaint;
+    String ChangeCategoryId,ChangesubCategoryId,schedule,complaint,catGlobal, sub_catGlobal;
 
+    TextView txt_loading,txt_loadingChange;
     public RecyclerAdapterPending(Context context, List<AppointmentPending> appointments){
         this.mContext = context;
         this.appointments = appointments;
@@ -88,13 +88,15 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
 
     public class MyViewHolderPending extends RecyclerView.ViewHolder {
 
-        private TextView aptCategory, aptSubCat, aptDate;
+        private Button btnDone, btnChange, btnCancel;
+        private TextView aptCategory, aptSubCat, aptDate,aptName ;
         private LinearLayout mContainer;
 
         public MyViewHolderPending(View view){
             super(view);
             aptCategory = view.findViewById(R.id.appointment_title);
             aptSubCat = view.findViewById(R.id.appointment_subCat);
+            aptName = view.findViewById(R.id.patient_name);
             aptDate = view.findViewById(R.id.appointment_date);
             mContainer = view.findViewById(R.id.appointment_container);
             btnDone = view.findViewById(R.id.btnDone);
@@ -126,10 +128,11 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         finalId = id;
         int finalUserId = userId;
 
-        btnDone.setOnClickListener(new View.OnClickListener() {
+        holder.btnDone.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+                Toast.makeText(mContext, "Appointment IDs" +  appointment.getIdd(), Toast.LENGTH_SHORT).show();
                 final SweetAlertDialog pDiaglog = new SweetAlertDialog(
                         mContext, SweetAlertDialog.WARNING_TYPE);
                 pDiaglog.setTitleText("Are you sure?");
@@ -144,24 +147,27 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                             public void onClick(SweetAlertDialog sDialog) {
 
                                 String userid = String.valueOf(finalUserId);
-                                DoneAppointment(appointment.getIdd(), pDiaglog, userid);
+                                ApprovedAppointment(appointment.getIdd(), pDiaglog, userid);
                             }
                         }).show();
 
             }
         });
 
-        btnChange.setOnClickListener(new View.OnClickListener() {
+        holder.btnChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int changeId = Integer.parseInt(appointment.getIdd());
+//                Toast.makeText(mContext, "Editt " + changeId  ,Toast.LENGTH_LONG).show();
+//                holder.aptSubCat.setText(appointment.getSub_cat());
                 CustomDialogEdit(changeId);
             }
         });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        holder.btnCancel.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+
                 int changeId = Integer.parseInt(appointment.getIdd());
                 CustomDialogCancel(changeId);
             }
@@ -171,6 +177,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         holder.aptSubCat.setText(appointment.getSub_cat());
         String schedule = appointment.getSchedule();
         holder.aptDate.setText(schedule);
+        holder.aptName.setText(appointment.getPatientName());
     }
 
 
@@ -183,6 +190,9 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         EditText noteField = dialog.findViewById(R.id.edtRemarksCancel);
         TextInputLayout tilRemarks = dialog.findViewById(R.id.til_remarks);
 
+        txt_loading = dialog.findViewById(R.id.txt_loading);
+        txt_loading.setVisibility(View.GONE);
+
         Button submitButtonCancel = dialog.findViewById(R.id.btn_cancel);
         submitButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,6 +202,8 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                 }
                 else {
 
+                    txt_loading.setVisibility(View.VISIBLE);
+                    submitButtonCancel.setClickable(false);
                     String remarks = noteField.getText().toString();
                     String idd = String.valueOf(id);
                     CancelAppointment(idd, dialog, remarks);
@@ -211,11 +223,21 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         EdtSpnAppointmentCat = dialog.findViewById(R.id.EdtSpnAppointmentCat);
         EditSpnComplaints = dialog.findViewById(R.id.EditSpnComplaints);
         scheduleEdit = dialog.findViewById(R.id.scheduleEdit);
-
+        edtMedication = dialog.findViewById(R.id.medicationEdit);
+        txt_loadingChange = dialog.findViewById(R.id.txt_loadingChange);
+        txt_loadingChange.setVisibility(View.GONE);
         complaints = dialog.findViewById(R.id.editComplaints);
         TextInputLayout tilComplaints = dialog.findViewById(R.id.til_complaints);
+        TextInputLayout tilMedication = dialog.findViewById(R.id.til_medication);
+
+
         if (admin==true) {
             complaints.setEnabled(false);
+        }
+        else {
+            tilMedication.setVisibility(View.GONE);
+            edtMedication.setVisibility(View.GONE);
+
         }
         Button submitButtonChange = dialog.findViewById(R.id.EditSubmit_button);
 
@@ -234,17 +256,24 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         submitButtonChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                    txt_loadingChange.setVisibility(View.VISIBLE);
+                    submitButtonChange.setClickable(false);
                     String complaint = complaints.getText().toString();
                     String idd = String.valueOf(id);
-                    ChangeAppointment(idd, complaint);
 
-
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                ChangeAppointment(idd, complaint);
+                            }
+                        },
+                        500);
             }
         });
         dialog.show();
     }
 
-    public void Category(Spinner aptCat, int id){
+    public void Category(Spinner aptCat, int idd){
         categories.clear();
         patientType.clear();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/category/list/2",
@@ -259,19 +288,20 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                                 String categoryID = object.optString("id");
                                 String categoryName = object.optString("name");
 
-
-
                                 categories.add(object);
                                 patientType.add(categoryName);
                                 patientAdapter = new ArrayAdapter<>(mContext,
                                         android.R.layout.simple_spinner_item, patientType);
                                 patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 aptCat.setAdapter(patientAdapter);
-
-
                             }
-                            CategoryReplace(EdtSpnAppointmentCat,EditSpnComplaints, id);
-
+                            new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                                    new Runnable() {
+                                        public void run() {
+                                            CategoryReplace(EdtSpnAppointmentCat,EditSpnComplaints, idd);
+                                        }
+                                    },
+                                    500);
 
                         }catch (Exception e){
                             e.printStackTrace();
@@ -288,78 +318,13 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         aptCat.setOnItemSelectedListener(this);
     }
 
-    public void CategoryReplace(Spinner aptCat,Spinner aptComplaint, int id){
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/appointment/get/"+id,
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/category/list/2",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-
-                            JSONObject object = new JSONObject(response);
-
-                            ChangeCategoryId = object.getString("category_id");
-                            ChangesubCategoryId = object.getString("sub_category_id");
-
-                            String category= object.getString("category");
-                            String sub_category = object.getString("sub_category");
-                            schedule = object.getString("schedule");
-                            complaint = object.getString("remarks");
-
-                            scheduleEdit.setText(schedule);
-                            if (!complaint.matches("null")){
-                                complaints.setText(complaint);
-                            }
-
-//                            ArrayAdapter myAdapCat = (ArrayAdapter) aptCat.getAdapter(); //cast to an ArrayAdapter
-//                            ArrayAdapter myAdapSub = (ArrayAdapter) aptComplaint.getAdapter(); //cast to an ArrayAdapter
-//
-//                            int spinnerPositionCat = myAdapCat.getPosition(category);
-//                            int spinnerPositionSub = myAdapSub.getPosition(sub_category);
-//
-//                            aptCat.setSelection(spinnerPositionCat);
-//                            aptComplaint.setSelection(spinnerPositionSub);
-
-
-//                            Toast.makeText(mContext, "result responsea " + response + " fsa" + subCategoryId ,Toast.LENGTH_LONG).show();
-
-//                            JSONArray jsonArray = new JSONArray(response);
-//                            JSONObject jsonObject1 = jsonArray.getJSONObject(0);
-//                            String SubCatName = jsonObject1.optString("name");
-//
-//                            ArrayAdapter myAdap = (ArrayAdapter) aptCat.getAdapter(); //cast to an ArrayAdapter
-//
-//                            int spinnerPosition = myAdap.getPosition(SubCatName);
-//
-////set the default according to value
-//                            aptCat.setSelection(spinnerPosition);
-
-
-                        }catch (Exception e){
-                            Toast.makeText(mContext, "error " + e ,Toast.LENGTH_LONG).show();
-
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        requestQueue.add(stringRequest);
-        aptCat.setOnItemSelectedListener(this);
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
         if(adapterView.getId() == R.id.EdtSpnAppointmentCat){
             complaintList.clear();
             sub_categories.clear();
             JSONObject category_data = categories.get(i);
             selectedCat = category_data.optString("id");
-
             StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/sub_category/list/2/"+selectedCat,
                     new Response.Listener<String>() {
                         @Override
@@ -369,18 +334,17 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
 
                                 for (int i = 0; i<array.length(); i++){
                                     JSONObject object = array.getJSONObject(i);
-
-
-
-                                    String cityName = object.optString("name");
+                                    String subName = object.optString("name");
 
                                     sub_categories.add(object);
-                                    complaintList.add(cityName);
+                                    complaintList.add(subName);
                                     complaintAdapter = new ArrayAdapter<>(mContext,
                                             android.R.layout.simple_spinner_item, complaintList);
                                     complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     EditSpnComplaints.setAdapter(complaintAdapter);
                                 }
+//                                SubCategoryReplace(EditSpnComplaints);
+//                                Toast.makeText(mContext, "responsive" + response  ,Toast.LENGTH_LONG).show();
 
                             }catch (Exception e){
                                 e.printStackTrace();
@@ -397,7 +361,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
             EditSpnComplaints.setOnItemSelectedListener(this);
         }
         else if (adapterView.getId() == R.id.EditSpnComplaints){
-
+//            Toast.makeText(mContext, "Diria oh",Toast.LENGTH_LONG).show();
             JSONObject sub_category_data = sub_categories.get(i);
             selectSubCat = sub_category_data.optString("id");
         }
@@ -408,6 +372,81 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    public void CategoryReplace(Spinner apptCat,Spinner apptSub, int id){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/appointment/get/"+id,
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/category/list/2",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+//                            Toast.makeText(mContext, "ID ni  " + id ,Toast.LENGTH_LONG).show();
+                            JSONObject object = new JSONObject(response);
+
+                            ChangeCategoryId = object.getString("category_id");
+                            ChangesubCategoryId = object.getString("sub_category_id");
+                            catGlobal = object.getString("category");
+                            sub_catGlobal = object.getString("sub_category");
+                            schedule = object.getString("schedule");
+                            complaint = object.getString("complaint");
+                            if (!complaint.matches("null")) {
+                                complaints.setText(complaint);
+                            }
+                            scheduleEdit.setText(schedule);
+                            try {
+                                patientAdapter = (ArrayAdapter) apptCat.getAdapter(); //cast to an ArrayAdapter
+                                int spinnerPositionCat = patientAdapter.getPosition(catGlobal);
+                                apptCat.setSelection(spinnerPositionCat);
+
+                                new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                                        new Runnable() {
+                                            public void run() {
+                                                SubCategoryReplace(EditSpnComplaints);
+                                            }
+                                        },
+                                        500);
+
+
+                            }
+                            catch (Exception e){
+                                Toast.makeText(mContext, "Error  " + e ,Toast.LENGTH_LONG).show();
+                            }
+
+                        }catch (Exception e){
+                            Toast.makeText(mContext, "error " + e ,Toast.LENGTH_LONG).show();
+
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(stringRequest);
+        apptCat.setOnItemSelectedListener(this);
+        apptSub.setOnItemSelectedListener(this);
+    }
+
+
+    public void SubCategoryReplace(Spinner apptSub){
+        try {
+            new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                    new Runnable() {
+                        public void run() {
+                            complaintAdapter = (ArrayAdapter) apptSub.getAdapter(); //cast to an ArrayAdapter
+                            int spinnerSubCat = complaintAdapter.getPosition(sub_catGlobal);
+                            apptSub.setSelection(spinnerSubCat);
+                        }
+                    },
+                    500);
+
+        }
+        catch (Exception e){
+            Toast.makeText(mContext, "Error  " + e ,Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -432,15 +471,15 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                     if (putData.startPut()) {
                         if (putData.onComplete()) {
                             String result = putData.getResult();
-
                             try {
                                 JSONArray jsonArray = new JSONArray(result);
                                 JSONObject jsonObject1 = jsonArray.getJSONObject(0);
-
-                                message = jsonObject1.optString("message");
+//                                Toast.makeText(mContext, "Sheeefd" + jsonArray, Toast.LENGTH_SHORT).show();
+//                                message = jsonObject1.optString("message");
                                 type = jsonObject1.optString("type");
 
                                 if (type.equals("success")) {
+//                                    btnCancel.setEnabled(true);
                                     dialog.dismiss();
                                     final SweetAlertDialog pDiaglog = new SweetAlertDialog(
                                             mContext, SweetAlertDialog.SUCCESS_TYPE);
@@ -467,9 +506,9 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                                 //End ProgressBar (Set visibility to GONE)
                                 Log.i("PutData", result);
                             }
-                            catch (JSONException e)
+                            catch (Exception e)
                             {
-                                Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, ""+e, Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -485,6 +524,8 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
 
     public void ChangeAppointment(String id, String remarks){
         try {
+
+            Toast.makeText(mContext, "ID Appointment " + id, Toast.LENGTH_SHORT).show();
 
             String sched = scheduleEdit.getText().toString();
             //Start ProgressBar first (Set visibility VISIBLE)
@@ -522,7 +563,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                                     final SweetAlertDialog pDiaglog = new SweetAlertDialog(
                                             mContext, SweetAlertDialog.SUCCESS_TYPE);
                                     pDiaglog.setTitleText("Successfully Save");
-                                    pDiaglog.setContentText("Appointment Cancel");
+                                    pDiaglog.setContentText("Appointment Change");
                                     pDiaglog.setConfirmText("Ok");
                                     pDiaglog.setCancelable(false);
                                     pDiaglog.showCancelButton(false)
@@ -560,8 +601,11 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         }
     }
 
-    public void DoneAppointment(String id, Dialog dialog, String userId){
+    public void ApprovedAppointment(String id, Dialog dialog, String userId){
         try {
+
+            Toast.makeText(mContext, "Appointment ID" +  id, Toast.LENGTH_SHORT).show();
+
             //Start ProgressBar first (Set visibility VISIBLE)
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {

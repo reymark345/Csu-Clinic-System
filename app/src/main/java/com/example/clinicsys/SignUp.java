@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -30,7 +31,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.clinicsys.Appointment.pending.HomePending;
 import com.example.clinicsys.Splash.Activity_Splash_Login;
 import com.google.android.material.textfield.TextInputLayout;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
@@ -48,22 +51,29 @@ import es.dmoral.toasty.Toasty;
 
 public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    EditText edtIDno,edtFirstname,edtMiddleName,edtLastname,edtBirthdate,edtAddress,edtCpno,edtEmail,edtSchedule;
+    EditText edtIDno,edtFirstname,edtMiddleName,edtLastname,edtBirthdate,edtAddress,edtCpno,edtEmail,edtSchedule, edtComplaint;
     Button buttonSignup;
     private int prevCount = 0;
-    String DialogStatus;
+    String selectedCat, selectSubCat, selectedPatient, type;
 
-    Spinner spinnerPatientType,spinnerAppointment,spinnerComplaints, spinnerSex;
-    ArrayList<String> appointmentList = new ArrayList<>();
+    Spinner spinnerPatientType,spinnerAppointment,spinnerSubCat, spinnerSex;
+
+    ArrayList<String> patientList = new ArrayList<>();
     ArrayList<String> complaintList = new ArrayList<>();
-    ArrayList<String> patientType = new ArrayList<>();
-    ArrayAdapter<String> countryAdapter;
-    ArrayAdapter<String> complaintAdapter;
-    ArrayAdapter<String> patientAdapter;
+    ArrayList<String> aptCategory = new ArrayList<>();
 
+    ArrayList<JSONObject> patientType = new ArrayList<>();
+    ArrayList<JSONObject> categories = new ArrayList<>();
+    ArrayList<JSONObject> sub_categories = new ArrayList<>();
+
+    ArrayAdapter<String> patientAdapter;
+    ArrayAdapter<String> categoriesAdapter;
+    ArrayAdapter<String> complaintAdapter;
     RequestQueue requestQueue;
-    TextInputLayout tilIdno, tilFname, tilMiddle,tilLastname, tilSex, tilAddress, tilBdate, tilComplants, tilCpno, tilEmail, tilPatientType;
+
+    TextInputLayout tilIdno, tilFname, tilMiddle,tilLastname, tilSex, tilAddress, tilBdate, til_SubCat, tilCpno, tilEmail;
     String blankMessage = "Please fill this blank";
+    private ProgressBar progressBar;
     private boolean isAtSpaceDelimiter(int currCount) {
         return currCount == 3;
     }
@@ -75,7 +85,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         requestQueue = Volley.newRequestQueue(this);
         spinnerPatientType = (Spinner)findViewById(R.id.spinnerPatientType);
         spinnerAppointment = (Spinner)findViewById(R.id.spinnerAppointmentCat);
-        spinnerComplaints = (Spinner)findViewById(R.id.spinnerComplaints);
+        spinnerSubCat = (Spinner)findViewById(R.id.spinnerSubCat);
         spinnerSex = (Spinner)findViewById(R.id.spinnerSex);
         edtIDno = findViewById(R.id.edtIdno);
 //        edtPatient = findViewById(R.id.edtPatientType);
@@ -89,6 +99,10 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         edtCpno = findViewById(R.id.edtContact);
         edtEmail = findViewById(R.id.edtEmail);
         edtAddress = findViewById(R.id.edtAddress);
+        edtComplaint = findViewById(R.id.edtComplaint);
+        progressBar = findViewById(R.id.progressbarSignup);
+
+
         buttonSignup = findViewById(R.id.confirmRequestBtn);
 
         //layoutMaterial
@@ -99,10 +113,11 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         tilSex = findViewById(R.id.til_sex);
         tilAddress = findViewById(R.id.til_address);
         tilBdate = findViewById(R.id.til_birthdate);
-        tilComplants = findViewById(R.id.til_complaints);
+        til_SubCat = findViewById(R.id.til_subCat);
         tilCpno = findViewById(R.id.til_cpno);
         tilEmail = findViewById(R.id.til_email);
 //        tilPatientType = findViewById(R.id.til_patientType);
+
 
         String[] Gender = new String[]{"Male", "Female"};
 
@@ -131,110 +146,153 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                 showDateDialog(edtBirthdate);
             }
         });
-        patientType();
-        patientDropdown();
+//        patientType(spinnerPatientType);
+        Category(spinnerAppointment);
+
+        PatientType(spinnerPatientType);
         DataAuthentication();
 
         buttonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 try {
-                    String id_no, patientType, fname, middle, lname, appointment, complain, sex, birthdate, email, contact_no, address;
+                    String id_no, patientType, fname, middle, lname, category, sub_category, sex, birthdate,schedule, email, contact_no, address, complaint;
                     id_no = String.valueOf(edtIDno.getText());
-                    middle = String.valueOf(edtMiddleName.getText());
                     fname = String.valueOf(edtFirstname.getText());
+                    middle = String.valueOf(edtMiddleName.getText());
                     lname = String.valueOf(edtLastname.getText());
-                    sex = spinnerSex.getSelectedItem().toString();
-
-                    email = String.valueOf(edtEmail.getText());
-                    contact_no = String.valueOf(edtCpno.getText());
-                    address = String.valueOf(edtAddress.getText());
                     birthdate = String.valueOf(edtBirthdate.getText());
+                    schedule = String.valueOf(edtSchedule.getText());
+                    sex = spinnerSex.getSelectedItem().toString();
+                    contact_no = String.valueOf(edtCpno.getText());
+//                    email = String.valueOf(edtEmail.getText());
+                    address = String.valueOf(edtAddress.getText());
+                    complaint = String.valueOf(edtComplaint.getText());
+//                    patientType = spinnerPatientType.getSelectedItem().toString();
+//                    category = spinnerAppointment.getSelectedItem().toString();
+//                    sub_category = spinnerSubCat.getSelectedItem().toString();
 
-                    patientType = spinnerPatientType.getSelectedItem().toString();
-                    appointment = spinnerAppointment.getSelectedItem().toString();
-                    complain = spinnerComplaints.getSelectedItem().toString();
+                    email = edtEmail.getText().toString().trim();
+                    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
-                    if (!id_no.equals("") && !fname.equals("") && !lname.equals("") && !email.equals("")) {
+                    if (!email.matches(emailPattern)){
+                        tilEmail.setError("Invalid Email e.g kevin@gmail.com");
+                    }
+                    else if (!id_no.equals("") && !fname.equals("") && !lname.equals("")&& !birthdate.equals("")&& !schedule.equals("")&& !contact_no.equals("") && !email.equals("") && !address.equals("")) {
+                        disabledAction();
+                        progressBar.setVisibility(View.VISIBLE);
                         //Start ProgressBar first (Set visibility VISIBLE)
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                String[] field = new String[9];
+                                String[] field = new String[14];
                                 EditText edtIDno, edtPatient, edtFirstname, edtMiddleName, edtLastname, edtBirthdate, edtAge, edtCpno, edtEmail;
 
-                                field[0] = "first_name";
-                                field[1] = "middle_name";
-                                field[2] = "last_name";
-                                field[3] = "sex";
-                                field[4] = "id_no";
-                                field[5] = "birthdate";
-                                field[6] = "email";
-                                field[7] = "contact_no";
-                                field[8] = "address";
-
-
+                                field[0] = "id_no";
+                                field[1] = "first_name";
+                                field[2] = "middle_name";
+                                field[3] = "last_name";
+                                field[4] = "birthday";
+                                field[5] = "schedule";
+                                field[6] = "sex";
+                                field[7] = "cellphone_no";
+                                field[8] = "email";
+                                field[9] = "address";
+                                field[10] = "patient_type";
+                                field[11] = "category";
+                                field[12] = "sub_category";
+                                field[13] = "complaint";
                                 //Creating array for data
-                                String[] data = new String[9];
-
-                                data[0] = fname;
-                                data[1] = middle;
-                                data[2] = lname;
-                                data[3] = sex;
-                                data[4] = id_no;
-                                data[5] = birthdate;
-                                data[6] = email;
+                                String[] data = new String[14];
+                                data[0] = id_no;
+                                data[1] = fname;
+                                data[2] = middle;
+                                data[3] = lname;
+                                data[4] = birthdate;
+                                data[5] = schedule;
+                                data[6] = sex;
                                 data[7] = contact_no;
-                                data[8] = address;
-//                            PutData putData = new PutData("http://172.31.250.143/csu_clinic/signup.php", "POST", field, data);
-                                PutData putData = new PutData(BASE_URL+"/csu_clinic/signup.php", "POST", field, data);
+                                data[8] = email;
+                                data[9] = address;
+                                data[10] = selectedPatient;
+                                data[11] = selectedCat;
+                                data[12] = selectSubCat;
+                                data[13] = complaint;
+//
+                                PutData putData = new PutData(BASE_URL + "/csu_clinic_app/api/appointment/create/new", "POST", field, data);
+
                                 if (putData.startPut()) {
                                     if (putData.onComplete()) {
                                         String result = putData.getResult();
-                                        if (result.equals("Created success")) {
-                                            Toast.makeText(getApplicationContext(), "Successfully save", Toast.LENGTH_SHORT).show();
 
-                                            final SweetAlertDialog pDiaglog = new SweetAlertDialog(
-                                                    SignUp.this, SweetAlertDialog.SUCCESS_TYPE);
-                                            pDiaglog.setTitleText("Successfully Save");
-                                            pDiaglog.setContentText("Please choose corresponding action");
-                                            pDiaglog.setConfirmText("Sign Up");
-                                            pDiaglog.setCancelText("Add");
-                                            pDiaglog.setCancelable(false);
-                                            pDiaglog.showCancelButton(true)
-                                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                        @Override
-                                                        public void onClick(SweetAlertDialog sDialog) {
-                                                            Intent in = new Intent(getApplicationContext(), Activity_Splash_Login.class);
-                                                            startActivity(in);
-                                                            finish();
-                                                        }
-                                                    })
-                                                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                        @Override
-                                                        public void onClick(SweetAlertDialog sDialog) {
-                                                            Intent in = new Intent(getApplicationContext(), SignUp.class);
-                                                            startActivity(in);
-                                                            finish();
-                                                        }
-                                                    }).show();
+                                        try{
+                                            JSONArray jsonArray = new JSONArray(result);
+                                            JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+                                            type = jsonObject1.optString("type");
+                                            Toast.makeText(getApplicationContext(), "diri" + type, Toast.LENGTH_SHORT).show();
+                                            if (type.equals("success")) {
+                                                enabledAction();
+                                                progressBar.setVisibility(View.GONE);
+                                                final SweetAlertDialog pDiaglog = new SweetAlertDialog(
+                                                        SignUp.this, SweetAlertDialog.SUCCESS_TYPE);
+                                                pDiaglog.setTitleText("Booked appointment successfully ");
+                                                pDiaglog.setConfirmText("Sign Up");
+                                                pDiaglog.setCancelText("Add");
+                                                pDiaglog.setCancelable(false);
+                                                pDiaglog.showCancelButton(true)
+                                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                            @Override
+                                                            public void onClick(SweetAlertDialog sDialog) {
+                                                                Intent in = new Intent(getApplicationContext(), Activity_Splash_Login.class);
+                                                                startActivity(in);
+                                                                finish();
+                                                            }
+                                                        })
+                                                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                            @Override
+                                                            public void onClick(SweetAlertDialog sDialog) {
+                                                                Intent in = new Intent(getApplicationContext(), SignUp.class);
+                                                                startActivity(in);
+                                                                finish();
+                                                            }
+                                                        }).show();
+                                                //End ProgressBar (Set visibility to GONE)
+                                                Log.i("PutData", result);
 
-//
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                                            }
+                                            else {
+                                                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                                            }
+
+
                                         }
-                                        //End ProgressBar (Set visibility to GONE)
-                                        Log.i("PutData", result);
+                                        catch (Exception e){
+                                            enabledAction();
+                                            progressBar.setVisibility(View.GONE);
+//                                            new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
+//                                                    .setTitleText("Error!")
+//                                                    .setContentText("ID number already exists")
+//                                                    .showCancelButton(true)
+//                                                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                                        @Override
+//                                                        public void onClick(SweetAlertDialog sDialog) {
+//                                                        }
+//                                                    }).show();
+                                        }
+
+
+
                                     }
+                                    //End Write and Read data with URL
                                 }
-                                //End Write and Read data with URL
                             }
                         });
                     } else {
                         new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
                                 .setTitleText("Error!")
-                                .setContentText("All Fields required")
+                                .setContentText("Fields are required")
                                 .showCancelButton(true)
                                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                     @Override
@@ -251,6 +309,9 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
 
     }
 //    ------------- start outside
+
+
+
 
     private void showDateTimeDialog(final EditText date_time_in) {
         final Calendar calendar=Calendar.getInstance();
@@ -296,115 +357,216 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         new DatePickerDialog(SignUp.this,dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
         if(adapterView.getId() == R.id.spinnerAppointmentCat){
             complaintList.clear();
-            String selectedCountry = adapterView.getSelectedItem().toString();
-//            String url = "http://10.0.2.2/csu_clinic/populate_city.php?country_name="+selectedCountry;
-//            String url = "http://172.31.250.143/csu_clinic/populate_city.php?country_name="+selectedCountry;
-            String url = BASE_URL+"/csu_clinic/populate_city.php?country_name="+selectedCountry;
-            requestQueue = Volley.newRequestQueue(this);
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                    url, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        JSONArray jsonArray = response.getJSONArray("cities");
-                        for(int i=0; i<jsonArray.length();i++){
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            String cityName = jsonObject.optString("city_name");
-                            complaintList.add(cityName);
-                            complaintAdapter = new ArrayAdapter<>(SignUp.this,
-                                    android.R.layout.simple_spinner_item, complaintList);
-                            complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinnerComplaints.setAdapter(complaintAdapter);
+            sub_categories.clear();
+            JSONObject category_data = categories.get(i);
+            selectedCat = category_data.optString("id");
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/sub_category/list/2/"+selectedCat,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray array = new JSONArray(response);
+                                for (int i = 0; i<array.length(); i++){
+                                    JSONObject object = array.getJSONObject(i);
+                                    String appointName = object.optString("name");
+                                    sub_categories.add(object);
+                                    complaintList.add(appointName);
+                                    complaintAdapter = new ArrayAdapter<>(SignUp.this,
+                                            android.R.layout.simple_spinner_item, complaintList);
+                                    complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    spinnerSubCat.setAdapter(complaintAdapter);
+                                }
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
+                    }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
 
                 }
             });
-            requestQueue.add(jsonObjectRequest);
+            requestQueue.add(stringRequest);
+            spinnerSubCat.setOnItemSelectedListener(this);
+        }
+        else if (adapterView.getId() == R.id.spinnerSubCat){
+            JSONObject sub_category_data = sub_categories.get(i);
+            selectSubCat = sub_category_data.optString("id");
+        }
+        else if (adapterView.getId() == R.id.spinnerPatientType){
+            JSONObject patient = patientType.get(i);
+            selectedPatient = patient.optString("id");
+        }
+        else{
+            Toast.makeText(SignUp.this, "Please contact administrator " + selectSubCat ,Toast.LENGTH_LONG).show();
         }
     }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+    public void patientTypeaa(Spinner aptType){
+//        categories.clear();
+        aptCategory.clear();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/patient_types/list/2",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
 
-    public void patientType(){
-        patientType.clear();
-//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
-//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
-        String url = BASE_URL+"/csu_clinic/populatePatientType.php";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray("patient_type");
-                    for(int i=0; i<jsonArray.length();i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String countryName = jsonObject.optString("type");
-                        patientType.add(countryName);
-                        patientAdapter = new ArrayAdapter<>(SignUp.this,
-                                android.R.layout.simple_spinner_item, patientType);
-                        patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinnerPatientType.setAdapter(patientAdapter);
+                            JSONArray array = new JSONArray(response);
+                            for (int i = 0; i<array.length(); i++){
+                                JSONObject object = array.getJSONObject(i);
+                                String categoryID = object.optString("id");
+                                String categoryName = object.optString("name");
+                                categories.add(object);
+                                aptCategory.add(categoryName);
+                                categoriesAdapter = new ArrayAdapter<>(SignUp.this,
+                                        android.R.layout.simple_spinner_item, aptCategory);
+                                categoriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                aptType.setAdapter(categoriesAdapter);
+
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
             }
         });
-        requestQueue.add(jsonObjectRequest);
-        spinnerPatientType.setOnItemSelectedListener(this);
+        requestQueue.add(stringRequest);
+        aptType.setOnItemSelectedListener(this);
     }
 
-    public void patientDropdown(){
-        appointmentList.clear();
-//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
-//        String url = "http://172.31.250.143/csu_clinic/populate_country.php";
-        String url = BASE_URL+"/csu_clinic/populate_country.php";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray("countries");
-                    for(int i=0; i<jsonArray.length();i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String countryName = jsonObject.optString("country_name");
-                        appointmentList.add(countryName);
-                        countryAdapter = new ArrayAdapter<>(SignUp.this,
-                                android.R.layout.simple_spinner_item, appointmentList);
-                        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinnerAppointment.setAdapter(countryAdapter);
+    public void PatientType(Spinner aptPatientType){
+        patientList.clear();
+//        categories.clear();
+//        aptCategory.clear();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/patient_types/list/2",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+
+                            JSONArray array = new JSONArray(response);
+                            for (int i = 0; i<array.length(); i++){
+                                JSONObject object = array.getJSONObject(i);
+                                String patientName = object.optString("type");
+                                patientType.add(object);
+                                patientList.add(patientName);
+                                patientAdapter = new ArrayAdapter<>(SignUp.this,
+                                        android.R.layout.simple_spinner_item, patientList);
+                                patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                aptPatientType.setAdapter(patientAdapter);
+
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
             }
         });
-        requestQueue.add(jsonObjectRequest);
-        spinnerAppointment.setOnItemSelectedListener(this);
+        requestQueue.add(stringRequest);
+        aptPatientType.setOnItemSelectedListener(this);
+    }
+
+    public void disabledAction(){
+        edtIDno.setEnabled(false);
+        edtFirstname.setEnabled(false);
+        edtMiddleName.setEnabled(false);
+        edtLastname.setEnabled(false);
+        edtBirthdate.setEnabled(false);
+        edtAddress.setEnabled(false);
+        edtCpno.setEnabled(false);
+        edtEmail.setEnabled(false);
+        edtSchedule.setEnabled(false);
+        edtComplaint.setEnabled(false);
+        edtIDno.setEnabled(false);
+//        buttonSignup.setEnabled(false);
+        spinnerPatientType.setEnabled(false);
+        spinnerAppointment.setEnabled(false);
+        spinnerSubCat.setEnabled(false);
+        spinnerSex.setEnabled(false);
+        buttonSignup.setVisibility(View.GONE);
+    }
+
+    public void enabledAction(){
+        edtIDno.setEnabled(true);
+        edtFirstname.setEnabled(true);
+        edtMiddleName.setEnabled(true);
+        edtLastname.setEnabled(true);
+        edtBirthdate.setEnabled(true);
+        edtAddress.setEnabled(true);
+        edtCpno.setEnabled(true);
+        edtEmail.setEnabled(true);
+        edtSchedule.setEnabled(true);
+        edtComplaint.setEnabled(true);
+        edtIDno.setEnabled(true);
+//        buttonSignup.setEnabled(true);
+        spinnerPatientType.setEnabled(true);
+        spinnerAppointment.setEnabled(true);
+        spinnerSubCat.setEnabled(true);
+        spinnerSex.setEnabled(true);
+        buttonSignup.setVisibility(View.VISIBLE);
+    }
+
+    public void Category(Spinner aptCat){
+        categories.clear();
+        aptCategory.clear();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/category/list/2",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+
+                            JSONArray array = new JSONArray(response);
+                            for (int i = 0; i<array.length(); i++){
+                                JSONObject object = array.getJSONObject(i);
+                                String categoryID = object.optString("id");
+                                String categoryName = object.optString("name");
+                                categories.add(object);
+                                aptCategory.add(categoryName);
+                                categoriesAdapter = new ArrayAdapter<>(SignUp.this,
+                                        android.R.layout.simple_spinner_item, aptCategory);
+                                categoriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                aptCat.setAdapter(categoriesAdapter);
+
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(stringRequest);
+        aptCat.setOnItemSelectedListener(this);
     }
 
 
