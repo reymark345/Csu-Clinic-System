@@ -1,7 +1,5 @@
 package com.example.clinicsys;
 
-import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -42,6 +40,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+
 public class MainActivity extends AppCompatActivity {
     CardView AppointmentDashPending,AppointmentDashApproved,AppointmentDashRecords, Logout;
     TextView txtPending, txtApproved, txtRecords, txtCancelled, txtCompleted;
@@ -49,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     String Urltype,useridd;
     ImageView profileImg;
+    public static String BASE_URL = "";
 
     public static boolean admin= false;
     @Override
@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerlayout);
         profileImg = findViewById(R.id.ImgProfileDashboard);
 
-        countAppointment(txtPending,txtApproved,txtCancelled,txtRecords);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigationview);
         navigationView.bringToFront();
         View headerView = navigationView.getHeaderView(0);
@@ -81,15 +80,23 @@ public class MainActivity extends AppCompatActivity {
         String idNo = sh.getString("idNo", "");
         String roleName = sh.getString("roleName", "");
         String imageUrl = sh.getString("imageUrl", "");
+        BASE_URL = sh.getString("urlBased", "");
         String fullName = fName + " "+ lName;
         navfullName.setText(fullName);
         navUsername.setText(idNo);
+
+        countAppointment(txtPending,txtApproved,txtCancelled,txtRecords);
+
         if (roleName.matches("staff") || roleName.matches("admin") ) {
             admin = true;
         }
         else {
             admin = false;
         }
+
+
+
+
         if (!imageUrl.matches("null")){
             Glide.with(this)
                     .load(BASE_URL+"/csu_clinic_app/storage/profile_img/"+imageUrl)

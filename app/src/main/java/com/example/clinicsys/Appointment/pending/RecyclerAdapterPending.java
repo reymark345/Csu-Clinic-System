@@ -1,7 +1,7 @@
 package com.example.clinicsys.Appointment.pending;
 
 import static com.example.clinicsys.MainActivity.admin;
-import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
+import static com.example.clinicsys.MainActivity.BASE_URL;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

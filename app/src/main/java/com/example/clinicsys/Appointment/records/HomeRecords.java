@@ -1,6 +1,6 @@
 package com.example.clinicsys.Appointment.records;
 
-import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
+import static com.example.clinicsys.MainActivity.BASE_URL;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
