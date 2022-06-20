@@ -2,9 +2,11 @@ package com.example.clinicsys.Appointment.approved;
 
 import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -48,6 +50,8 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -72,26 +76,11 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
     RequestQueue requestQueue;
 
     Spinner spnAppointmentCat, spinnerComplaints;
-    EditText edtSched, edtComplaints;
+    EditText edtSched, edtComplaints, edtMedication;
     String Urltype,categoryID,selectedCat, selectSubCat, useridd, type;
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (item.getItemId() == R.id.action_add){
-            showCustomDialog();
-        }
 
-        return true;
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.dashboard_menu,menu);
-
-        return true;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,12 +109,11 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
         spinnerComplaints = dialog.findViewById(R.id.spnComplaints);
         edtSched = dialog.findViewById(R.id.edtSchedule);
         edtComplaints =  dialog.findViewById(R.id.edtComplaints);
-
-
         Button submitButton = dialog.findViewById(R.id.submit_button);
         Category(spnAppointmentCat);
         edtSched.setFocusable(false);
         edtSched.setClickable(true);
+
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +134,7 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
                 showDateTimeDialog(edtSched);
             }
         });
+
     }
 
     public void Category(Spinner aptCat){

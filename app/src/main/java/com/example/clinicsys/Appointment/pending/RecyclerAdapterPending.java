@@ -75,7 +75,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
     RequestQueue requestQueue;
     String selectedCat, selectSubCat;
     Spinner EdtSpnAppointmentCat,EditSpnComplaints;
-    EditText scheduleEdit,complaints;
+    EditText scheduleEdit,complaints,edtMedication;
     int finalId;
     String ChangeCategoryId,ChangesubCategoryId,schedule,complaint,catGlobal, sub_catGlobal;
 
@@ -171,9 +171,9 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
             }
         });
 
-        holder.aptCategory.setText(appointment.getIdd());
+        holder.aptCategory.setText(appointment.getCategory());
         holder.aptSubCat.setText(appointment.getSub_cat());
-        String schedule = appointment.getSchedule();
+        String schedule = appointment.getIdd();
         holder.aptDate.setText(schedule);
         holder.aptName.setText(appointment.getPatientName());
     }
@@ -216,11 +216,20 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         EdtSpnAppointmentCat = dialog.findViewById(R.id.EdtSpnAppointmentCat);
         EditSpnComplaints = dialog.findViewById(R.id.EditSpnComplaints);
         scheduleEdit = dialog.findViewById(R.id.scheduleEdit);
+        edtMedication = dialog.findViewById(R.id.medicationEdit);
 
         complaints = dialog.findViewById(R.id.editComplaints);
         TextInputLayout tilComplaints = dialog.findViewById(R.id.til_complaints);
+        TextInputLayout tilMedication = dialog.findViewById(R.id.til_medication);
+
+
         if (admin==true) {
             complaints.setEnabled(false);
+        }
+        else {
+            tilMedication.setVisibility(View.GONE);
+            edtMedication.setVisibility(View.GONE);
+
         }
         Button submitButtonChange = dialog.findViewById(R.id.EditSubmit_button);
 
@@ -241,8 +250,14 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
             public void onClick(View v) {
                     String complaint = complaints.getText().toString();
                     String idd = String.valueOf(id);
-                    ChangeAppointment(idd, complaint);
 
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                ChangeAppointment(idd, complaint);
+                            }
+                        },
+                        500);
             }
         });
         dialog.show();
@@ -262,6 +277,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                                 JSONObject object = array.getJSONObject(i);
                                 String categoryID = object.optString("id");
                                 String categoryName = object.optString("name");
+
                                 categories.add(object);
                                 patientType.add(categoryName);
                                 patientAdapter = new ArrayAdapter<>(mContext,
@@ -317,7 +333,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
                                     complaintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     EditSpnComplaints.setAdapter(complaintAdapter);
                                 }
-                                SubCategoryReplace(EditSpnComplaints);
+//                                SubCategoryReplace(EditSpnComplaints);
 //                                Toast.makeText(mContext, "responsive" + response  ,Toast.LENGTH_LONG).show();
 
                             }catch (Exception e){
@@ -360,21 +376,28 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
 
                             ChangeCategoryId = object.getString("category_id");
                             ChangesubCategoryId = object.getString("sub_category_id");
-
                             catGlobal = object.getString("category");
                             sub_catGlobal = object.getString("sub_category");
                             schedule = object.getString("schedule");
                             complaint = object.getString("complaint");
-                            complaints.setText(complaint);
-                            scheduleEdit.setText(schedule);
-
-                            if (!complaint.matches("null")){
+                            if (!complaint.matches("null")) {
                                 complaints.setText(complaint);
                             }
+                            scheduleEdit.setText(schedule);
                             try {
                                 patientAdapter = (ArrayAdapter) apptCat.getAdapter(); //cast to an ArrayAdapter
                                 int spinnerPositionCat = patientAdapter.getPosition(catGlobal);
                                 apptCat.setSelection(spinnerPositionCat);
+
+                                new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                                        new Runnable() {
+                                            public void run() {
+                                                SubCategoryReplace(EditSpnComplaints);
+                                            }
+                                        },
+                                        500);
+
+
                             }
                             catch (Exception e){
                                 Toast.makeText(mContext, "Error  " + e ,Toast.LENGTH_LONG).show();

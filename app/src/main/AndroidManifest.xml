@@ -22,9 +22,10 @@
 <!--        android:name=".MainActivity"-->
 <!--        android:name=".Splash.Activity_Splash_Login"-->
 <!--        android:name=".SignUp"-->
-        <!--            android:name=".EditProfile"-->
+
+<!--        android:name=".Splash.Activity_Splash_Login"-->
         <activity
-            android:name=".Splash.Activity_Splash_Login"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +34,7 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".EditProfile"
             android:exported="true" />
 
         <activity
@@ -53,7 +54,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".EditProfile"
+            android:name=".Splash.Activity_Splash_Login"
             android:exported="true" />
 
     </application>

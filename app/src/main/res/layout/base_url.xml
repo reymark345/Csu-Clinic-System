@@ -9,14 +9,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel appointment"
+        android:text="BASE URL"
         android:textSize="24sp"
         android:textColor="@color/colorBlack"
         android:layout_marginBottom="16dp"
         android:id="@+id/textAppointment"/>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_remarks"
+        android:id="@+id/til_baseUrl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:endIconMode="clear_text"
@@ -29,11 +29,11 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
         <EditText
-            android:id="@+id/edtRemarksCancel"
+            android:id="@+id/edtBaseUrl"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:hint="Remarks (Mandatory)"
-            android:inputType="text|textMultiLine"
+            android:layout_height="wrap_content"
+            android:hint="eg. 192.168.1.1"
+            android:inputType="text"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -45,5 +45,5 @@
         android:text="Confirm"
         android:textColor="@color/colorWhite"
         android:background="@color/colorPrimary"
-        android:id="@+id/btn_cancel"/>
+        android:id="@+id/btn_baseUrl"/>
 </LinearLayout>

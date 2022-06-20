@@ -76,23 +76,6 @@ public class HomeRecords extends AppCompatActivity implements AdapterView.OnItem
     String Urltype,selectedCat, selectSubCat, useridd, type;
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if (item.getItemId() == R.id.action_add){
-            showCustomDialog();
-        }
-
-        return true;
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.dashboard_menu,menu);
-
-        return true;
-    }
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_records);

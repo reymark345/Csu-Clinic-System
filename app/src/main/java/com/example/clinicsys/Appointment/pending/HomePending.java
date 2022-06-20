@@ -1,5 +1,6 @@
 package com.example.clinicsys.Appointment.pending;
 
+import static com.example.clinicsys.MainActivity.admin;
 import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
 
 import android.app.DatePickerDialog;
@@ -70,7 +71,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
     private RecyclerView.Adapter mAdapter;
     private List<AppointmentPending> appointments;
     private ProgressBar progressBar;
-    public static boolean admin= false;
+//    public static boolean admin= false;
     ArrayList<String> complaintList = new ArrayList<>();
     ArrayList<String> patientType = new ArrayList<>();
     ArrayList<JSONObject> categories = new ArrayList<>();
@@ -97,9 +98,23 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
 
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.dashboard_menu,menu);
-
+        MenuItem shareItem = menu.findItem(R.id.action_add);
+        if (admin == true){
+            shareItem.setVisible(false);
+        }
         return true;
     }
+
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.sidemenu, menu);
+//        MenuItem shareItem = menu.findItem(R.id.editProfile);
+//
+//        // show the button when some condition is true
+//        shareItem.setVisible(false);
+//        return true;
+//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -324,6 +339,7 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
             Toast.makeText(getApplicationContext(), "Server Connection Failed", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void showDateTimeDialog(final EditText date_time_in) {
         final Calendar calendar=Calendar.getInstance();
         DatePickerDialog.OnDateSetListener dateSetListener=new DatePickerDialog.OnDateSetListener() {

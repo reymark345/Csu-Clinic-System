@@ -6,6 +6,7 @@ import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,12 +42,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
 public class EditProfile extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     EditText idNo,edtFirstname,edtMiddle,edtLast_name,edtBdate,edtContact,edtEmail, edtAddress;
     Button btnEdit, btnSave;
-    String userType, selectedPatient, patientReplace,sub_catGlobal;
+    String userId, selectedPatient, roleId;
     Spinner spnSex,spnPatient;
     boolean editable = false;
     Button btnUpdate;
@@ -85,11 +87,12 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
         btnEdit = findViewById(R.id.editProfile);
         edtAddress = findViewById(R.id.edt_address);
         btnUpdate = findViewById(R.id.updateProfileBtn);
+        btnUpdate.setVisibility(View.GONE);
         getAppointment();
         disabled();
         PatientType(spnPatient);
 
-        String[] Gender = new String[]{"Male", "Female"};
+        String[] Gender = new String[]{"male", "female"};
 
         adapterSex = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Gender);
         spnSex.setAdapter(adapterSex);
@@ -100,10 +103,17 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
             public void onClick(View v) {
                 if (editable==false){
                     enabled();
+                    Toasty.success(EditProfile.this, "Edit profile", Toast.LENGTH_SHORT, true).show();
+                    btnEdit.setBackgroundColor(Color.parseColor("#fcba03"));
+                    btnUpdate.setVisibility(View.VISIBLE);
                     editable = true;
+                    btnEdit.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_cancel, 0, 0, 0);
                 }
                 else{
                     disabled();
+                    btnEdit.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit, 0, 0, 0);
+                    btnEdit.setBackgroundColor(Color.parseColor("#667AFF"));
+                    btnUpdate.setVisibility(View.GONE);
                     editable = false;
                 }
             }
@@ -117,6 +127,15 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
     }
     public void updateProfile(){
         try {
+
+
+//            ToasterBuilderKtx.prepareToast(this) {
+//                message = "File uploaded successfully"
+//                leftDrawableRes = R.drawable.ic_baseline_cloud_done_24
+//                leftDrawableTint = R.color.blue
+//                stripTint = R.color.blue
+//                duration = Toaster.LENGTH_SHORT
+//            }.show()
 
             String id = idNo.getText().toString();
             String fname = edtFirstname.getText().toString();
@@ -134,7 +153,7 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    String[] field = new String[11];
+                    String[] field = new String[12];
                     field[0] = "id_no";
                     field[1] = "first_name";
                     field[2] = "middle_name";
@@ -146,9 +165,10 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
                     field[8] = "id";
                     field[9] = "sex";
                     field[10] = "patient_id";
+                    field[11] = "role_id";
 
                     //Creating array for data
-                    String[] data = new String[11];
+                    String[] data = new String[12];
                     data[0] = id;
                     data[1] = fname;
                     data[2] = middle;
@@ -157,9 +177,11 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
                     data[5] = contact;
                     data[6] = email;
                     data[7] = address;
-                    data[8] = userType;
+                    data[8] = userId;
                     data[9] = sex;
                     data[10] = selectedPatient;
+                    data[11] = roleId;
+
 
                     PutData putData = new PutData(BASE_URL+"/csu_clinic_app/api/users/update", "POST", field, data);
 //                        PutData putData = new PutData("http://192.168.254.109/csu_clinic/CancelApt.php", "POST", field, data);
@@ -167,19 +189,19 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
                         if (putData.onComplete()) {
                             String result = putData.getResult();
                             try {
-                                Toast.makeText(getApplicationContext(), "Mo error doctype" + result, Toast.LENGTH_SHORT).show();
-//                                JSONArray jsonArray = new JSONArray(result);
-//                                JSONObject jsonObject1 = jsonArray.getJSONObject(0);
-//
-//                                String message = jsonObject1.optString("message");
-//                                String type = jsonObject1.optString("type");
-                                String type = "success";
+//                                Toast.makeText(getApplicationContext(), "Mo error doctype" + result, Toast.LENGTH_SHORT).show();
+                                JSONArray jsonArray = new JSONArray(result);
+                                JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+
+                                String message = jsonObject1.optString("message");
+                                String type = jsonObject1.optString("type");
+//                                String type = "successaa";
 
                                 if (type.equals("success")) {
                                     final SweetAlertDialog pDiaglog = new SweetAlertDialog(
                                             EditProfile.this, SweetAlertDialog.SUCCESS_TYPE);
                                     pDiaglog.setTitleText("Successfully Save");
-                                    pDiaglog.setContentText("Appointment Change");
+                                    pDiaglog.setContentText("Profile save!");
                                     pDiaglog.setConfirmText("Ok");
                                     pDiaglog.setCancelable(false);
                                     pDiaglog.showCancelButton(false)
@@ -187,10 +209,10 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
                                                 @Override
                                                 public void onClick(SweetAlertDialog sDialog) {
 
-//                                                    Intent in = new Intent(mContext.getApplicationContext(), HomePending.class);
-//                                                    mContext.startActivity(in);
-//                                                    ((Activity) mContext).finish();
-//                                                    pDiaglog.dismiss();
+//                                                    Intent in = new Intent(EditProfile.this.getApplicationContext(), EditProfile.class);
+//                                                    EditProfile.this.startActivity(in);
+//                                                    ((Activity) EditProfile.this).finish();
+                                                    pDiaglog.dismiss();
 
                                                 }
                                             }).show();
@@ -218,8 +240,10 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
     }
     public void getAppointment (){
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
-        userType = sh.getString("userId", "");
-        String linkUrl = "/csu_clinic_app/api/users/show/"+userType;
+        userId = sh.getString("userId", "");
+        roleId = sh.getString("roleId", "");
+
+        String linkUrl = "/csu_clinic_app/api/users/show/"+userId;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+linkUrl,
                 new Response.Listener<String>() {
@@ -329,26 +353,24 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
         String useridd = sh.getString("userId", "");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/users/show/"+useridd,
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/category/list/2",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONObject object = new JSONObject(response);
-
-                            JSONArray array1 = object.getJSONArray("patient");
-                            JSONObject jsonObject = array1.getJSONObject(0);
-                            String name = jsonObject.getString("type");
                             String sex = object.getString("details");
+                            String patient = object.getString("patient");
                             JSONObject object2 = new JSONObject(sex);
                             String gender = object2.getString("sex");
+                            JSONObject object3 = new JSONObject(patient);
+                            String typeName = object3.getString("type");
+
                             new android.os.Handler(Looper.getMainLooper()).postDelayed(
                                     new Runnable() {
                                         public void run() {
                                             patientAdapter = (ArrayAdapter) spnPatient.getAdapter(); //cast to an ArrayAdapter
-                                            int spinnerSubCat = patientAdapter.getPosition(name);
-                                            spnPatient.setSelection(spinnerSubCat);
-
+                                            int spnAdapter = patientAdapter.getPosition(typeName);
+                                            spnPatient.setSelection(spnAdapter);
                                             adapterSex = (ArrayAdapter) spnSex.getAdapter();
                                             int spinnerSex = adapterSex.getPosition(gender);
                                             spnSex.setSelection(spinnerSex);
@@ -356,7 +378,7 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
                                     },
                                     500);
                         }catch (Exception e){
-                            Toast.makeText(EditProfile.this, "error " + e ,Toast.LENGTH_LONG).show();
+                            Toast.makeText(EditProfile.this, "error" + e ,Toast.LENGTH_LONG).show();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -371,7 +393,6 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         JSONObject category_data = patientType.get(i);
         selectedPatient = category_data.optString("id");
-        Toast.makeText(getApplicationContext(), "Patient Tpe" + selectedPatient, Toast.LENGTH_SHORT).show();
     }
     public void disabled(){
 

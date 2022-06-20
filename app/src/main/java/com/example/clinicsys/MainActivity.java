@@ -9,6 +9,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -68,19 +70,37 @@ public class MainActivity extends AppCompatActivity {
         View headerView = navigationView.getHeaderView(0);
         TextView navfullName = (TextView) headerView.findViewById(R.id.fullName);
         TextView navUsername = (TextView) headerView.findViewById(R.id.idNumber);
+
+
+//        Toast.makeText(getApplicationContext(), z, Toast.LENGTH_SHORT).show();
+
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
         String fName = sh.getString("firstName", "");
         String lName = sh.getString("lastName", "");
         String idNo = sh.getString("idNo", "");
         String roleName = sh.getString("roleName", "");
         String imageUrl = sh.getString("imageUrl", "");
+
         String fullName = fName + " "+ lName;
         navfullName.setText(fullName);
         navUsername.setText(idNo);
-        if (roleName.matches("staff") || roleName.matches("admin") ) {admin = true;}
-        else {admin = false;}
+        if (roleName.matches("staff") || roleName.matches("admin") ) {
+            admin = true;
+            Toast.makeText(getApplicationContext(), "True ", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            admin = false;
+            Toast.makeText(getApplicationContext(), "false ", Toast.LENGTH_SHORT).show();
+        }
 
-//        Toast.makeText(getApplicationContext(), "imageee  " + BASE_URL+"/csu_clinic_app/storage/profile_img/"+imageUrl, Toast.LENGTH_SHORT).show();
+//
+//        Menu menus = null;
+//        MenuItem item = menus.findItem(R.id.editProfile);
+//        item.setVisible(false);
+
+
+
+
 
         //        Glide.with(this)
 //                        .load("https://pixabay.com/images/search/nature/")
@@ -142,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     public void countAppointment (TextView txtPending, TextView txtApproved, TextView txtCancelled,TextView txtRecords){
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
         useridd = sh.getString("userId", "");
@@ -161,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
                             String cancelled = jsonObject1.optString("cancelled");
                             String records = jsonObject1.optString("records");
                             String completed = jsonObject1.optString("completed");
+
                             txtPending.setText(pending);
                             txtApproved.setText(approved);
                             txtCancelled.setText(cancelled);

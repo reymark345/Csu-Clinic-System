@@ -221,39 +221,71 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                                 data[12] = selectSubCat;
                                 data[13] = complaint;
 //
-                                PutData putData = new PutData(BASE_URL+"/csu_clinic_app/api/appointment/create/new", "POST", field, data);
+                                PutData putData = new PutData(BASE_URL + "/csu_clinic_app/api/appointment/create/new", "POST", field, data);
 
                                 if (putData.startPut()) {
+                                    if (putData.onComplete()) {
                                         String result = putData.getResult();
-                                        enabledAction();
-                                        progressBar.setVisibility(View.GONE);
-                                        final SweetAlertDialog pDiaglog = new SweetAlertDialog(
-                                                SignUp.this, SweetAlertDialog.SUCCESS_TYPE);
-                                        pDiaglog.setTitleText("Booked appointment successfully ");
-                                        pDiaglog.setConfirmText("Sign Up");
-                                        pDiaglog.setCancelText("Add");
-                                        pDiaglog.setCancelable(false);
-                                        pDiaglog.showCancelButton(true)
-                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                    @Override
-                                                    public void onClick(SweetAlertDialog sDialog) {
-                                                        Intent in = new Intent(getApplicationContext(), Activity_Splash_Login.class);
-                                                        startActivity(in);
-                                                        finish();
-                                                    }
-                                                })
-                                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                    @Override
-                                                    public void onClick(SweetAlertDialog sDialog) {
-                                                        Intent in = new Intent(getApplicationContext(), SignUp.class);
-                                                        startActivity(in);
-                                                        finish();
-                                                    }
-                                                }).show();
-                                            //End ProgressBar (Set visibility to GONE)
-                                            Log.i("PutData", result);
+
+                                        try{
+                                            JSONArray jsonArray = new JSONArray(result);
+                                            JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+                                            type = jsonObject1.optString("type");
+                                            if (type.equals("success")) {
+                                                enabledAction();
+                                                progressBar.setVisibility(View.GONE);
+                                                final SweetAlertDialog pDiaglog = new SweetAlertDialog(
+                                                        SignUp.this, SweetAlertDialog.SUCCESS_TYPE);
+                                                pDiaglog.setTitleText("Booked appointment successfully ");
+                                                pDiaglog.setConfirmText("Sign Up");
+                                                pDiaglog.setCancelText("Add");
+                                                pDiaglog.setCancelable(false);
+                                                pDiaglog.showCancelButton(true)
+                                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                            @Override
+                                                            public void onClick(SweetAlertDialog sDialog) {
+                                                                Intent in = new Intent(getApplicationContext(), Activity_Splash_Login.class);
+                                                                startActivity(in);
+                                                                finish();
+                                                            }
+                                                        })
+                                                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                            @Override
+                                                            public void onClick(SweetAlertDialog sDialog) {
+                                                                Intent in = new Intent(getApplicationContext(), SignUp.class);
+                                                                startActivity(in);
+                                                                finish();
+                                                            }
+                                                        }).show();
+                                                //End ProgressBar (Set visibility to GONE)
+                                                Log.i("PutData", result);
+
+                                            }
+                                            else {
+                                                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                                            }
+
+
+                                        }
+                                        catch (Exception e){
+                                            enabledAction();
+                                            progressBar.setVisibility(View.GONE);
+//                                            new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
+//                                                    .setTitleText("Error!")
+//                                                    .setContentText("ID number already exists")
+//                                                    .showCancelButton(true)
+//                                                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                                        @Override
+//                                                        public void onClick(SweetAlertDialog sDialog) {
+//                                                        }
+//                                                    }).show();
+                                        }
+
+
+
+                                    }
+                                    //End Write and Read data with URL
                                 }
-                                //End Write and Read data with URL
                             }
                         });
                     } else {

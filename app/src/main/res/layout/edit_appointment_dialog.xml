@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="280dp"
     android:layout_height="wrap_content"
     android:layout_margin="16dp">
 
@@ -77,6 +77,28 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_medication"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:endIconMode="clear_text"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        app:helperTextTextColor="@color/validation"
+        app:startIconDrawable="@drawable/ic_medication"
+        android:layout_below="@+id/til_schedule"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:hint="Medication"
+            android:id="@+id/medicationEdit"
+            android:inputType="text|textMultiLine"
+            android:layout_below="@id/EditSpnComplaints"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_complaints"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,7 +108,7 @@
         android:layout_marginLeft="10dp"
         app:helperTextTextColor="@color/validation"
         app:startIconDrawable="@drawable/ic_complaint"
-        android:layout_below="@+id/til_schedule"
+        android:layout_below="@+id/til_medication"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
         <EditText

@@ -5,10 +5,12 @@ import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -48,6 +50,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -59,18 +62,32 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
     private Button btnDone,btnChange, btnCancel;
     String message,type;
     ArrayList<String> complaintList = new ArrayList<>();
-    ArrayList<String> patientType = new ArrayList<>();
+    ArrayList<String> categoryType = new ArrayList<>();
     ArrayList<JSONObject> categories = new ArrayList<>();
     ArrayList<JSONObject> sub_categories = new ArrayList<>();
-    ArrayAdapter<String> patientAdapter;
+    ArrayAdapter<String> categoryAdapter;
     ArrayAdapter<String> complaintAdapter;
     RequestQueue requestQueue;
     String selectedCat, selectSubCat;
     Spinner EdtSpnAppointmentCat;
     Spinner EditSpnComplaints;
-    EditText scheduleEdit,complaints;
+    EditText scheduleEdit,complaints, edtMedication;
     int finalId;
     String ChangeCategoryId,ChangesubCategoryId,schedule,complaint,catGlobal, sub_catGlobal;
+    boolean[] selectedMedication;
+    ArrayList<Integer> medicationList = new ArrayList<>();
+
+    ArrayList<JSONObject> medication = new ArrayList<>();
+    ArrayList<String> medicationType = new ArrayList<>();
+    ArrayAdapter<String> medicationAdapter;
+
+
+    String[] medicationArray =  {"Amoxicillin","Paracetamol","Sympex", "Zilgam","Ceterezine"};
+
+
+
+
+
 
     public RecyclerAdapterApproved(Context context, List<AppointmentApproved> appointments){
         this.mContext = context;
@@ -207,6 +224,9 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
         EdtSpnAppointmentCat = dialog.findViewById(R.id.EdtSpnAppointmentCat);
         EditSpnComplaints = dialog.findViewById(R.id.EditSpnComplaints);
         scheduleEdit = dialog.findViewById(R.id.scheduleEdit);
+        edtMedication = dialog.findViewById(R.id.medicationEdit);
+        edtMedication = dialog.findViewById(R.id.medicationEdit);
+        selectedMedication = new boolean[medicationArray.length];
 
         complaints = dialog.findViewById(R.id.editComplaints);
         TextInputLayout tilComplaints = dialog.findViewById(R.id.til_complaints);
@@ -217,13 +237,67 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
 
         scheduleEdit.setFocusable(false);
         scheduleEdit.setClickable(true);
+        edtMedication.setFocusable(false);
+        edtMedication.setClickable(true);
 
         Category(EdtSpnAppointmentCat,id);
+        MedicationList();
 
         scheduleEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDateTimeDialog(scheduleEdit);
+            }
+        });
+        edtMedication.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("Select medication");
+                builder.setCancelable(false);
+                builder.setMultiChoiceItems(medicationArray, selectedMedication, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                        if (b){
+                            medicationList.add(i);
+                            Collections.sort(medicationList);
+                        }
+                        else{
+                            medicationList.remove(i);
+                        }
+                    }
+                });
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for(int j=0; j<medicationList.size();j++){
+                            stringBuilder.append(medicationArray[medicationList.get(j)]);
+                            if(j !=medicationList.size()-1){
+                                stringBuilder.append(", ");
+                            }
+                        }
+                        edtMedication.setText(stringBuilder.toString());
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        for(int j=0;j<selectedMedication.length;j++){
+                            selectedMedication[j]=false;
+                            medicationList.clear();
+                            edtMedication.setText("");
+                        }
+                    }
+                });
+                builder.show();
             }
         });
 
@@ -233,16 +307,46 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                     String complaint = complaints.getText().toString();
                     String idd = String.valueOf(id);
                     ChangeAppointment(idd, complaint);
-
-
             }
         });
         dialog.show();
     }
 
+
+    public void MedicationList(){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/medicine/list/2",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray array = new JSONArray(response);
+                            for (int i = 0; i<array.length(); i++){
+                                JSONObject object = array.getJSONObject(i);
+
+                                String medicineId = object.optString("id");
+                                String MedicineName = object.optString("name");
+
+                                //gettingMedicine through medicineName
+                                Toast.makeText(mContext, "Medicine result  " + MedicineName ,Toast.LENGTH_LONG).show();
+
+                            }
+                        }catch (Exception e){
+                            Toast.makeText(mContext, "error medicine  " + e ,Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(stringRequest);
+    }
+
     public void Category(Spinner aptCat, int id){
         categories.clear();
-        patientType.clear();
+        categoryType.clear();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL+"/csu_clinic_app/api/category/list/2",
                 new Response.Listener<String>() {
                     @Override
@@ -255,11 +359,11 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                                 String categoryID = object.optString("id");
                                 String categoryName = object.optString("name");
                                 categories.add(object);
-                                patientType.add(categoryName);
-                                patientAdapter = new ArrayAdapter<>(mContext,
-                                        android.R.layout.simple_spinner_item, patientType);
-                                patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                aptCat.setAdapter(patientAdapter);
+                                categoryType.add(categoryName);
+                                categoryAdapter = new ArrayAdapter<>(mContext,
+                                        android.R.layout.simple_spinner_item, categoryType);
+                                categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                aptCat.setAdapter(categoryAdapter);
                             }
                             new android.os.Handler(Looper.getMainLooper()).postDelayed(
                                     new Runnable() {
@@ -304,8 +408,8 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                                 complaints.setText(complaint);
                             }
                             try {
-                                patientAdapter = (ArrayAdapter) aptCat.getAdapter(); //cast to an ArrayAdapter
-                                int spinnerPositionCat = patientAdapter.getPosition(catGlobal);
+                                categoryAdapter = (ArrayAdapter) aptCat.getAdapter(); //cast to an ArrayAdapter
+                                int spinnerPositionCat = categoryAdapter.getPosition(catGlobal);
                                 aptCat.setSelection(spinnerPositionCat);
 
                             }
