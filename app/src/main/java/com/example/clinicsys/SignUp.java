@@ -1,11 +1,11 @@
 package com.example.clinicsys;
 
 
-import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -55,6 +55,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
     Button buttonSignup;
     private int prevCount = 0;
     String selectedCat, selectSubCat, selectedPatient, type;
+    public static String BASE_URL = "";
 
     Spinner spinnerPatientType,spinnerAppointment,spinnerSubCat, spinnerSex;
 
@@ -117,6 +118,12 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         tilCpno = findViewById(R.id.til_cpno);
         tilEmail = findViewById(R.id.til_email);
 //        tilPatientType = findViewById(R.id.til_patientType);
+
+
+        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
+        BASE_URL = sh.getString("urlBased", "");
+
+        Toast.makeText(getApplicationContext(), "strict " + BASE_URL, Toast.LENGTH_SHORT).show();
 
 
         String[] Gender = new String[]{"Male", "Female"};

@@ -183,11 +183,13 @@ public class MainActivity extends AppCompatActivity {
                             String records = jsonObject1.optString("records");
                             String completed = jsonObject1.optString("completed");
 
-                            txtPending.setText(pending);
-                            txtApproved.setText(approved);
-                            txtCancelled.setText(cancelled);
-                            txtCompleted.setText(completed);
-                            txtRecords.setText(records);
+                            if (!pending.matches("null") ){
+                                txtPending.setText(pending);
+                                txtApproved.setText(approved);
+                                txtCancelled.setText(cancelled);
+                                txtCompleted.setText(completed);
+                                txtRecords.setText(records);
+                            }
                         }
                         catch (Exception e){
                             Toast.makeText(getApplicationContext(), "catch error " + e, Toast.LENGTH_SHORT).show();
