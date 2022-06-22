@@ -520,9 +520,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
 
     public void ChangeAppointment(String id, String remarks){
         try {
-
-            Toast.makeText(mContext, "ID Appointment " + id, Toast.LENGTH_SHORT).show();
-
+//            Toast.makeText(mContext, "ID Appointment " + id, Toast.LENGTH_SHORT).show();
             String sched = scheduleEdit.getText().toString();
             //Start ProgressBar first (Set visibility VISIBLE)
             Handler handler = new Handler(Looper.getMainLooper());
