@@ -16,20 +16,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.clinicsys.Appointment.pending.HomePending;
-import com.example.clinicsys.EditProfile;
 import com.example.clinicsys.MainActivity;
 import com.example.clinicsys.R;
 import com.example.clinicsys.SignUp;
@@ -41,8 +34,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import es.dmoral.toasty.Toasty;
@@ -64,7 +55,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
     ArrayAdapter<String> patientAdapter;
     RequestQueue requestQueue;
     TextView newPatient,tv_BaseUrl;
-    String user_id,id_number,message,type,role,fname,lname, image, role_id;
+    String user_id,id_number,message,type,role,fname,lname, image, role_id, token;
 
 
     @Override
@@ -132,6 +123,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
 
                                             message = jsonObject1.optString("message");
                                             type = jsonObject1.optString("type");
+                                            token = jsonObject1.optString("token");
                                             id_number = jsonObject2.optString("id_no");
                                             fname = jsonObject2.optString("first_name");
                                             lname = jsonObject2.optString("last_name");
@@ -150,6 +142,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                                             myEdit.putString("roleName", role);
                                             myEdit.putString("imageUrl", image);
                                             myEdit.putString("roleId", role_id);
+                                            myEdit.putString("token", token);
                                             myEdit.commit();
 
 
@@ -166,7 +159,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                                         }
                                         catch (JSONException e)
                                         {
-                                            Toasty.error(Activity_Splash_Login.this, "Username/Password is wrong", Toast.LENGTH_SHORT, true).show();
+                                            Toasty.error(Activity_Splash_Login.this, "ID no./Password is wrong", Toast.LENGTH_SHORT, true).show();
                                         }
 
                                     }

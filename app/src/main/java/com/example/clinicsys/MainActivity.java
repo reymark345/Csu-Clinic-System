@@ -6,13 +6,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,24 +17,19 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.clinicsys.Appointment.approved.HomeApproved;
 import com.example.clinicsys.Appointment.pending.HomePending;
 
-import com.example.clinicsys.Appointment.records.AppointmentRecords;
 import com.example.clinicsys.Appointment.records.HomeRecords;
-import com.example.clinicsys.Appointment.records.RecyclerAdapterRecords;
+import com.example.clinicsys.Profile.EditProfile;
 import com.example.clinicsys.Splash.Activity_Splash_Login;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -80,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
         String idNo = sh.getString("idNo", "");
         String roleName = sh.getString("roleName", "");
         String imageUrl = sh.getString("imageUrl", "");
+        String token = sh.getString("token", "");
         BASE_URL = sh.getString("urlBased", "");
+
         String fullName = fName + " "+ lName;
         navfullName.setText(fullName);
         navUsername.setText(idNo);
@@ -93,9 +86,6 @@ public class MainActivity extends AppCompatActivity {
         else {
             admin = false;
         }
-
-
-
 
         if (!imageUrl.matches("null")){
             Glide.with(this)

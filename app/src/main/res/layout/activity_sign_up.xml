@@ -344,7 +344,6 @@
                 android:layout_height="wrap_content"
                 app:helperTextTextColor="@color/validation"
                 android:layout_below="@+id/til_complaint"
-                android:layout_marginBottom="90dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
                 <ProgressBar
@@ -355,6 +354,31 @@
                     android:visibility="gone"
                     android:layout_below="@+id/edtComplaint"
                     />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:helperTextTextColor="@color/validation"
+                android:layout_marginTop="25dp"
+                android:layout_below="@+id/til_progress"
+                android:layout_marginBottom="5dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <Button
+                    android:id="@+id/confirmRequestBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/mybutton"
+                    android:textSize="20dp"
+                    android:text="Confirm Request"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="5dp"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -379,18 +403,7 @@
 
 
 
-    <Button
-        android:id="@+id/confirmRequestBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/mybutton"
-        android:textSize="20dp"
-        android:text="Confirm Request"
-        android:textColor="@color/white"
-        android:layout_marginBottom="5dp"/>
+
 
 
 

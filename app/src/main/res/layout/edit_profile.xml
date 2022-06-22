@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".EditProfile">
+    tools:context=".Profile.EditProfile">
     <ScrollView
         android:id="@+id/scrolView_account"
         android:layout_width="match_parent"
@@ -51,17 +51,36 @@
                         android:id="@+id/txtProfileDetails"
                         android:text="Profile Details"
                         android:textStyle="bold" />
-
-                    <Button
-                        android:layout_width="45dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        android:padding="10dp"
-                        android:layout_marginRight="10dp"
-                        android:id="@+id/editProfile"
-                        android:drawableLeft="@drawable/ic_edit"
-                        android:textStyle="bold" />
+                        android:layout_gravity="right">
+
+
+                        <Button
+                            android:id="@+id/editPassword"
+                            android:layout_width="170dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginRight="10dp"
+                            android:padding="10dp"
+                            android:textSize="13dp"
+                            android:text="Change Password"
+                            android:textStyle="bold"
+                            />
+
+                            <Button
+                                android:layout_width="45dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:padding="10dp"
+                                android:layout_marginRight="10dp"
+                                android:id="@+id/editProfile"
+                                android:drawableLeft="@drawable/ic_edit"
+                                android:textStyle="bold" />
+
+                    </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/cc_idno"

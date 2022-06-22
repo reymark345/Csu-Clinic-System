@@ -87,7 +87,7 @@
             android:drawableLeft="@drawable/ic_baseline_email_24"
             android:drawablePadding="16dp"
             android:maxLength="9"
-            android:hint="ID no."
+            android:hint="ID number"
             android:inputType="number"
             android:padding="16dp"
             android:textSize="14sp" />
