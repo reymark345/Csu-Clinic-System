@@ -6,10 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/inventoryList"
+        android:id="@+id/AppointmentDash_Approved"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
-        app:cardBackgroundColor="@color/dashboard_item_2"
+        app:cardBackgroundColor="@color/dashboard_item_3"
         app:cardCornerRadius="@dimen/_14sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/_8sdp"
-            android:src="@drawable/ic_inventory"
+            android:src="@drawable/ic_approved"
             app:tint="@color/white"/>
     </com.google.android.material.card.MaterialCardView>
 
@@ -45,7 +45,7 @@
             android:paddingBottom="@dimen/_16sdp">
 
             <TextView
-                android:id="@+id/txtInventoryAmount"
+                android:id="@+id/txtApproved"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
@@ -62,10 +62,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_marginRight="@dimen/_8sdp"
-                android:text="Records"
+                android:text="Approved"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/_14ssp"
-                app:layout_constraintEnd_toStartOf="@id/txtInventoryAmount"
+                app:layout_constraintEnd_toStartOf="@id/txtApproved"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -74,7 +74,7 @@
                 android:layout_width="@dimen/_12sdp"
                 android:layout_height="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_4sdp"
-                android:src="@drawable/ic_creditcard"
+                android:src="@drawable/ic_sync_1"
                 app:layout_constraintStart_toStartOf="@id/textTitle"
                 app:layout_constraintTop_toBottomOf="@id/textTitle"
                 app:tint="@color/secondary_text"/>
@@ -83,13 +83,12 @@
                 android:id="@+id/textLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Data"
+                android:text="Done"
                 android:textColor="@color/secondary_text"
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageLocation"
                 app:layout_constraintStart_toEndOf="@id/imageLocation"
                 app:layout_constraintTop_toTopOf="@id/imageLocation"/>
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

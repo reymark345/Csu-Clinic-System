@@ -2,19 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior = "single">
-        <item android:id="@+id/history_menu"
+        <item android:id="@+id/editProfile"
             android:icon="@drawable/history"
-            android:title="Transaction history"/>
-        <item android:id="@+id/settings_menu"
-            android:icon="@drawable/settings"
-            android:title="Settings"/>
+            android:title="Edit Profile"/>
+
         <item android:id="@+id/logout_menu"
             android:icon="@drawable/logout"
             android:title="Logout"/>
     </group>
-
-
-
-
-
 </menu>

@@ -42,15 +42,6 @@
             android:background="@color/primary"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <com.github.ybq.android.spinkit.SpinKitView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/spin_kit"
-            style="@style/SpinKitView.Large.Circle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:SpinKit_Color="@color/validation"
-            tools:ignore="MissingConstraints" />
         <TextView
             android:id="@+id/textTitle"
             android:layout_width="wrap_content"
@@ -65,18 +56,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
-
-        <androidx.appcompat.widget.AppCompatImageView
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/ImgProfileDashboard"
             android:layout_width="@dimen/_26sdp"
             android:layout_height="@dimen/_26sdp"
             android:layout_marginEnd="@dimen/_16sdp"
             android:layout_marginRight="@dimen/_16sdp"
-            android:src="@drawable/dswd_logo"
+            android:src="@drawable/user_logo"
             app:layout_constraintBottom_toBottomOf="@id/textTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/textTitle"
-            app:tint="@color/white"
-            />
+           />
 
 
         <com.google.android.material.card.MaterialCardView
@@ -110,7 +101,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:background="@android:color/transparent"
-
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:scaleType="fitCenter"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -134,11 +125,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"
-                        android:text="Appointments"
+                        android:text="Pending"
                         android:textColor="@color/secondary_text"
                         android:textSize="@dimen/_10ssp"/>
 
                     <TextView
+                        android:id="@+id/txtPending"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"
@@ -167,12 +159,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"
-                        android:text="Pending"
+                        android:text="Completed"
                         android:textColor="@color/secondary_text"
                         android:textSize="@dimen/_10ssp"/>
 
                     <TextView
-                        android:id="@+id/txtPending"
+                        android:id="@+id/txtCompleted"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"
@@ -201,11 +193,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"
-                        android:text="Spam"
+                        android:text="Cancelled"
                         android:textColor="@color/secondary_text"
                         android:textSize="@dimen/_10ssp"/>
 
                     <TextView
+                        android:id="@+id/txtCancelled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"

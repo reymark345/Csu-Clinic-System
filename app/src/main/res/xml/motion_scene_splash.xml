@@ -96,6 +96,19 @@
                 android:alpha="1"
                 motion:framePosition="85"/>
 
+            <KeyAttribute
+                motion:motionTarget="@+id/PatientTypeSpinner"
+                android:alpha="0"
+                motion:framePosition="75"/>
+
+            <KeyAttribute
+                motion:motionTarget="@+id/PatientTypeSpinner"
+                android:alpha="1"
+                motion:framePosition="85"/>
+
+
+
+
             <KeyPosition
                 motion:framePosition="75"
                 motion:percentY="0"

@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/CardScan"
+        android:id="@+id/AppointmentDash_Pending"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
         app:cardBackgroundColor="@color/dashboard_item_1"
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/_8sdp"
-            android:src="@drawable/ic_scanner"
+            android:src="@drawable/ic_meeting"
             app:tint="@color/white"/>
     </com.google.android.material.card.MaterialCardView>
 
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_marginRight="@dimen/_8sdp"
-                android:text="Appointments"
+                android:text="Pending"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintEnd_toStartOf="@id/textAmount"
@@ -82,7 +82,7 @@
                 android:id="@+id/textLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Appointments"
+                android:text="Pending"
                 android:textColor="@color/secondary_text"
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageLocation"
