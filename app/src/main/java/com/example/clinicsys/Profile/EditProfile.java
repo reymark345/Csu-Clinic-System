@@ -1,15 +1,15 @@
-package com.example.clinicsys;
+package com.example.clinicsys.Profile;
 
 
 import static com.example.clinicsys.Splash.Activity_Splash_Login.BASE_URL;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,15 +29,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.clinicsys.Appointment.pending.HomePending;
-import com.example.clinicsys.Appointment.records.AppointmentRecords;
-import com.example.clinicsys.Appointment.records.HomeRecords;
-import com.example.clinicsys.Appointment.records.RecyclerAdapterRecords;
-import com.google.android.material.textfield.TextInputLayout;
+import com.bumptech.glide.Glide;
+import com.example.clinicsys.MainActivity;
+import com.example.clinicsys.R;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -47,7 +45,7 @@ import es.dmoral.toasty.Toasty;
 public class EditProfile extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     EditText idNo,edtFirstname,edtMiddle,edtLast_name,edtBdate,edtContact,edtEmail, edtAddress;
-    Button btnEdit, btnSave;
+    Button btnEdit, btnChangePass;
     String userId, selectedPatient, roleId;
     Spinner spnSex,spnPatient;
     boolean editable = false;
@@ -58,14 +56,7 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
     ArrayAdapter<String> patientAdapter;
     ArrayAdapter<String> adapterSex;
     RequestQueue requestQueue;
-
-
-    ArrayList<JSONObject> categories = new ArrayList<>();
-    ArrayList<JSONObject> sub_categories = new ArrayList<>();
-    ArrayList<String> complaintList = new ArrayList<>();
-    ArrayAdapter<String> complaintAdapter;
-
-
+    ImageView profileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +67,7 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
 
         idNo = findViewById(R.id.edt_idno);
         btnEdit = findViewById(R.id.editProfile);
+        btnChangePass = findViewById(R.id.editPassword);
         edtFirstname = findViewById(R.id.edt_Fname);
         edtMiddle = findViewById(R.id.edt_middleName);
         edtLast_name = findViewById(R.id.edt_lastName);
@@ -88,6 +80,14 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
         edtAddress = findViewById(R.id.edt_address);
         btnUpdate = findViewById(R.id.updateProfileBtn);
         btnUpdate.setVisibility(View.GONE);
+
+        profileImage = (ImageView) findViewById(R.id.imageview_account_profile);
+
+        edtFirstname.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        edtMiddle.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        edtLast_name.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        edtAddress.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+
         getAppointment();
         disabled();
         PatientType(spnPatient);
@@ -96,6 +96,15 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
 
         adapterSex = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Gender);
         spnSex.setAdapter(adapterSex);
+
+        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
+        String imageUrl = sh.getString("imageUrl", "");
+
+        if (!imageUrl.matches("null")){
+            Glide.with(this)
+                    .load(BASE_URL+"/csu_clinic_app/storage/profile_img/"+imageUrl)
+                    .into(profileImage);
+        }
 
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +125,14 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
                     btnUpdate.setVisibility(View.GONE);
                     editable = false;
                 }
+            }
+        });
+        btnChangePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ChangePassword.class);
+                startActivity(intent);
+                finish();
             }
         });
         btnUpdate.setOnClickListener(new View.OnClickListener() {

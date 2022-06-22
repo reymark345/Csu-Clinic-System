@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,7 +23,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -40,18 +38,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.clinicsys.EditProfile;
 import com.example.clinicsys.MainActivity;
 import com.example.clinicsys.R;
-import com.example.clinicsys.SignUp;
-import com.example.clinicsys.Splash.Activity_Splash_Login;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -90,7 +83,6 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
         if (item.getItemId() == R.id.action_add){
             showCustomDialog();
         }
-
         return true;
     }
     @Override
@@ -98,22 +90,12 @@ public class HomePending extends AppCompatActivity implements AdapterView.OnItem
 
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.dashboard_menu,menu);
-        MenuItem shareItem = menu.findItem(R.id.action_add);
-        if (admin == true){
-            shareItem.setVisible(false);
-        }
+//        MenuItem shareItem = menu.findItem(R.id.action_add);
+//        if (admin == true){
+//            shareItem.setVisible(false);
+//        }
         return true;
     }
-
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.sidemenu, menu);
-//        MenuItem shareItem = menu.findItem(R.id.editProfile);
-//
-//        // show the button when some condition is true
-//        shareItem.setVisible(false);
-//        return true;
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

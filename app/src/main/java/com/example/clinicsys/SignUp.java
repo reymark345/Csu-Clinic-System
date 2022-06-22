@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -119,20 +120,20 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         tilEmail = findViewById(R.id.til_email);
 //        tilPatientType = findViewById(R.id.til_patientType);
 
+        edtFirstname.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        edtAddress.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        edtMiddleName.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        edtLastname.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        edtAddress.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+
 
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
         BASE_URL = sh.getString("urlBased", "");
-
-        Toast.makeText(getApplicationContext(), "strict " + BASE_URL, Toast.LENGTH_SHORT).show();
-
 
         String[] Gender = new String[]{"Male", "Female"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Gender);
         spinnerSex.setAdapter(adapter);
-//        ArrayAdapter<String> adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, patientType);
-
-//        spinnerPatientType.setAdapter(adapt);
 
         edtSchedule.setFocusable(false);
         edtSchedule.setClickable(true);
@@ -164,7 +165,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
             public void onClick(View view) {
 
                 try {
-                    String id_no, patientType, fname, middle, lname, category, sub_category, sex, birthdate,schedule, email, contact_no, address, complaint;
+                    String id_no, fname, middle, lname, sex, birthdate,schedule, email, contact_no, address, complaint;
                     id_no = String.valueOf(edtIDno.getText());
                     fname = String.valueOf(edtFirstname.getText());
                     middle = String.valueOf(edtMiddleName.getText());
@@ -173,12 +174,8 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                     schedule = String.valueOf(edtSchedule.getText());
                     sex = spinnerSex.getSelectedItem().toString();
                     contact_no = String.valueOf(edtCpno.getText());
-//                    email = String.valueOf(edtEmail.getText());
                     address = String.valueOf(edtAddress.getText());
                     complaint = String.valueOf(edtComplaint.getText());
-//                    patientType = spinnerPatientType.getSelectedItem().toString();
-//                    category = spinnerAppointment.getSelectedItem().toString();
-//                    sub_category = spinnerSubCat.getSelectedItem().toString();
 
                     email = edtEmail.getText().toString().trim();
                     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -189,30 +186,32 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                     else if (!id_no.equals("") && !fname.equals("") && !lname.equals("")&& !birthdate.equals("")&& !schedule.equals("")&& !contact_no.equals("") && !email.equals("") && !address.equals("")) {
                         disabledAction();
                         progressBar.setVisibility(View.VISIBLE);
+
+                        String role = "1";
                         //Start ProgressBar first (Set visibility VISIBLE)
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                String[] field = new String[14];
-                                EditText edtIDno, edtPatient, edtFirstname, edtMiddleName, edtLastname, edtBirthdate, edtAge, edtCpno, edtEmail;
+                                String[] field = new String[15];
 
                                 field[0] = "id_no";
                                 field[1] = "first_name";
                                 field[2] = "middle_name";
                                 field[3] = "last_name";
-                                field[4] = "birthday";
+                                field[4] = "birthdate";
                                 field[5] = "schedule";
                                 field[6] = "sex";
-                                field[7] = "cellphone_no";
+                                field[7] = "contact_no";
                                 field[8] = "email";
                                 field[9] = "address";
-                                field[10] = "patient_type";
+                                field[10] = "patient_id";
                                 field[11] = "category";
                                 field[12] = "sub_category";
                                 field[13] = "complaint";
+                                field[14] = "role_id";
                                 //Creating array for data
-                                String[] data = new String[14];
+                                String[] data = new String[15];
                                 data[0] = id_no;
                                 data[1] = fname;
                                 data[2] = middle;
@@ -227,18 +226,18 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                                 data[11] = selectedCat;
                                 data[12] = selectSubCat;
                                 data[13] = complaint;
+                                data[14] = role;
+
 //
                                 PutData putData = new PutData(BASE_URL + "/csu_clinic_app/api/appointment/create/new", "POST", field, data);
 
                                 if (putData.startPut()) {
                                     if (putData.onComplete()) {
                                         String result = putData.getResult();
-
                                         try{
                                             JSONArray jsonArray = new JSONArray(result);
                                             JSONObject jsonObject1 = jsonArray.getJSONObject(0);
                                             type = jsonObject1.optString("type");
-                                            Toast.makeText(getApplicationContext(), "diri" + type, Toast.LENGTH_SHORT).show();
                                             if (type.equals("success")) {
                                                 enabledAction();
                                                 progressBar.setVisibility(View.GONE);
@@ -276,6 +275,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
 
                                         }
                                         catch (Exception e){
+                                            Toast.makeText(getApplicationContext(), "The error " + e, Toast.LENGTH_SHORT).show();
                                             enabledAction();
                                             progressBar.setVisibility(View.GONE);
 //                                            new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)

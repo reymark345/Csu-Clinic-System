@@ -132,7 +132,7 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Appointment IDs" +  appointment.getIdd(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "Appointment IDs" +  appointment.getIdd(), Toast.LENGTH_SHORT).show();
                 final SweetAlertDialog pDiaglog = new SweetAlertDialog(
                         mContext, SweetAlertDialog.WARNING_TYPE);
                 pDiaglog.setTitleText("Are you sure?");
@@ -229,15 +229,11 @@ public class RecyclerAdapterPending extends RecyclerView.Adapter<RecyclerAdapter
         complaints = dialog.findViewById(R.id.editComplaints);
         TextInputLayout tilComplaints = dialog.findViewById(R.id.til_complaints);
         TextInputLayout tilMedication = dialog.findViewById(R.id.til_medication);
-
+        tilMedication.setVisibility(View.GONE);
+        edtMedication.setVisibility(View.GONE);
 
         if (admin==true) {
             complaints.setEnabled(false);
-        }
-        else {
-            tilMedication.setVisibility(View.GONE);
-            edtMedication.setVisibility(View.GONE);
-
         }
         Button submitButtonChange = dialog.findViewById(R.id.EditSubmit_button);
 
