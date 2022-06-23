@@ -76,9 +76,9 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
     TextInputLayout tilIdno, tilFname, tilMiddle,tilLastname, tilSex, tilAddress, tilBdate, til_SubCat, tilCpno, tilEmail;
     String blankMessage = "Please fill this blank";
     private ProgressBar progressBar;
-    private boolean isAtSpaceDelimiter(int currCount) {
-        return currCount == 3;
-    }
+//    private boolean isAtSpaceDelimiter(int currCount) {
+//        return currCount == 3;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -578,53 +578,53 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
 
 
 
-    private boolean shouldIncrementOrDecrement(int currCount, boolean shouldIncrement) {
-        if (shouldIncrement) {
-            return prevCount <= currCount && isAtSpaceDelimiter(currCount);
-        } else {
-            return prevCount > currCount && isAtSpaceDelimiter(currCount);
-        }
-    }
-    private void appendOrStrip(String field, boolean shouldAppend) {
-        StringBuilder sb = new StringBuilder(field);
-        if (shouldAppend) {
-            sb.append("-");
-        } else {
-            sb.setLength(sb.length() - 1);
-        }
-        edtIDno.setText(sb.toString());
-        edtIDno.setSelection(sb.length());
-    }
+//    private boolean shouldIncrementOrDecrement(int currCount, boolean shouldIncrement) {
+//        if (shouldIncrement) {
+//            return prevCount <= currCount && isAtSpaceDelimiter(currCount);
+//        } else {
+//            return prevCount > currCount && isAtSpaceDelimiter(currCount);
+//        }
+//    }
+//    private void appendOrStrip(String field, boolean shouldAppend) {
+//        StringBuilder sb = new StringBuilder(field);
+//        if (shouldAppend) {
+//            sb.append("-");
+//        } else {
+//            sb.setLength(sb.length() - 1);
+//        }
+//        edtIDno.setText(sb.toString());
+//        edtIDno.setSelection(sb.length());
+//    }
     public void DataAuthentication(){
-        edtIDno.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                if(s.toString().length() != 9){
-                    tilIdno.setError("Not enough length");
-                }
-                else{
-                    tilIdno.setError(null);
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                String field = s.toString();
-                int currCount = field.length();
-
-                if (shouldIncrementOrDecrement(currCount, true)){
-                    appendOrStrip(field, true);
-                } else if (shouldIncrementOrDecrement(currCount, false)) {
-                    appendOrStrip(field, false);
-                }
-                prevCount = edtIDno.getText().toString().length();
-
-
-            }
-        });
+//        edtIDno.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//            @Override
+//            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+//                if(s.toString().length() != 9){
+//                    tilIdno.setError("Not enough length");
+//                }
+//                else{
+//                    tilIdno.setError(null);
+//                }
+//            }
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                String field = s.toString();
+//                int currCount = field.length();
+//
+//                if (shouldIncrementOrDecrement(currCount, true)){
+//                    appendOrStrip(field, true);
+//                } else if (shouldIncrementOrDecrement(currCount, false)) {
+//                    appendOrStrip(field, false);
+//                }
+//                prevCount = edtIDno.getText().toString().length();
+//
+//
+//            }
+//        });
         edtFirstname.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
