@@ -34,7 +34,7 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     CardView AppointmentDashPending,AppointmentDashApproved,AppointmentDashRecords, Logout;
-    TextView txtPending, txtApproved, txtRecords, txtCancelled, txtCompleted;
+    TextView txtApprovedDashboard, txtRecords, txtCancelled, txtCompleted;
     RequestQueue requestQueue;
     DrawerLayout drawerLayout;
     String Urltype,useridd;
@@ -47,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_main);
         requestQueue = Volley.newRequestQueue(this);
-        AppointmentDashPending = (CardView) findViewById(R.id.AppointmentDash_Pending);
+//        AppointmentDashPending = (CardView) findViewById(R.id.AppointmentDash_Pending);
         AppointmentDashApproved = (CardView) findViewById(R.id.AppointmentDash_Approved);
         AppointmentDashRecords = (CardView) findViewById(R.id.AppointmentDashRecords);
-        txtPending = (TextView) findViewById(R.id.txtPending);
-        txtApproved = (TextView) findViewById(R.id.txtApproved);
+        txtApprovedDashboard = (TextView) findViewById(R.id.txtApprovedDashboard);
+//        txtApproved = (TextView) findViewById(R.id.txtApproved);
         txtCancelled = (TextView) findViewById(R.id.txtCancelled);
         txtRecords = (TextView) findViewById(R.id.txtRecords);
         txtCompleted = (TextView) findViewById(R.id.txtCompleted);
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         navfullName.setText(fullName);
         navUsername.setText(idNo);
 
-        countAppointment(txtPending,txtApproved,txtCancelled,txtRecords);
+        countAppointment(txtApprovedDashboard,txtCancelled,txtRecords);
 
         if (roleName.matches("staff") || roleName.matches("admin") ) {
             admin = true;
@@ -116,14 +116,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        AppointmentDashPending.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HomePending.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        AppointmentDashPending.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, HomePending.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
         AppointmentDashApproved.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void countAppointment (TextView txtPending, TextView txtApproved, TextView txtCancelled,TextView txtRecords){
+    public void countAppointment (TextView txtPending, TextView txtCancelled,TextView txtRecords){
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
         useridd = sh.getString("userId", "");
         String roleName = sh.getString("roleName", "");
@@ -174,8 +174,7 @@ public class MainActivity extends AppCompatActivity {
                             String completed = jsonObject1.optString("completed");
 
                             if (!pending.matches("null") ){
-                                txtPending.setText(pending);
-                                txtApproved.setText(approved);
+                                txtPending.setText(approved);
                                 txtCancelled.setText(cancelled);
                                 txtCompleted.setText(completed);
                                 txtRecords.setText(records);

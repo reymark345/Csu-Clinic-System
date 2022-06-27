@@ -125,12 +125,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"
-                        android:text="Pending"
+                        android:text="Approved"
                         android:textColor="@color/secondary_text"
                         android:textSize="@dimen/_10ssp"/>
 
                     <TextView
-                        android:id="@+id/txtPending"
+                        android:id="@+id/txtApprovedDashboard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_4sdp"
@@ -224,7 +224,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <include layout="@layout/dashboard_item_1"/>
+<!--                <include layout="@layout/dashboard_item_1"/>-->
                 <include layout="@layout/dashboard_item_2"/>
                 <include layout="@layout/dashboard_item_3"/>
                 <include layout="@layout/dashboard_item_4"/>

@@ -42,6 +42,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.clinicsys.MainActivity;
 import com.example.clinicsys.R;
+import com.example.clinicsys.Splash.Activity_Splash_Login;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 import org.json.JSONArray;
@@ -55,6 +56,7 @@ import java.util.Collections;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
 public class HomeApproved extends AppCompatActivity implements AdapterView.OnItemSelectedListener  {
 
@@ -77,7 +79,28 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
 
     Spinner spnAppointmentCat, spinnerComplaints;
     EditText edtSched, edtComplaints, edtMedication;
-    String Urltype,categoryID,selectedCat, selectSubCat, useridd, type;
+    String Urltype,categoryID,selectedCat, selectSubCat, useridd, type, message;
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == R.id.action_add){
+            showCustomDialog();
+        }
+        return true;
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.dashboard_menu,menu);
+//        MenuItem shareItem = menu.findItem(R.id.action_add);
+//        if (admin == true){
+//            shareItem.setVisible(false);
+//        }
+        return true;
+    }
 
 
 
@@ -260,6 +283,7 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
                                     JSONArray jsonArray = new JSONArray(result);
                                     JSONObject jsonObject1 = jsonArray.getJSONObject(0);
                                     type = jsonObject1.optString("type");
+                                    message = jsonObject1.optString("message");
                                     if (type.equals("success")) {
                                         final SweetAlertDialog pDiaglog = new SweetAlertDialog(
                                                 HomeApproved.this, SweetAlertDialog.SUCCESS_TYPE);
@@ -276,8 +300,19 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
                                                         pDiaglog.dismiss();
                                                     }
                                                 }).show();
-
-                                    } else {
+                                    }
+                                    else if(type.equals("error")){
+                                        new SweetAlertDialog(HomeApproved.this, SweetAlertDialog.ERROR_TYPE)
+                                                .setTitleText("Error!")
+                                                .setContentText(message)
+                                                .showCancelButton(true)
+                                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sDialog) {
+                                                    }
+                                                }).show();
+                                    }
+                                    else {
                                         Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                                     }
                                 }
