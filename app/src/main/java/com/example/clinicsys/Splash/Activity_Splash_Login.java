@@ -71,7 +71,7 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
 
 
         newPatient.setPaintFlags(newPatient.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
-        DataAuthentication();
+//        DataAuthentication();
 
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_APPEND);
         BASE_URL  = sh.getString("urlBased", "");
@@ -238,20 +238,6 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
         dialog.show();
     }
 
-public void fetchToken(){
-    FetchData fetchData = new FetchData("http://192.168.1.3/csu_clinic_app/refreshtokens");
-    if (fetchData.startFetch()) {
-        if (fetchData.onComplete()) {
-            String fetchResult = fetchData.getResult();
-            Toast.makeText(getApplicationContext(), "fetchToken " + fetchResult, Toast.LENGTH_SHORT).show();
-//
-            Log.i("fetchData", fetchResult);
-        }}
-}
-
-
-
-
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
     }
@@ -261,52 +247,52 @@ public void fetchToken(){
 
     }
 
-    private boolean shouldIncrementOrDecrement(int currCount, boolean shouldIncrement) {
-        if (shouldIncrement) {
-            return prevCount <= currCount && isAtSpaceDelimiter(currCount);
-        } else {
-            return prevCount > currCount && isAtSpaceDelimiter(currCount);
-        }
-    }
-    private void appendOrStrip(String field, boolean shouldAppend) {
-        StringBuilder sb = new StringBuilder(field);
-        if (shouldAppend) {
-            sb.append("-");
-        } else {
-            sb.setLength(sb.length() - 1);
-        }
-        EdtloginIdno.setText(sb.toString());
-        EdtloginIdno.setSelection(sb.length());
-    }
-    public void DataAuthentication(){
-        EdtloginIdno.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                if(s.toString().length() != 9){
-                    EdtloginIdno.setError("Not enough length");
-                }
-                else{
-                    EdtloginIdno.setError(null);
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                String field = s.toString();
-                int currCount = field.length();
-
-                if (shouldIncrementOrDecrement(currCount, true)){
-                    appendOrStrip(field, true);
-                } else if (shouldIncrementOrDecrement(currCount, false)) {
-                    appendOrStrip(field, false);
-                }
-                prevCount = EdtloginIdno.getText().toString().length();
-
-
-            }
-        });
-    }
+//    private boolean shouldIncrementOrDecrement(int currCount, boolean shouldIncrement) {
+//        if (shouldIncrement) {
+//            return prevCount <= currCount && isAtSpaceDelimiter(currCount);
+//        } else {
+//            return prevCount > currCount && isAtSpaceDelimiter(currCount);
+//        }
+//    }
+//    private void appendOrStrip(String field, boolean shouldAppend) {
+//        StringBuilder sb = new StringBuilder(field);
+//        if (shouldAppend) {
+//            sb.append("-");
+//        } else {
+//            sb.setLength(sb.length() - 1);
+//        }
+//        EdtloginIdno.setText(sb.toString());
+//        EdtloginIdno.setSelection(sb.length());
+//    }
+//    public void DataAuthentication(){
+//        EdtloginIdno.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//            @Override
+//            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+//                if(s.toString().length() != 9){
+//                    EdtloginIdno.setError("Not enough length");
+//                }
+//                else{
+//                    EdtloginIdno.setError(null);
+//                }
+//            }
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                String field = s.toString();
+//                int currCount = field.length();
+//
+//                if (shouldIncrementOrDecrement(currCount, true)){
+//                    appendOrStrip(field, true);
+//                } else if (shouldIncrementOrDecrement(currCount, false)) {
+//                    appendOrStrip(field, false);
+//                }
+//                prevCount = EdtloginIdno.getText().toString().length();
+//
+//
+//            }
+//        });
+//    }
 }

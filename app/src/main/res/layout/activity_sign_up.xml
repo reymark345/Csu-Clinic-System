@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/til_Idno"
                 app:counterEnabled="true"
-                app:counterMaxLength="9"
+                app:counterMaxLength="12"
                 app:endIconMode="clear_text"
                 app:helperText="Good valid!"
                 android:layout_marginTop="50dp"
@@ -38,10 +38,10 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLength="9"
+                    android:maxLength="12"
                     android:hint="ID No."
                     android:id="@+id/edtIdno"
-                    android:inputType="number"/>
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
