@@ -49,6 +49,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -79,7 +80,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
     String ChangeCategoryId,ChangesubCategoryId,schedule,complaint,catGlobal, sub_catGlobal;
     boolean[] selectedMedication;
     ArrayList<Integer> medicationList = new ArrayList<Integer>();
-
+    ArrayList<Integer> medicationUpdate = new ArrayList<Integer>();
     ArrayList<JSONObject> medication = new ArrayList<>();
     ArrayList<String> medicationType = new ArrayList<>();
     ArrayAdapter<String> medicationAdapter;
@@ -87,6 +88,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
 
 //    String[] medicationArray =  {"Amoxicillin","Paracetamol","Sympex", "Zilgam","Ceterezine"};
     ArrayList<String> medicationArray = new ArrayList<>();
+    ArrayList<JSONObject> medicationData = new ArrayList<>();
     TextView txt_loading,txt_loadingChange;
 
 
@@ -285,13 +287,12 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                 builder.setMultiChoiceItems(arr, selectedMedication, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                        if (b){
+                        if (b) {
                             medicationList.add(i);
                             Collections.sort(medicationList);
-                        }
-                        else{
-                            medicationList.remove(i);
-                            ApptMedications.remove(i);
+                        } else {
+                            medicationList.remove(Integer.valueOf(i));
+                            ApptMedications.remove(Integer.valueOf(i));
                         }
                     }
                 });
@@ -331,11 +332,18 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
         submitButtonChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    txt_loadingChange.setVisibility(View.VISIBLE);
-                    submitButtonChange.setClickable(false);
-                    String complaint = complaints.getText().toString();
-                    String idd = String.valueOf(id);
-                    ChangeAppointment(idd, complaint);
+                txt_loadingChange.setVisibility(View.VISIBLE);
+                submitButtonChange.setClickable(false);
+                String complaint = complaints.getText().toString();
+                String idd = String.valueOf(id);
+                for (int i=0; i<medicationList.size(); i++) {
+                    for (int j=0; j<medicationData.size(); j++) {
+                        if (medicationArray.get(medicationList.get(i)).equals(medicationData.get(j).optString("name"))) {
+                            medicationUpdate.add(medicationData.get(j).optInt("id"));
+                        }
+                    }
+                }
+                ChangeAppointment(idd, complaint);
             }
         });
         dialog.show();
@@ -354,7 +362,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                                 String medicineId = object.optString("id");
                                 String MedicineName = object.optString("name");
                                 medicationArray.add(MedicineName);
-
+                                medicationData.add(object);
                             }
                         }catch (Exception e){
                             Toast.makeText(mContext, "error medicine  " + e ,Toast.LENGTH_LONG).show();
@@ -619,25 +627,27 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    String[] field = new String[5];
+                    String[] field = new String[6];
                     field[0] = "id";
                     field[1] = "schedule";
                     field[2] = "category";
                     field[3] = "sub_category";
-                    field[4] = "complaint";
+                    field[4] = "remarks";
+                    field[5] = "medications";
                     //Creating array for data
-                    String[] data = new String[5];
+                    String[] data = new String[6];
                     data[0] = id;
                     data[1] = sched;
                     data[2] = selectedCat;
                     data[3] = selectSubCat;
                     data[4] = remarks;
-                    PutData putData = new PutData(BASE_URL+"/csu_clinic_app/api/appointment/pending/update", "POST", field, data);
+                    data[5] = medicationUpdate.toString();
+
+                    PutData putData = new PutData(BASE_URL+"/csu_clinic_app/api/appointment/approved/update", "POST", field, data);
 //                        PutData putData = new PutData("http://192.168.254.109/csu_clinic/CancelApt.php", "POST", field, data);
                     if (putData.startPut()) {
                         if (putData.onComplete()) {
                             String result = putData.getResult();
-
                             try {
                                 JSONArray jsonArray = new JSONArray(result);
                                 JSONObject jsonObject1 = jsonArray.getJSONObject(0);
