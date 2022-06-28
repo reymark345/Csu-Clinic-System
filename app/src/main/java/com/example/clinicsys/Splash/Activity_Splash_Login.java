@@ -1,12 +1,20 @@
 package com.example.clinicsys.Splash;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -23,6 +31,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.clinicsys.Appointment.approved.HomeApproved;
 import com.example.clinicsys.MainActivity;
 import com.example.clinicsys.R;
 import com.example.clinicsys.SignUp;
@@ -34,8 +43,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 
 
@@ -109,6 +123,10 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                                 String[] data = new String[2];
                                 data[0] = id_no;
                                 data[1] = password;
+
+                                MyTask task = new MyTask();
+                                task.execute(BASE_URL);
+
                                 PutData putData = new PutData(BASE_URL+"/csu_clinic_app/api/auth", "POST", field, data);
                                 if (putData.startPut()) {
                                     if (putData.onComplete()) {
@@ -245,6 +263,48 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private class MyTask extends AsyncTask<String, Void, Boolean> {
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                HttpURLConnection.setFollowRedirects(false);
+                HttpURLConnection con = (HttpURLConnection) new URL(params[0]).openConnection();
+                con.setRequestMethod("HEAD");
+                System.out.println(con.getResponseCode());
+                return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected  void onPostExecute(Boolean result) {
+            boolean bResponse = result;
+            if (bResponse == false) {
+                final SweetAlertDialog pDiaglog = new SweetAlertDialog(
+                        Activity_Splash_Login.this, SweetAlertDialog.ERROR_TYPE);
+                pDiaglog.setTitleText("INVALID");
+                pDiaglog.setContentText("NO BASE_URL CONNECTION MATCH");
+                pDiaglog.setConfirmText("Ok");
+                pDiaglog.setCancelable(false);
+                pDiaglog.showCancelButton(false)
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                pDiaglog.dismiss();
+                            }
+                        }).show();
+
+            }
+        }
     }
 
 //    private boolean shouldIncrementOrDecrement(int currCount, boolean shouldIncrement) {
