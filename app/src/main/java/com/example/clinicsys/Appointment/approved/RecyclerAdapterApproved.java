@@ -261,24 +261,23 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                 showDateTimeDialog(scheduleEdit);
             }
         });
-        medicationList.clear();
-        edtMedication.setText("");
+//        edtMedication.setText("");
         edtMedication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setTitle("Select medication");
                 builder.setCancelable(false);
                 String[] arr = new String[medicationArray.size()];
+                medicationList.clear();
                 for(int i=0 ; i< medicationArray.size();i++){
                     arr[i] = medicationArray.get(i);
+                    selectedMedication[i] = false;
                     //getProductName or any suitable method
                     for (int j=0 ; j<ApptMedications.length(); j++) {
                         if (ApptMedications.optString(j).equals(medicationArray.get(i))) {
                             selectedMedication[i] = true;
                             medicationList.add(i);
-                            Collections.sort(medicationList);
                         }
                     }
                 }
@@ -286,12 +285,28 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                 builder.setMultiChoiceItems(arr, selectedMedication, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+//                        for(int i=0 ; i< medicationArray.size();i++){
+//                            arr[i] = medicationArray.get(i);
+//                            selectedMedication[i] = false;
+//                            //getProductName or any suitable method
+//                            for (int j=0 ; j<ApptMedications.length(); j++) {
+//                                if (ApptMedications.optString(j).equals(medicationArray.get(i))) {
+//                                    selectedMedication[i] = true;
+//                                    medicationList.add(i);
+//                                }
+//                            }
+//                        }
                         if (b) {
                             medicationList.add(i);
+                            ApptMedications.put(medicationArray.get(i));
                             Collections.sort(medicationList);
                         } else {
                             medicationList.remove(Integer.valueOf(i));
-                            ApptMedications.remove(Integer.valueOf(i));
+                            for (int x=0; x < ApptMedications.length(); x++) {
+                                if (ApptMedications.optString(x).equals(medicationArray.get(i))) {
+                                    ApptMedications.remove(x);
+                                }
+                            }
                         }
                     }
                 });
@@ -335,6 +350,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                 submitButtonChange.setClickable(false);
                 String complaint = complaints.getText().toString();
                 String idd = String.valueOf(id);
+                medicationUpdate.clear();
                 for (int i=0; i<medicationList.size(); i++) {
                     for (int j=0; j<medicationData.size(); j++) {
                         if (medicationArray.get(medicationList.get(i)).equals(medicationData.get(j).optString("name"))) {
@@ -357,6 +373,8 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                     public void onResponse(String response) {
                         try {
                             JSONArray array = new JSONArray(response);
+                            medicationArray.clear();
+                            medicationData.clear();
                             for (int i = 0; i<array.length(); i++){
                                 JSONObject object = array.getJSONObject(i);
                                 String medicineId = object.optString("id");
@@ -430,7 +448,6 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                         try {
 
                             JSONObject object = new JSONObject(response);
-
                             ChangeCategoryId = object.getString("category_id");
                             ChangesubCategoryId = object.getString("sub_category_id");
                             catGlobal= object.getString("category");
@@ -439,6 +456,10 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                             schedule = object.getString("schedule");
                             complaint = object.getString("remarks");
                             scheduleEdit.setText(schedule);
+                            medicationUpdate.clear();
+                            for (int j=0; j<object.getJSONArray("medications").length(); j++) {
+                                    medicationUpdate.add((Integer) object.getJSONArray("medications").get(j));
+                            }
                             if (!complaint.matches("null")){
                                 complaints.setText(complaint);
                             }

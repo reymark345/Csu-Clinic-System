@@ -303,6 +303,8 @@ public class Activity_Splash_Login extends AppCompatActivity implements AdapterV
                             }
                         }).show();
 
+                return;
+
             }
         }
     }
