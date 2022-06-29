@@ -115,7 +115,7 @@
             android:id="@+id/editComplaints"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:hint="Complaint (Optional)"
+            android:hint="Remarks"
             android:inputType="text|textMultiLine"
             />
     </com.google.android.material.textfield.TextInputLayout>

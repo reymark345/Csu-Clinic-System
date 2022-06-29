@@ -12,6 +12,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -59,9 +60,10 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapterApproved.MyViewHolderApproved> implements AdapterView.OnItemSelectedListener {
 
+    private static final String TAG ="" ;
     private Context mContext;
     private List<AppointmentApproved> appointments = new ArrayList<>();
-    private Button btnDone,btnChange, btnCancel;
+    private Button btnDone,btnChange, btnCancel,submitButtonChange ;
     String message,type;
     ArrayList<String> complaintList = new ArrayList<>();
     ArrayList<String> categoryType = new ArrayList<>();
@@ -243,10 +245,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
         txt_loadingChange.setVisibility(View.GONE);
         complaints = dialog.findViewById(R.id.editComplaints);
         TextInputLayout tilComplaints = dialog.findViewById(R.id.til_complaints);
-        if (admin==true) {
-            complaints.setEnabled(false);
-        }
-        Button submitButtonChange = dialog.findViewById(R.id.EditSubmit_button);
+        submitButtonChange = dialog.findViewById(R.id.EditSubmit_button);
 
 
         scheduleEdit.setFocusable(false);
@@ -343,6 +342,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                         }
                     }
                 }
+
                 ChangeAppointment(idd, complaint);
             }
         });
@@ -437,7 +437,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                             sub_catGlobal = object.getString("sub_category");
                             ApptMedications = object.getJSONArray("medications_name");
                             schedule = object.getString("schedule");
-                            complaint = object.getString("complaint");
+                            complaint = object.getString("remarks");
                             scheduleEdit.setText(schedule);
                             if (!complaint.matches("null")){
                                 complaints.setText(complaint);
@@ -621,6 +621,8 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
     public void ChangeAppointment(String id, String remarks){
         try {
 
+            Toast.makeText(mContext, "try "+remarks, Toast.LENGTH_SHORT).show();
+            Log.i(TAG,"aPPOINTMENT TEST " + remarks);
             String sched = scheduleEdit.getText().toString();
             //Start ProgressBar first (Set visibility VISIBLE)
             Handler handler = new Handler(Looper.getMainLooper());
@@ -659,24 +661,37 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                                     final SweetAlertDialog pDiaglog = new SweetAlertDialog(
                                             mContext, SweetAlertDialog.SUCCESS_TYPE);
                                     pDiaglog.setTitleText("Successfully Save");
-                                    pDiaglog.setContentText("Appointment Cancel");
+                                    pDiaglog.setContentText("Appointment Updated");
                                     pDiaglog.setConfirmText("Ok");
                                     pDiaglog.setCancelable(false);
                                     pDiaglog.showCancelButton(false)
                                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                                 @Override
                                                 public void onClick(SweetAlertDialog sDialog) {
-
-                                                    Intent in = new Intent(mContext.getApplicationContext(), HomeApproved.class);
-                                                    mContext.startActivity(in);
-                                                    ((Activity) mContext).finish();
+                                                    txt_loadingChange.setVisibility(View.GONE);
+                                                    submitButtonChange.setClickable(true);
+//                                                    Intent in = new Intent(mContext.getApplicationContext(), HomeApproved.class);
+//                                                    mContext.startActivity(in);
+//                                                    ((Activity) mContext).finish();
                                                     pDiaglog.dismiss();
-
                                                 }
                                             }).show();
-
                                 } else {
-                                    Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                                    txt_loadingChange.setVisibility(View.GONE);
+                                    submitButtonChange.setClickable(true);
+                                    final SweetAlertDialog pDiaglog = new SweetAlertDialog(
+                                            mContext, SweetAlertDialog.ERROR_TYPE);
+                                    pDiaglog.setTitleText("Error!");
+                                    pDiaglog.setContentText(message);
+                                    pDiaglog.setConfirmText("Ok");
+                                    pDiaglog.setCancelable(false);
+                                    pDiaglog.showCancelButton(false)
+                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                @Override
+                                                public void onClick(SweetAlertDialog sDialog) {
+                                                    pDiaglog.dismiss();
+                                                }
+                                            }).show();
                                 }
                                 //End ProgressBar (Set visibility to GONE)
                                 Log.i("PutData", result);
@@ -733,12 +748,10 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                                 @Override
                                                 public void onClick(SweetAlertDialog sDialog) {
-
                                                     Intent in = new Intent(mContext.getApplicationContext(), HomeApproved.class);
                                                     mContext.startActivity(in);
                                                     ((Activity) mContext).finish();
                                                     pDiaglog.dismiss();
-
                                                 }
                                             }).show();
                                 } else {
@@ -748,7 +761,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                                 Log.i("PutData", result);
 
                             }catch (Exception e){
-
+                                Toast.makeText(mContext, result, Toast.LENGTH_SHORT).show();
                             }
 
 

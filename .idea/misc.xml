@@ -3,50 +3,70 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2546875" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable-v24/ic_notifications_black_24dp.xml" value="0.24322916666666666" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable-v24/ic_settings_black_24dp.xml" value="0.24322916666666666" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/background.xml" value="0.2703125" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/background2.xml" value="0.26481481481481484" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/button_bg.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/button_shape.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/cardView.xml" value="0.26481481481481484" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/edittext_bg.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/gradient_spinner.xml" value="0.20277777777777778" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/history.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_add.xml" value="0.26615384615384613" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.22407407407407406" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.2703125" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_baseline_visibility_24.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_creditcard.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_light.xml" value="0.2546875" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_location.xml" value="0.22407407407407406" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_nowifi.xml" value="0.2546875" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/ic_qrcode.xml" value="0.2546875" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/spinner.xml" value="0.20277777777777778" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/drawable/spinner_background.xml" value="0.22685185185185186" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_appointments.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_appointments_list.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_detailed_appointment.xml" value="0.23854166666666668" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_detailed_products.xml" value="0.21302083333333333" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_home.xml" value="0.21302083333333333" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_login2.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_main.xml" value="0.24010416666666667" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_records.xml" value="0.2368659420289855" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_sign_up.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_splash.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_splash_login.xml" value="0.12360688956433637" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/activity_sync_data.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/appointment_activity.xml" value="0.21784420289855072" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/appointment_approved.xml" value="0.23854166666666668" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/appointment_layout_approved.xml" value="0.23854166666666668" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/appointment_layout_pending.xml" value="0.23854166666666668" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/appointment_pending.xml" value="0.2427536231884058" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/change_password.xml" value="0.22509057971014493" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/check_internet_dialog.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/custom_dialog.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard_item_1.xml" value="0.2203125" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard_item_1_1.xml" value="0.24728260869565216" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard_item_2.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard_item_3.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard_item_4.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard_item_5.xml" value="0.23854166666666668" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dashboard_main.xml" value="0.23854166666666668" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/dialog_cancel.xml" value="0.21458333333333332" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/edit_appointment_dialog.xml" value="0.264" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/home(pending).xml" value="0.2427536231884058" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/home_approved.xml" value="0.23854166666666668" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/home_pending.xml" value="0.2427536231884058" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/products_list_item_layout.xml" value="0.21302083333333333" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/safasf.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/sidebar_header.xml" value="0.2203125" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/spinner_load.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/layout/temp.xml" value="0.23369565217391305" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/menu/dashboard_menu.xml" value="0.21302083333333333" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/menu/main_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ClinicSys/app/src/main/res/menu/sidemenu.xml" value="0.2203125" />
-<<<<<<< Updated upstream
-        <entry key="..\:/laragon/www/Csu-Clinic-System/app/src/main/res/drawable/background.xml" value="0.263" />
-        <entry key="..\:/laragon/www/Csu-Clinic-System/app/src/main/res/layout/activity_sign_up.xml" value="0.3625" />
-        <entry key="..\:/laragon/www/Csu-Clinic-System/app/src/main/res/layout/appointment_layout_pending.xml" value="0.3625" />
-        <entry key="..\:/laragon/www/Csu-Clinic-System/app/src/main/res/layout/custom_dialog.xml" value="0.3625" />
-        <entry key="..\:/laragon/www/Csu-Clinic-System/app/src/main/res/layout/edit_profile.xml" value="0.1641337386018237" />
-=======
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/activity_login.xml" value="0.10005065856129686" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/activity_records.xml" value="0.20572916666666666" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/activity_sign_up.xml" value="0.2" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/activity_splash_login.xml" value="0.1" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/appointment_activity.xml" value="0.11398176291793313" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/appointment_layout_approved.xml" value="0.24537037037037038" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/appointment_layout_pending.xml" value="0.12158054711246201" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/appointment_layout_records.xml" value="0.10005065856129686" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/dashboard_item_1.xml" value="0.2203125" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/dashboard_item_2.xml" value="0.234375" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/dashboard_item_3.xml" value="0.21944444444444444" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/dashboard_main.xml" value="0.1" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/dialog_cancel.xml" value="0.21944444444444444" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/edit_appointment_dialog.xml" value="0.1" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/edit_profile.xml" value="0.20260416666666667" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/home_approved.xml" value="0.20260416666666667" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/home_pending.xml" value="0.20260416666666667" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/home_records.xml" value="0.20260416666666667" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/layout/sidebar_header.xml" value="0.20260416666666667" />
-        <entry key="..\:/laragon/www/android/Csu-Clinic-System/app/src/main/res/menu/sidemenu.xml" value="0.24537037037037038" />
->>>>>>> Stashed changes
       </map>
     </option>
   </component>

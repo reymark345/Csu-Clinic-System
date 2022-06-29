@@ -242,7 +242,7 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
                             }
                             catch (Exception e)
                             {
-                                Toast.makeText(EditProfile.this, "error" + e, Toast.LENGTH_SHORT).show();
+                                Toasty.error(EditProfile.this, "Id number already exists", Toast.LENGTH_SHORT, true).show();
                             }
                         }
 
