@@ -359,7 +359,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                     }
                 }
 
-                ChangeAppointment(idd, complaint);
+                ChangeAppointment(idd, complaint, dialog);
             }
         });
         dialog.show();
@@ -639,7 +639,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
         }
     }
 
-    public void ChangeAppointment(String id, String remarks){
+    public void ChangeAppointment(String id, String remarks, Dialog dialog){
         try {
 
             Toast.makeText(mContext, "try "+remarks, Toast.LENGTH_SHORT).show();
@@ -694,6 +694,7 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
 //                                                    Intent in = new Intent(mContext.getApplicationContext(), HomeApproved.class);
 //                                                    mContext.startActivity(in);
 //                                                    ((Activity) mContext).finish();
+                                                    dialog.dismiss();
                                                     pDiaglog.dismiss();
                                                 }
                                             }).show();
