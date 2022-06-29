@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         String fullName = fName + " "+ lName;
         navfullName.setText(fullName);
-        navUsername.setText(idNo);
+        navUsername.setText(idNo +" : " + roleName);
 
         countAppointment(txtApprovedDashboard,txtCancelled,txtRecords);
 

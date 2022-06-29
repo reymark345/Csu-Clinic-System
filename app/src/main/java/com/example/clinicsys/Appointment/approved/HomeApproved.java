@@ -146,8 +146,8 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
                 String schedule = edtSched.getText().toString();
                 String complaint = edtComplaints.getText().toString();
 //                addAppointment(CatType,complaints,schedule,remarks);
-                addAppointment(selectedCat,selectSubCat,schedule,complaint);
-                dialog.dismiss();
+                addAppointment(selectedCat,selectSubCat,schedule,complaint, dialog);
+
             }
         });
         dialog.show();
@@ -252,7 +252,7 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    public void addAppointment(String CatType,String subCategory,String schedule,String complaint){
+    public void addAppointment(String CatType,String subCategory,String schedule,String complaint, Dialog dialog){
         try {
 
             if (!CatType.equals("") && !subCategory.equals("") && !schedule.equals("")) {
@@ -298,6 +298,7 @@ public class HomeApproved extends AppCompatActivity implements AdapterView.OnIte
                                                         appointments.clear();
                                                         getAppointment();
                                                         pDiaglog.dismiss();
+                                                        dialog.dismiss();
                                                     }
                                                 }).show();
                                     }

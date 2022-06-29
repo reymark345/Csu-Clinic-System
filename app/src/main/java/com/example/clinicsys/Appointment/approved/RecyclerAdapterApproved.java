@@ -608,7 +608,6 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                                 @Override
                                                 public void onClick(SweetAlertDialog sDialog) {
-
                                                     Intent in = new Intent(mContext.getApplicationContext(), HomeApproved.class);
                                                     mContext.startActivity(in);
                                                     ((Activity) mContext).finish();
@@ -638,14 +637,9 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
             Toast.makeText(mContext, "Server Connection Failed", Toast.LENGTH_SHORT).show();
         }
     }
-
     public void ChangeAppointment(String id, String remarks, Dialog dialog){
         try {
-
-            Toast.makeText(mContext, "try "+remarks, Toast.LENGTH_SHORT).show();
-            Log.i(TAG,"aPPOINTMENT TEST " + remarks);
             String sched = scheduleEdit.getText().toString();
-            //Start ProgressBar first (Set visibility VISIBLE)
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
                 @Override
@@ -688,14 +682,16 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                                     pDiaglog.showCancelButton(false)
                                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                                 @Override
-                                                public void onClick(SweetAlertDialog sDialog) {
+                                                public void onClick(SweetAlertDialog pDiaglogs) {
+
+                                                    pDiaglogs.dismiss();
+                                                    dialog.dismiss();
                                                     txt_loadingChange.setVisibility(View.GONE);
                                                     submitButtonChange.setClickable(true);
 //                                                    Intent in = new Intent(mContext.getApplicationContext(), HomeApproved.class);
 //                                                    mContext.startActivity(in);
 //                                                    ((Activity) mContext).finish();
-                                                    dialog.dismiss();
-                                                    pDiaglog.dismiss();
+
                                                 }
                                             }).show();
                                 } else {
@@ -749,7 +745,6 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                     data[0] = id;
                     data[1] = userId;
                     PutData putData = new PutData(BASE_URL+"/csu_clinic_app/api/appointment/complete/"+id+"/"+userId, "POST", field, data);
-//                        PutData putData = new PutData("http://192.168.254.109/csu_clinic/CancelApt.php", "POST", field, data);
                     if (putData.startPut()) {
                         if (putData.onComplete()) {
                             String result = putData.getResult();
@@ -777,7 +772,20 @@ public class RecyclerAdapterApproved extends RecyclerView.Adapter<RecyclerAdapte
                                                 }
                                             }).show();
                                 } else {
-                                    Toast.makeText(mContext, result, Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    final SweetAlertDialog pDiaglog = new SweetAlertDialog(
+                                            mContext, SweetAlertDialog.ERROR_TYPE);
+                                    pDiaglog.setTitleText("INVALID!");
+                                    pDiaglog.setContentText(message);
+                                    pDiaglog.setConfirmText("Ok");
+                                    pDiaglog.setCancelable(false);
+                                    pDiaglog.showCancelButton(false)
+                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                @Override
+                                                public void onClick(SweetAlertDialog sDialog) {
+                                                    pDiaglog.dismiss();
+                                                }
+                                            }).show();
                                 }
                                 //End ProgressBar (Set visibility to GONE)
                                 Log.i("PutData", result);
