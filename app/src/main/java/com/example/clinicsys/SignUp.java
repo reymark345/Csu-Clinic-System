@@ -34,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.clinicsys.Appointment.approved.HomeApproved;
 import com.example.clinicsys.Appointment.pending.HomePending;
 import com.example.clinicsys.Splash.Activity_Splash_Login;
 import com.google.android.material.textfield.TextInputLayout;
@@ -55,7 +56,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
     EditText edtIDno,edtFirstname,edtMiddleName,edtLastname,edtBirthdate,edtAddress,edtCpno,edtEmail,edtSchedule, edtComplaint;
     Button buttonSignup;
     private int prevCount = 0;
-    String selectedCat, selectSubCat, selectedPatient, type;
+    String selectedCat, selectSubCat, selectedPatient, type, message;
     public static String BASE_URL = "";
 
     Spinner spinnerPatientType,spinnerAppointment,spinnerSubCat, spinnerSex;
@@ -238,6 +239,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                                             JSONArray jsonArray = new JSONArray(result);
                                             JSONObject jsonObject1 = jsonArray.getJSONObject(0);
                                             type = jsonObject1.optString("type");
+                                            message = jsonObject1.optString("message");
                                             if (type.equals("success")) {
                                                 enabledAction();
                                                 progressBar.setVisibility(View.GONE);
@@ -265,32 +267,32 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                                                             }
                                                         }).show();
                                                 //End ProgressBar (Set visibility to GONE)
-                                                Log.i("PutData", result);
 
+
+                                            }
+                                            else if(type.equals("error")){
+                                                enabledAction();
+                                                progressBar.setVisibility(View.GONE);
+                                                new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
+                                                        .setTitleText("Error!")
+                                                        .setContentText(message)
+                                                        .showCancelButton(true)
+                                                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                            @Override
+                                                            public void onClick(SweetAlertDialog sDialog) {
+                                                                sDialog.dismiss();
+                                                            }
+                                                        }).show();
                                             }
                                             else {
                                                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                                             }
-
-
                                         }
                                         catch (Exception e){
                                             Toast.makeText(getApplicationContext(), "The error " + e, Toast.LENGTH_SHORT).show();
                                             enabledAction();
                                             progressBar.setVisibility(View.GONE);
-//                                            new SweetAlertDialog(SignUp.this, SweetAlertDialog.ERROR_TYPE)
-//                                                    .setTitleText("Error!")
-//                                                    .setContentText("ID number already exists")
-//                                                    .showCancelButton(true)
-//                                                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                                                        @Override
-//                                                        public void onClick(SweetAlertDialog sDialog) {
-//                                                        }
-//                                                    }).show();
                                         }
-
-
-
                                     }
                                     //End Write and Read data with URL
                                 }
@@ -316,9 +318,6 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
 
     }
 //    ------------- start outside
-
-
-
 
     private void showDateTimeDialog(final EditText date_time_in) {
         final Calendar calendar=Calendar.getInstance();
